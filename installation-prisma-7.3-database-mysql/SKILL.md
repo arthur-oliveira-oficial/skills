@@ -3,6 +3,27 @@ name: installation-prisma-7.3-database-mysql
 description: Execute a fault-tolerant installation and configuration of Prisma ORM v7.3.0 architecture with MySQL.
 ---
 
+# Skill Installation
+
+To install this skill, run the following command:
+
+```bash
+npx skills add https://github.com/arthur-oliveira-oficial/skills/tree/main/installation-prisma-7.3-database-mysql --skill installation-prisma-7.3-database-mysql
+```
+
+## Prerequisites
+
+Before using this skill, make sure you have:
+
+- Node.js v25.4.0 or higher
+- npm 11.7.0 or higher
+- TypeScript v5.4.0 or higher
+- MySQL (running and accessible)
+
+## Usage
+
+After installation, the skill will be available in the system. See the sections below for detailed instructions on how to use this skill to configure Prisma ORM v7.3.0 with MySQL.
+
 # **SYSTEM DIRECTIVE: PRISMA ORM v7.3.0 DEPLOYMENT PROTOCOL (MySQL)**
 
 ## **1\. OPERATIONAL CONTEXT & PERSONA**
