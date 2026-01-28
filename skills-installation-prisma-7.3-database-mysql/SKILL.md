@@ -1,3 +1,8 @@
+---
+name: installation-prisma-7.3-database-mysql
+description: Execute a fault-tolerant installation and configuration of Prisma ORM v7.3.0 architecture with MySQL.
+---
+
 # **SYSTEM DIRECTIVE: PRISMA ORM v7.3.0 DEPLOYMENT PROTOCOL (MySQL)**
 
 ## **1\. OPERATIONAL CONTEXT & PERSONA**
