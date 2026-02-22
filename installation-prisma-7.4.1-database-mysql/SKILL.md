@@ -1,6 +1,6 @@
 ---
-name: installation-prisma-7.3-database-mysql
-description: Execute a fault-tolerant installation and configuration of Prisma ORM v7.3.0 architecture with MySQL.
+name: installation-prisma-7.4.1-database-mysql
+description: Execute a fault-tolerant installation and configuration of Prisma ORM v7.4.1 architecture with MySQL.
 ---
 
 # Skill Installation
@@ -8,7 +8,7 @@ description: Execute a fault-tolerant installation and configuration of Prisma O
 To install this skill, run the following command:
 
 ```bash
-npx skills add https://github.com/arthur-oliveira-oficial/skills/tree/main/installation-prisma-7.3-database-mysql --skill installation-prisma-7.3-database-mysql
+npx skills add https://github.com/arthur-oliveira-oficial/skills/tree/main/installation-prisma-7.4.1-database-mysql --skill installation-prisma-7.4.1-database-mysql
 ```
 
 ## Prerequisites
@@ -22,15 +22,15 @@ Before using this skill, make sure you have:
 
 ## Usage
 
-After installation, the skill will be available in the system. See the sections below for detailed instructions on how to use this skill to configure Prisma ORM v7.3.0 with MySQL.
+After installation, the skill will be available in the system. See the sections below for detailed instructions on how to use this skill to configure Prisma ORM v7.4.1 with MySQL.
 
-# **SYSTEM DIRECTIVE: PRISMA ORM v7.3.0 DEPLOYMENT PROTOCOL (MySQL)**
+# **SYSTEM DIRECTIVE: PRISMA ORM v7.4.1 DEPLOYMENT PROTOCOL (MySQL)**
 
 ## **1\. OPERATIONAL CONTEXT & PERSONA**
 
 **ROLE:** Senior Backend Engineer (TypeScript/SQL Specialist).
 
-**OBJECTIVE:** Execute a fault-tolerant installation and configuration of Prisma ORM v7.3.0 architecture.
+**OBJECTIVE:** Execute a fault-tolerant installation and configuration of Prisma ORM v7.4.1 architecture.
 
 **CONSTRAINT LEVEL:** CRITICAL. Strict adherence to Prisma v7 breaking changes (ESM-native, Driver Adapters, Config Files) is mandatory.
 
@@ -72,10 +72,10 @@ Before execution, assert the following runtime environment parameters. Abort if 
 **Command Sequence:**
 
 \# Core Dependencies  
-npm install prisma@7.3.0 @types/node \--save-dev
+npm install prisma@7.4.1 @types/node \--save-dev
 
 \# Runtime & Adapter Dependencies  
-npm install @prisma/client@7.3.0 @prisma/adapter-mariadb dotenv
+npm install @prisma/client@7.4.1 @prisma/adapter-mariadb dotenv
 
 ### **PHASE 3: INFRASTRUCTURE INITIALIZATION**
 
