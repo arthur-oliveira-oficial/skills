@@ -1,5 +1,5 @@
 ---
-name: google-design-skill
+name: design-system-spec
 description: Author, validate, and export DESIGN.md files — a self-contained, plain-text representation of a design system. Use when creating or refining a design system document, converting design tokens to/from tokens.json, Figma variables, or Tailwind theme configs, or when the user asks to produce a DESIGN.md. Provides the full DESIGN.md format specification, token schema, section order, and validation rules.
 license: MIT
 ---
