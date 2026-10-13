@@ -1,9 +1,4 @@
----
-name: apply-design-system
-description: Enforce the project's docs/design/DESIGN.md when creating, editing, reviewing, or refactoring frontend code. Use for any task that changes user-interface layout, styling, themes, design tokens, components, pages, responsive behavior, or visual states in web and frontend applications. Read the canonical design file before implementation, map its tokens and guidance to the project's framework, and verify the result against it.
----
-
-# Apply Design System
+# Applying DESIGN.md to Frontend Code
 
 Treat `docs/design/DESIGN.md`, relative to the project root, as the canonical visual specification for every frontend change. Apply its machine-readable tokens and human-readable guidance without inventing conflicting styles.
 

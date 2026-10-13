@@ -1,10 +1,10 @@
 ---
 name: design-system-spec
-description: Author, validate, and export DESIGN.md files — a self-contained, plain-text representation of a design system. Use when creating or refining a design system document, converting design tokens to/from tokens.json, Figma variables, or Tailwind theme configs, or when the user asks to produce a DESIGN.md. Provides the full DESIGN.md format specification, token schema, section order, and validation rules.
+description: Author, validate, export, and apply DESIGN.md files — a self-contained, plain-text representation of a design system. Use to create or refine a design system document, convert tokens to/from tokens.json, Figma variables, or Tailwind theme configs, or produce a DESIGN.md. Also use to enforce an existing docs/design/DESIGN.md when creating, editing, reviewing, or refactoring frontend code (layout, styling, themes, tokens, components, responsive behavior, visual states).
 license: MIT
 ---
 
-# Google Design Skill (DESIGN.md Authoring)
+# Design System Spec (DESIGN.md Authoring and Application)
 
 DESIGN.md is a self-contained, plain-text representation of a design system. It defines the visual identity of a brand and product so stylistic choices can be followed across design sessions and between different AI agents and tools. It is a living source of truth that both humans and AI can understand and refine.
 
@@ -25,6 +25,10 @@ Use this skill when:
 - The user wants a design system captured in a portable, agent-readable format.
 - The user wants to convert design tokens between `DESIGN.md`, `tokens.json`, Figma variables, and Tailwind theme configs.
 - The user is establishing a shared visual identity for a brand or product.
+
+## Applying DESIGN.md to Frontend Code
+
+When the task changes frontend code in a project that has `docs/design/DESIGN.md`, treat that file as the canonical visual specification. Read `references/apply-to-frontend.md` for the required workflow, the rules for missing or conflicting specifications, implementation rules, and the verification checklist. Do not invent conflicting styles, and stop before visual decisions if the file is missing.
 
 ## Structure of a DESIGN.md
 
