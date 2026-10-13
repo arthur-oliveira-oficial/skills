@@ -1,5 +1,5 @@
 ---
-name: frontend-design-premium
+name: product-ui-engineer
 description: Design and implement distinctive, production-grade frontends with Next.js, React, Tailwind CSS, shadcn/ui, and Lucide. Use for pages, dashboards, SaaS apps, landing pages, admin panels, product interfaces, component systems, redesigns, and UI polishing where strong visual quality, mobile-first UX, accessibility, responsive behavior, and a non-generic human-designed feel are required.
 ---
 
@@ -108,7 +108,7 @@ Avoid patterns that make the interface look mass-generated.
 - realistic content shapes instead of placeholder-looking copy
 - subtle surface changes instead of gratuitous shadows
 
-Read `references/anti-ai-ui.md` for the extended anti-pattern guide.
+Apply the anti-pattern lists in section 3 to every screen.
 
 ## 4. Mobile-first is mandatory
 
@@ -409,7 +409,7 @@ At minimum reason through or inspect approximately:
 
 ### Step H — Review quality
 
-Use `references/review-checklist.md` before finishing.
+Use the questions in section 19 before finishing.
 
 ## 16. Redesign mode
 
@@ -477,3 +477,8 @@ Before declaring completion, ask:
 - Does the result feel calm, intentional, and production-ready?
 
 If the answer to several questions is no, iterate before finishing.
+
+## 20. Related skills
+
+- For usability audits and cognitive-load fixes in an existing interface (Fitts, Hick, Jakob, Miller, Zeigarnik, goal-gradient, Von Restorff), use `ux-cognitive-laws`.
+- If the project has `docs/design/DESIGN.md`, its tokens and rules take precedence over the visual defaults here. Follow the `design-system-spec` skill, starting with its `references/apply-to-frontend.md` file.
