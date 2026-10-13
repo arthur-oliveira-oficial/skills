@@ -85,6 +85,12 @@ Each rule contains:
 
 For the complete guide with every rule expanded, read `AGENTS.md`.
 
+## Planning Documents
+
+When asked to plan, document, or break down work (not only to review or code), inspect the repository first, then use `references/implementation-plan.md` as the default document shape. It covers requirements, behavioral contract, stories, acceptance criteria, design, file-level change map, risk, sprint backlog, TDD and verification plan, adversarial review plan, Definition of Done, and evidence requirements.
+
+Apply the rule files listed in that template. For medium- or high-risk work, consider every rule category explicitly. Save the document to `docs/plan-implementation/<feature-slug>.md` unless the user specifies another path or asks for the content only.
+
 # Expanded Rules
 
 ---

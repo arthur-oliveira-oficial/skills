@@ -1,9 +1,4 @@
----
-name: implementation-docs
-description: Create implementation-ready, evidence-driven software documentation for a feature, change, bug fix, refactor, integration, migration, or technical initiative. Use when asked to plan implementation, create implementation documentation, prepare a Sprint Backlog, break down development work, write technical design, PRD, user stories, acceptance criteria, behavioral contracts, tasks, verification strategy, test plan, risks, Definition of Done, implementation evidence, or code-review checklist. Inspect the repository first and adapt rigor to change size and risk.
----
-
-# Implementation Documentation
+# Implementation Plan Template
 
 Create implementation-ready documentation grounded in the actual repository whenever a repository is available.
 
@@ -58,7 +53,7 @@ Classify the work internally by size:
 - **Medium**: several components or meaningful business behavior.
 - **Large**: cross-cutting change, new subsystem, migration, external integration, security-sensitive work, or multiple delivery phases.
 
-Also classify implementation risk using `rules/risk-classification.md`.
+Also classify implementation risk using `../rules/risk-classify-first.md`, `../rules/risk-human-review.md`.
 
 Use both dimensions to decide rigor. A small authentication or payment change can still be high risk. A large documentation-only refactor can be low risk.
 
@@ -66,22 +61,22 @@ Do not print either classification unless it improves the document.
 
 ## Required workflow
 
-Use `references/output-template.md` as the default document shape. Apply the rule files below where relevant.
+This file is the default document shape. Apply the rule files below where relevant.
 
 ### Rule modules
 
 Read and apply these rules as needed:
 
-- `rules/behavioral-contract.md`
-- `rules/implementation-slices.md`
-- `rules/tdd-and-regression.md`
-- `rules/verification-gauntlet.md`
-- `rules/architecture-boundaries.md`
-- `rules/risk-classification.md`
-- `rules/adversarial-review.md`
-- `rules/implementation-evidence.md`
+- `../rules/contract-before-code.md`, `../rules/contract-gherkin-examples.md`, `../rules/contract-invariants.md`
+- `../rules/tdd-small-slices.md`
+- `../rules/tdd-red-green-refactor.md`, `../rules/tdd-regression-first.md`
+- `../rules/verify-overlapping-tests.md`, `../rules/verify-mutation-testing.md`, `../rules/verify-no-weakened-gates.md`
+- `../rules/architecture-boundaries.md`, `../rules/architecture-complexity-budget.md`
+- `../rules/risk-classify-first.md`, `../rules/risk-human-review.md`
+- `../rules/agent-adversarial-review.md`, `../rules/agent-separate-roles.md`
+- `../rules/evidence-command-results.md`, `../rules/evidence-residual-risk.md`
 
-For medium/high-risk work, all eight rule modules should be considered explicitly.
+For medium/high-risk work, consider every rule group above explicitly.
 
 ## 1. Implementation summary
 
@@ -130,7 +125,7 @@ Include, when relevant:
 
 For bug fixes, explicitly document the failing/regression behavior that must no longer occur.
 
-Follow `rules/behavioral-contract.md`.
+Follow `../rules/contract-before-code.md`, `../rules/contract-gherkin-examples.md`, `../rules/contract-invariants.md`.
 
 ## 4. User / technical stories
 
@@ -201,7 +196,7 @@ Include, when relevant:
 - complexity/size limits where useful
 - repository checks that enforce architecture
 
-Follow `rules/architecture-boundaries.md`.
+Follow `../rules/architecture-boundaries.md`, `../rules/architecture-complexity-budget.md`.
 
 ## 8. File-level change map
 
@@ -240,7 +235,7 @@ Prioritize:
 - external dependencies
 - rollback difficulty
 
-Follow `rules/risk-classification.md`.
+Follow `../rules/risk-classify-first.md`, `../rules/risk-human-review.md`.
 
 ## 10. Sprint Backlog
 
@@ -280,7 +275,7 @@ Include tests, migrations, telemetry, documentation, flags, cleanup, and deploym
 
 Avoid vague tasks such as "implement backend" or "add tests".
 
-Follow `rules/implementation-slices.md`.
+Follow `../rules/tdd-small-slices.md`.
 
 ## 12. TDD / regression strategy
 
@@ -290,7 +285,7 @@ For critical or behavior-heavy changes, describe a Red → Green → Refactor de
 
 Do not force TDD ceremony for trivial or unsuitable changes, but always require behavior to be verifiable.
 
-Follow `rules/tdd-and-regression.md`.
+Follow `../rules/tdd-red-green-refactor.md`, `../rules/tdd-regression-first.md`.
 
 ## 13. Test and verification plan
 
@@ -318,7 +313,7 @@ When repository validation commands are known, include exact commands.
 
 Never plan to disable tests, reduce coverage thresholds, suppress type errors, or relax lint rules simply to obtain a passing result.
 
-Follow `rules/verification-gauntlet.md`.
+Follow `../rules/verify-overlapping-tests.md`, `../rules/verify-mutation-testing.md`, `../rules/verify-no-weakened-gates.md`.
 
 ## 14. Adversarial review plan
 
@@ -336,7 +331,7 @@ For medium/high-risk changes, define an independent review pass that deliberatel
 
 The reviewer/agent should critique the implementation against the behavioral contract rather than merely restating the implementation.
 
-Follow `rules/adversarial-review.md`.
+Follow `../rules/agent-adversarial-review.md`, `../rules/agent-separate-roles.md`.
 
 ## 15. Definition of Done
 
@@ -397,7 +392,7 @@ Evidence can include:
 
 Do not claim evidence exists during planning. State it as a required completion artifact.
 
-Follow `rules/implementation-evidence.md`.
+Follow `../rules/evidence-command-results.md`, `../rules/evidence-residual-risk.md`.
 
 ## 18. Open questions and assumptions
 

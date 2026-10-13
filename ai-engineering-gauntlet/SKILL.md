@@ -1,10 +1,10 @@
 ---
 name: ai-engineering-gauntlet
-description: Evidence-driven AI coding practices inspired by Robert C. Martin's specification-first, TDD, architecture, metrics, mutation testing, and adversarial verification workflow. Use when planning, implementing, reviewing, or refactoring software with AI agents, especially when correctness must be demonstrated rather than assumed.
+description: Evidence-driven AI coding practices inspired by Robert C. Martin's specification-first, TDD, architecture, metrics, mutation testing, and adversarial verification workflow. Use when planning, implementing, reviewing, or refactoring software with AI agents, especially when correctness must be demonstrated rather than assumed. Also use to create implementation-ready documentation for a feature, bug fix, refactor, integration, or migration: behavioral contract, PRD, stories, acceptance criteria, sprint backlog, test plan, Definition of Done, and code-review checklist.
 license: MIT
 metadata:
   author: community
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # AI Engineering Gauntlet
@@ -80,6 +80,12 @@ Each rule contains:
 - An incorrect workflow
 - A correct workflow
 - Practical acceptance criteria
+
+## Planning Documents
+
+When asked to plan, document, or break down work (not only to review or code), inspect the repository first, then use `references/implementation-plan.md` as the default document shape. It covers requirements, behavioral contract, stories, acceptance criteria, design, file-level change map, risk, sprint backlog, TDD and verification plan, adversarial review plan, Definition of Done, and evidence requirements.
+
+Apply the rule files listed in that template. For medium- or high-risk work, consider every rule category explicitly. Save the document to `docs/plan-implementation/<feature-slug>.md` unless the user specifies another path or asks for the content only.
 
 ## Full Compiled Document
 
