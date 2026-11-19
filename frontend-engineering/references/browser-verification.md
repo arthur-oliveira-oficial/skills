@@ -107,12 +107,14 @@ Look at each screenshot: navigation pattern, columns, content width cap, sticky 
 ```bash
 agent-browser set viewport 1280 800
 agent-browser open http://localhost:3000/route
-agent-browser eval "document.documentElement.style.fontSize = '200%'; document.documentElement.scrollWidth > document.documentElement.clientWidth"
+# text that did NOT scale (px-sized) — must be [] before the overflow checks mean anything
+agent-browser eval "const els = [...document.querySelectorAll('body *')].filter(el => [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())); const before = els.map(el => parseFloat(getComputedStyle(el).fontSize)); document.documentElement.style.fontSize = '200%'; els.filter((el, i) => parseFloat(getComputedStyle(el).fontSize) < before[i] * 1.5).map(el => el.tagName.toLowerCase() + '.' + [...el.classList].join('.')).slice(0, 10)"
+agent-browser eval "document.documentElement.scrollWidth > document.documentElement.clientWidth"
 agent-browser eval "[...document.querySelectorAll('body *')].filter(el => { const s = getComputedStyle(el); return el.clientWidth > 1 && (s.overflow.includes('hidden') || s.textOverflow === 'ellipsis') && (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1); }).map(el => el.tagName.toLowerCase() + '.' + [...el.classList].join('.')).slice(0, 10)"
 agent-browser screenshot --full "$V/screenshots/route-text200.png"
 ```
 
-This only works when type uses `rem`/`em`; a page sized in `px` will not scale, which is itself a finding.
+Run the commands in this order (the first one sets 200%). Elements listed by the first check are sized in `px` and did not scale: that is a finding, and a clean overflow result for them proves nothing.
 
 ## Input modality and touch
 
@@ -130,9 +132,11 @@ agent-browser screenshot "$V/screenshots/route-ipad-pro.png"
 Verify touch behavior with these checks instead of trusting emulation:
 
 1. **Hover-only actions (static):** search the changed code for visibility gated on hover, e.g. `opacity-0 group-hover:opacity-100`, `hidden group-hover:block`, `:hover` rules that reveal controls. Each must also appear on `focus-visible`/`focus-within` and be visible by default under `@media (hover: none)` (or always visible).
-2. **Target size (browser):** `agent-browser get box @eN` on important controls — ≥ 44×44px preferred, ≥ 24×24px minimum.
+2. **Target size (browser):** `agent-browser get box @eN` on important controls — ≥ 44×44px preferred, ≥ 24×24px minimum. For visually hidden inputs (custom radios/checkboxes, which measure 1×1), measure the clickable `<label>` instead.
 3. **Spacing between targets:** compare adjacent boxes; ≥ 8px apart on touch layouts.
 4. **Real device or DevTools device mode** (touch enabled) when the change depends on gestures, `pointer: coarse` styles, or touch events. If not available, list "touch interaction" as **not verified**.
+
+`set device` changes the **user agent for the rest of the session**; a later `set viewport` resets size and pixel ratio but the page still reports an iPhone/iPad UA (tested on 0.43; there is no reset command). Run device emulation last, or in its own `--session`, and do desktop checks in a session that never ran `set device`.
 
 Check that the emulated device actually applied:
 
@@ -176,6 +180,8 @@ Pass when dark mode preserves hierarchy and contrast, and animated elements have
 agent-browser a11y http://localhost:3000/route --tags wcag2a,wcag2aa,wcag21aa,wcag22aa
 agent-browser a11y --selector "#main" --json        # scope to the changed area
 ```
+
+`a11y <url>` and `vitals <url>` **navigate to the URL again**: page state (toggles, filled fields, opened dialogs) is lost and every `@eN` ref goes stale (tested on 0.43). To audit a state you reached by interacting, run `a11y` **without** a URL (it audits the current page), and take a fresh `snapshot -i` afterwards.
 
 Pass when the change introduces no new `serious`/`critical` violations. Report pre-existing violations separately. axe catches roughly a third to half of issues; keyboard, focus, and screen-reader semantics still need the manual checks above.
 
@@ -239,7 +245,7 @@ Unexpected changes outside the task's scope are findings.
 - **Always pass absolute paths** to `screenshot`, `record`, and `diff --baseline`. Tested on agent-browser 0.43: `screenshot .verification/x.png` treats `.verification` as a CSS **selector** and silently saves to `~/.agent-browser/tmp/`, and other relative paths resolve against the browser daemon's working directory, not your shell's. Both print "✓ saved". Use `"$V/…"` with `V="$PWD/.verification"`, and confirm with `ls` that the files exist before citing them.
 - **Where artifacts go:**
   - Implementation work: `.verification/` in the project (or a path the user names). Suggest adding it to `.gitignore` in the report — don't create or edit `.gitignore` unasked; do not commit artifacts unless asked.
-- **Evidence must show the final state.** If you change code after taking screenshots (a bug found during verification), retake every screenshot that shows the changed area and rerun the checks it affects. Never deliver pre-fix screenshots as evidence.
+- **Evidence must show the final state.** If you change code after taking screenshots (a bug found during verification), retake every screenshot that shows the changed area and rerun the checks it affects. Retake, don't just delete: a check without its evidence counts as **not verified**. Never deliver pre-fix screenshots as evidence.
   - **Audit-only work**: do not write into the project. Use a directory outside it (the session's scratchpad if there is one, otherwise `V="$(mktemp -d)/verification"`), unless the user names a path.
   - Report artifacts with their full absolute paths.
 - Record a video for multi-step flows and bug reproductions. Recording needs **ffmpeg**; if `record start` reports it missing, do not install it unasked: fall back to a numbered screenshot per step and note "video: not recorded (ffmpeg missing)".

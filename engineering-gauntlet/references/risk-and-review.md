@@ -47,7 +47,7 @@ When risk justifies it, use separate roles or isolated sessions: specification, 
 
 ## Adversarial review
 
-An independent reviewer (clean context) receives **contract + diff** and an attack checklist — not "review this code":
+An independent reviewer (clean context) receives **contract + diff** and an attack checklist — not "review this code". The reviewer is **read-only**: say so in its prompt ("do not modify files; do not write anything outside the repository; run probes with `node -e`/a REPL or in a scratch file inside the repo that you delete"), and check `git status` and the parent directory afterwards. Checklist:
 
 - missing or partially met requirements
 - incorrect assumptions

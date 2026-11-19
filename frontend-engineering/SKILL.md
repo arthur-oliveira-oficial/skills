@@ -3,7 +3,7 @@ name: frontend-engineering
 description: Designs, builds, audits, and verifies production web interfaces. Use for pages, dashboards, SaaS apps, landing pages, admin panels, forms, onboarding, checkout, navigation, components, redesigns, visual polish, responsive layout (mobile, tablet, desktop), UX/usability/accessibility audits, browser verification or QA of a web app, and any change to layout, styling, themes, tokens, or visual states; with Next.js or Vite + React, Tailwind CSS, shadcn/ui or other component libraries, Vue, Nuxt, Angular, Svelte, or plain HTML/CSS; and for creating, validating, exporting, or applying a DESIGN.md design system (tokens, Tailwind theme, Figma variables, tokens.json). Not for backend-only work. Também: tela, página, formulário, painel, componente, layout, responsivo, acessibilidade, usabilidade, redesign, design system.
 license: MIT
 metadata:
-  version: "2.3.2"
+  version: "2.3.3"
 ---
 
 # Frontend Engineering
@@ -104,7 +104,7 @@ New project with no stack specified: Next.js App Router + TypeScript + Tailwind 
 
 **Dashboard / SaaS.** Task completion and information scent over spectacle: clear active navigation, a useful title and action area, sensible defaults, search/filter when needed, contextual actions near the object they affect, responsive data representation. Do not wrap every metric in a floating card.
 
-**UX / a11y audit.** Prioritized findings with file/screen, evidence, law/heuristic or WCAG criterion, recommendation, and risk. No code edits, no files written into the project. When the app can run, verify findings in the browser ([browser-verification.md](references/browser-verification.md)); use `agent-browser skills get dogfood` only for multi-page apps or flows, not for a single screen. End with the checks run and what was **not verified**.
+**UX / a11y audit.** Prioritized findings with file/screen, evidence, law/heuristic or WCAG criterion, recommendation, and risk/effort. No code edits, no files written into the project. When the app can run, verify findings in the browser ([browser-verification.md](references/browser-verification.md)); use `agent-browser skills get dogfood` only for multi-page apps or flows, not for a single screen. End with the checks run and what was **not verified**.
 
 ## Relationship with the `engineering-gauntlet` skill
 
