@@ -1,16 +1,16 @@
 ---
 name: engineering-gauntlet
-description: Evidence-driven software engineering process for AI coding agents. Use when designing, planning, implementing, debugging, reviewing, refactoring, or shipping code in any language; when a request needs clarifying before building; when writing a PRD, spec, implementation plan, backlog, test plan, or Definition of Done; when executing a plan with subagents; when responding to code review or finishing a branch (merge, PR); for backend work (APIs, databases, migrations, queues, auth, security); for writing prompts, skills, or AGENTS.md/CLAUDE.md; and whenever correctness must be demonstrated rather than assumed. Também: planejar, especificar, implementar, depurar, bug, teste, revisão de código, refatorar, API, banco de dados, migração, plano de implementação, prompt.
+description: Evidence-driven software engineering process for AI coding agents. Use for non-trivial work in any language (designing, planning, implementing, debugging, reviewing, refactoring, or shipping code); when a request needs clarifying before building; when writing a PRD, spec, implementation plan, backlog, test plan, or Definition of Done; when executing a plan with subagents; when responding to code review or finishing a branch (merge, PR); for backend work (APIs, databases, migrations, queues, auth, security); for writing prompts, skills, or AGENTS.md/CLAUDE.md; and whenever correctness must be demonstrated rather than assumed. Not for questions about code, one-line edits, or purely visual UI work. Também — planejar, especificar, implementar, corrigir, depurar, bug, erro, lento, desempenho, revisão de código, PR, merge, refatorar, banco de dados, migração, autenticação, segurança, plano de implementação.
 license: MIT
 metadata:
-  version: "2.3.3"
+  version: "2.4.0"
 ---
 
 # Engineering Gauntlet
 
 The human owns intent and acceptance. AI may generate and refactor code, but **completion requires reproducible evidence**.
 
-Respond in the user's language (default: Brazilian Portuguese), including the headings of the report format below; keep commands, code, and identifiers as they are.
+Respond in the language of the user's messages (Brazilian Portuguese only when it cannot be determined), including report headings; keep commands, code, and identifiers as they are. Persisted artifacts (commits, PR text, docs, code comments) follow the repository's language. Match reply length to the user's.
 
 ## Iron laws
 
@@ -38,9 +38,11 @@ Respond in the user's language (default: Brazilian Portuguese), including the he
 | Respond to code review feedback; finish a branch (merge, PR, keep, discard) | [delivery.md](references/delivery.md) |
 | Writing prompts, skills, AGENTS.md/CLAUDE.md, orchestrating subagents | [prompts-and-agents.md](references/prompts-and-agents.md) |
 
-When several rows match (e.g. "export customers to CSV" → discovery + backend + risk, since it moves personal data), read all of them and apply them in workflow order: discovery first, then risk and contract, then the domain references during implementation.
+When several rows match (e.g. "export customers to CSV" → discovery + backend + risk), read all of them and apply them in workflow order: discovery first, then risk and contract, then the domain references during implementation. On follow-up turns, re-read only the reference the turn needs.
 
-For interface changes, also use the `frontend-engineering` skill. For anything that runs in a browser, verification and bug reproduction use `agent-browser` (see [verification-and-evidence.md](references/verification-and-evidence.md) and [debugging.md](references/debugging.md)).
+Question only: answer after reading the code. Review only: findings per [risk-and-review.md](references/risk-and-review.md); edit and commit nothing. Trivial edit: do it, run the relevant check, one-line report.
+
+For interface work `frontend-engineering` leads (its workflow and browser evidence); apply this skill on top only for medium/high risk or logic, data, auth, or money. Purely visual changes need browser evidence, not a red test. Browser verification and bug reproduction use `agent-browser` (see [verification-and-evidence.md](references/verification-and-evidence.md) and [debugging.md](references/debugging.md)).
 
 ## Default workflow
 
@@ -53,7 +55,7 @@ Scale depth to **risk** (not just size). Size, for deciding whether a plan is ne
 Copy and track:
 
 ```
-- [ ] 0. Discovery: clarify intent, approve a design (skip if small and clear)
+- [ ] 0. Discovery (after a first look at the repo): clarify intent, approve a design (skip if small and clear)
 - [ ] 1. Investigate the repository and the current execution path
 - [ ] 2. Classify risk (low / medium / high) and set gates
 - [ ] 3. Write the contract: observable outcomes, non-goals, failures, invariants
@@ -62,10 +64,10 @@ Copy and track:
 - [ ] 6. Verify in layers (lint, types, tests, build; mutation if critical)
 - [ ] 7. Independent/adversarial review (medium/high risk)
 - [ ] 8. Report evidence and residual risk
-- [ ] 9. Finish the branch: verify, then merge / PR / keep / discard as the human chooses
+- [ ] 9. Finish: checkpoint, then merge / PR / keep / discard as the human chooses
 ```
 
-**0. Discovery.** If intent, scope, or approach is open, follow [discovery.md](references/discovery.md): one question at a time, approaches with a recommendation, and no building until the design is approved. Small and clear requests skip this.
+**0. Discovery.** If intent, scope, or approach is open, take a first look at the repo, then follow [discovery.md](references/discovery.md): ask only what changes the build, approaches with a recommendation, and no building until the design is approved. Small and clear requests skip this.
 
 **1. Investigate.** `AGENTS.md`/`CLAUDE.md`/README, manifests, entry points, relevant domain code, tests, CI, lint/type/build commands. For a bug or existing feature, trace the current execution path. Run independent reads in parallel.
 
@@ -73,25 +75,25 @@ Copy and track:
 
 | Risk | Minimum gates |
 |---|---|
-| Low | focused tests, lint, types, build (a check the project has no tooling for is reported as N/A in **Not verified**; don't add tooling unasked) |
+| Low | focused tests, lint, types, build (no tooling for a check → N/A under **Not verified**; don't add tooling unasked) |
 | Medium | + written contract, regression/boundary tests, independent review |
 | High | + tested invariants, negative security tests, mutation testing on critical modules, rollback plan, recorded human approval |
 
-Gates scale to the change, not just the level: a one-line high-risk fix still needs the invariant tests, mutation check (manual if no tool, see [verification-and-evidence.md](references/verification-and-evidence.md)), and human approval, but its rollback plan can be "revert the commit". When no human is available, do the work, do not merge or deploy, and list the approval as pending under **Decisions needed**.
+Gates scale to the change, not just the level: a one-line high-risk fix still needs the invariant tests, mutation check (manual if no tool, see [verification-and-evidence.md](references/verification-and-evidence.md)), and human approval, but its rollback plan can be "revert the commit". When no human is available, follow the no-human rule in [discovery.md](references/discovery.md); approval stays pending under **Decisions needed**.
 
-**3. Contract.** Short. Relevant ambiguity → ask before implementing; minor ambiguity → record the assumption and proceed.
+**3. Contract.** Short. Relevant ambiguity (a business rule or destination the repo cannot answer) → if a human is reachable, ask before implementing, with your proposed default; minor, or nobody can answer → record the assumption under **Decisions needed** and proceed.
 
 **4–5. Slices + TDD.** One slice = one primary outcome. Run the new test **before** the code and confirm it fails for the expected reason. Implement the minimum. Refactor with everything green.
 
-**6. Verify.** Run the project's full suite, not just the new file. Pre-existing failures are reported too.
+**6. Verify.** Per slice: focused tests. Before the report and delivery: the project's full suite once (impractical → affected packages, the rest under **Not verified**). Pre-existing failures are reported too.
 
-**7. Review.** Reviewer in a clean context, given contract + diff and an attack checklist — not "review this". Verify each finding against the code, then: blocking/important → fix and re-run step 6; suggestions → report, don't apply unasked (minimal scope).
+**7. Review.** Reviewer in a clean context, given contract + diff and an attack checklist — not "review this". Verify each finding against the code, then: blocking/important → fix and re-run step 6; minor → report, don't apply unasked (minimal scope).
 
 **8. Report** using the format below.
 
-**9. Finish.** Commit verified work locally on a feature branch (never directly on the default branch) with a message describing the behavior, unless the project or the human says otherwise; a local commit is reversible and makes "keep" and "PR" meaningful. Then follow [delivery.md](references/delivery.md). Merge, push, and PR are external side effects: only after the human chooses.
+**9. Finish.** If the host, project, or human restricts commits (e.g. "commit only when asked"), do not commit or branch: leave the verified change in the working tree and list "commit" first under **Decisions needed**. Otherwise commit locally on a feature branch (never the default branch), staging only the paths you changed (never `git add -A`/`.`, evidence, ledgers, or the user's pre-existing changes). No VCS: list the changed paths in the report. Then follow [delivery.md](references/delivery.md). Merge, push, and PR are external side effects: only after the human chooses.
 
-For high risk the order is: green (5) → full suite (6) → local commit → mutation check on the committed change → review (7) → fixes, re-verify, amend or add commits → report (8) → delivery options (9).
+For high risk the order is: green (5) → full suite (6) → local checkpoint (commit, or `git add` of the changed files if commits are restricted) → mutation check → review (7) → fixes, re-verify, amend or add commits → report (8) → delivery options (9).
 
 For medium/large work, write a plan ([implementation-plan.md](references/implementation-plan.md)) and execute it with [execution.md](references/execution.md) — inline, or a fresh subagent per task with independent spec and quality reviews.
 
@@ -100,16 +102,18 @@ For medium/large work, write a plan ([implementation-plan.md](references/impleme
 ```markdown
 ## Summary
 What changed and why (1–3 sentences).
+Risk: <low|medium|high> (factors). Root cause: <bug fixes>. Human approval: <quote and date | pending | n/a>.
 
 ## Evidence
 | Command | Result |
 |---|---|
-| `pnpm test` | ✅ 142 passed, 0 failed |
-| `pnpm lint` | ✅ exit 0 |
-| `pnpm build` | ❌ failed — see below |
+| `pnpm test` | PASS: 142 passed, 0 failed |
+| `pnpm lint` | PASS: exit 0 |
+| `pnpm build` | FAIL: see below |
+| mutation check | NOT VERIFIED: no VCS |
 
 Regression test: failed before the fix (`<short output>`), passes after.
-Browser (web changes): `agent-browser` flow ✅, screenshots in `.verification/`, `errors` empty.
+Browser (web changes): `agent-browser` flow PASS, screenshots in `<abs project root>/.verification/`, no new `errors` versus baseline.
 
 ## Decisions needed
 Business or product choices you made as assumptions and the human must confirm (rounding policy, defaults, copy, URLs), and pending approvals. Omit if none.
@@ -120,6 +124,8 @@ Skipped checks and why.
 ## Residual risk
 Assumptions, uncovered areas, recommended monitoring.
 ```
+
+This format is for the final report of a change; follow-up replies answer what was asked. Small low-risk change: three lines (what changed, command and result, not verified).
 
 ## Red flags — stop and go back
 

@@ -17,6 +17,8 @@ Don't implement the feature unless the user also asks for implementation.
 - Traceability
 - Output location
 - Final quality gate
+- Self-review before handoff
+- Handoff
 
 ## Principles
 
@@ -41,13 +43,12 @@ For an existing feature or bug, trace the current execution path before proposin
 
 ## Planning depth
 
-- **Small:** localized change, few dependencies.
-- **Medium:** several components or meaningful business rules.
-- **Large:** cross-cutting, new subsystem, migration, external integration, security, multiple phases.
+Size as defined in [SKILL.md](../SKILL.md), crossed with risk ([risk-and-review.md](risk-and-review.md)): small + auth = high risk. Read only the references the routing table selects.
 
-Cross with risk ([risk-and-review.md](risk-and-review.md)). Small + auth = high risk. Don't print the classification unless it helps. For medium/high risk, explicitly consider every reference in this skill.
+- **Short plan (medium):** sections 1, 3, 5, 8, 11, 13, 18.
+- **Full plan (large or high risk):** all relevant sections.
 
-Omit irrelevant sections for small changes; avoid unnecessary Scrum ceremony.
+Omit irrelevant sections; avoid unnecessary Scrum ceremony.
 
 ## Document sections
 
@@ -95,7 +96,7 @@ Each task contains:
   - [ ] Run `pnpm test orders/cancel` → expect FAIL (missing guard)
   - [ ] Implement guard in `src/orders/cancel.ts` (`cancelOrder(id, actor): Result<Order, CancelError>`)
   - [ ] Run `pnpm test orders/cancel` → expect PASS
-  - [ ] Commit `feat(orders): reject cancel after shipping (TASK-02.1)`
+  - [ ] Commit `feat(orders): reject cancel after shipping (TASK-02.1)` (commits restricted → stage the changed files instead)
   ```
   Test steps name the test and its assertion; code steps give signature, location, and spec-pinned values — not full bodies, unless an exact algorithm or copy is required; verification steps give the command and expected result.
 
@@ -130,7 +131,7 @@ Lightweight, proportional to size: `REQ-*` requirements, `BC-*`/`INV-*` contract
 
 ## Output location
 
-Save to `docs/plan-implementation/<feature-slug>.md` (lowercase kebab-case), creating the directory if needed, unless the user specifies another path. Don't switch directories just because the repository already has another docs folder. If the user asks for content only, respond without creating a file.
+Save as `<feature-slug>.md` (lowercase kebab-case) in the path the user names; otherwise in the repository's existing plans/specs/ADR folder if one exists; otherwise in `docs/plan-implementation/`, creating it if needed. Write the plan in the repository's language. If the user asks for content only, respond without creating a file.
 
 ## Final quality gate
 

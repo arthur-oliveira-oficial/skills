@@ -15,11 +15,11 @@
 
 ## Required location
 
-Always `docs/design/DESIGN.md`, relative to the project root. Create `docs/design/` if it does not exist. Do not create `DESIGN.md` at the root or in another directory. When reading, refining, validating, or exporting, use this file as the canonical source unless the user points to another existing file.
+New files go to `docs/design/DESIGN.md` (create `docs/design/` if needed). An existing DESIGN.md elsewhere (root, `docs/`) stays where it is and is the canonical source unless the user asks to move it; never create a second one. When reading, refining, validating, or exporting, use the existing file, or the one the user points to.
 
 ## Structure
 
-1. **YAML front matter (optional):** machine-readable tokens — **these are the normative values**.
+1. **YAML front matter** (optional for a prose-only file; required to validate or export, with at least `colors.primary`): machine-readable tokens — **these are the normative values**.
 2. **Markdown body:** rationale and guidance for humans. Prose may use descriptive names ("Midnight Forest Green") that correspond to tokens (`primary`).
 
 The block starts and ends with a line containing exactly `---`.
@@ -137,7 +137,7 @@ components:
 
 ## Authoring workflow
 
-1. Write to `docs/design/DESIGN.md`.
+1. Write to `docs/design/DESIGN.md` (or update the existing file; see Required location).
 2. Gather material: brand book, style guide, assets, the existing theme in code. Extract palettes, fonts, spacing rhythm, component patterns.
 3. Define the front-matter tokens **first**, with a consistent naming convention.
 4. Write the sections in the prescribed order, explaining the rationale for each token.
@@ -148,7 +148,7 @@ components:
 ## Validation
 
 - Valid YAML; correct `---` delimiters.
-- `colors.primary` defined.
+- Front matter present with `colors.primary` defined.
 - No duplicate sections; sections in the prescribed order.
 - Every `{...}` reference resolves to an existing value (primitive, except composites in `components`).
 - Dimensions with a valid unit.
@@ -158,6 +158,6 @@ Report each problem with its exact line/path.
 
 ## Export
 
-Tokens convert to/from `tokens.json` (W3C Design Tokens format), Figma variables, and Tailwind theme. When importing, write to `docs/design/DESIGN.md`.
+Tokens convert to/from `tokens.json` (W3C Design Tokens format) and Tailwind theme. For Figma variables, export `tokens.json` and say it must be imported with a tokens plugin; this skill has no direct Figma mechanism. When importing, write to the existing DESIGN.md, or `docs/design/DESIGN.md` if none exists.
 
 Tailwind mapping: `colors` → `colors`; `typography` → `fontFamily`/`fontSize`/`fontWeight` (with `lineHeight` and `letterSpacing` in the `fontSize` tuple); `rounded` → `borderRadius`; `spacing` → `spacing`. In Tailwind v4, generate variables in `@theme` (`--color-primary`, `--radius-md`, `--spacing-md`…). In shadcn projects, also map to the theme CSS variables (`--primary`, `--background`, `--radius`…).

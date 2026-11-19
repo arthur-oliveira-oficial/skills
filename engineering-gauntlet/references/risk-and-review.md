@@ -23,9 +23,9 @@ Before implementing, set the level and the gates. Factors:
 
 Criteria: level stated; factors listed; gates derived from the level (table in `SKILL.md`).
 
-❌ The same lightweight process for changing a label and for payment logic.
+Anti-pattern: the same lightweight process for changing a label and for payment logic.
 
-**Proportionality.** The level picks which gates apply; the size of the change decides how heavy each one is. A one-line fix in billing is high risk: it still gets invariant tests, a mutation check on the changed expression, an independent review, and human approval, but the rollback plan is one line and the review is focused on that expression. Never drop a gate silently; if one cannot run (no tool, no human), report it under **Not verified** or **Decisions needed**.
+Gate weight scales with the size of the change (see the risk table in `SKILL.md`). Never drop a gate silently; if one cannot run (no tool, no human), report it under **Not verified** or **Decisions needed**.
 
 ## Human review for high impact
 
@@ -47,7 +47,7 @@ When risk justifies it, use separate roles or isolated sessions: specification, 
 
 ## Adversarial review
 
-An independent reviewer (clean context) receives **contract + diff** and an attack checklist — not "review this code". The reviewer is **read-only**: say so in its prompt ("do not modify files; do not write anything outside the repository; run probes with `node -e`/a REPL or in a scratch file inside the repo that you delete"), and check `git status` and the parent directory afterwards. Checklist:
+An independent reviewer (clean context) receives **contract + diff** and an attack checklist — not "review this code". The reviewer is **read-only**: say so in its prompt ("Do not create, modify, or delete files in the repository; run probes with `node -e`/a REPL or in the host scratch directory."). Record `git rev-parse HEAD` and `git status --porcelain` before dispatch; both must be identical afterwards. No reviewer can be spawned: run the checklist as a self-review and report "independent review: NOT VERIFIED". Checklist:
 
 - missing or partially met requirements
 - incorrect assumptions
@@ -73,4 +73,4 @@ Keeping them separate stops one axis from masking the other: code can follow eve
 
 Additional checklist (only what's relevant): business rules; invariants; types and input validation; authorization; data integrity/migrations; concurrency; error handling; performance; test quality; observability and sensitive-data leaks in logs; compatibility; rollout/rollback; cleanup of flags and temporary code; accidental weakening of gates.
 
-Format: findings with file:line, violated rule/requirement, concrete failure scenario, severity (blocking / important / suggestion).
+Format: findings with file:line, violated rule/requirement, concrete failure scenario, severity (blocking / important / minor).

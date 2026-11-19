@@ -10,6 +10,7 @@ How to write instructions for AI models (system prompts, skills, `AGENTS.md`/`CL
 - Writing skills
 - AGENTS.md / CLAUDE.md
 - Subagents
+- Test-driven skills
 - Evaluate and iterate
 
 ## Prompt principles
@@ -95,7 +96,7 @@ Short, factual, up to date. Avoid repeating the README or explaining what the co
 
 ## Test-driven skills
 
-Treat writing a skill (or a CLAUDE.md rule, or a system prompt) as TDD for process documentation. The rule: **no skill without a failing test first** — this applies to edits as well.
+Treat writing a skill (or a CLAUDE.md rule, or a system prompt) as TDD for process documentation. For discipline rules, and whenever the user asks for a tested skill: **no change without a failing scenario first**, edits included. Factual edits (commands, paths, flags) need no baseline: verify the fact and write it. Ask before spawning more than 3 evaluation subagents.
 
 1. **Red — baseline:** run realistic scenarios with fresh subagents **without** the skill. Record the choices, the rationalizations verbatim, and which pressures caused violations.
 2. **Green — minimal skill:** write only what addresses the observed failures. Re-run the same scenarios with the skill and confirm compliance.
@@ -118,7 +119,7 @@ Test by skill type:
 - **Pattern** (architecture style): recognition, application, and cases where it does **not** apply.
 - **Reference** (API, spec): retrieval, correct application, coverage gaps.
 
-Compare wording variants against a no-guidance control with several runs each (≥ 5), reading flagged outputs manually. Test one skill at a time before writing the next.
+Compare wording variants against a no-guidance control with several runs each (≥ 5 when the user approved that cost), reading flagged outputs manually. Test one skill at a time before writing the next.
 
 ## Evaluate and iterate
 

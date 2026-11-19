@@ -30,7 +30,8 @@ Concrete, verifiable rules for interaction, forms, content, and accessibility. A
 - Visible labels; a placeholder is not a label. Placeholders are examples and end with `…`.
 - Correct `type`, `inputmode`, `autocomplete`, and `name`. Disable spellcheck for email, codes, and usernames.
 - Accept any typing and validate with feedback; do not block keystrokes. Trim surrounding whitespace.
-- Do not disable submit before submission. On submit: disable, show progress while keeping the label, and send an idempotency key.
+- Do not disable submit before submission. On submit: disable, show progress while keeping the label, and send an idempotency key when the API supports one (never invent a header the backend does not read).
+- No backend or endpoint yet: implement loading and error states only, no fake success screen; list success as not verified.
 - Errors next to the field, associated via `aria-describedby`; on submit, focus the first error. Preserve what the user typed.
 - Enter submits when there is a single input; in a textarea, Cmd/Ctrl+Enter submits and Enter inserts a newline.
 - Warn before leaving with unsaved changes.

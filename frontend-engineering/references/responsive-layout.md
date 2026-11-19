@@ -169,7 +169,7 @@ Use when a component appears in containers of different widths (card in sidebar 
 
 ## Viewport, safe areas, virtual keyboard
 
-- Viewport meta: `width=device-width, initial-scale=1, viewport-fit=cover`. Never `user-scalable=no` or `maximum-scale=1`.
+- Viewport meta: `width=device-width, initial-scale=1`; add `viewport-fit=cover` only together with `env(safe-area-inset-*)` padding. Never `user-scalable=no` or `maximum-scale=1`.
 - Use `dvh` for elements that must match the visible viewport, `svh` for stable minimum heights; avoid `100vh` on mobile.
 - Pad fixed/sticky elements with `env(safe-area-inset-*)` (notches, home indicator, rounded corners).
 - Virtual keyboard: the focused input and the submit action must stay visible. Consider `interactive-widget=resizes-content` in the viewport meta and the `VisualViewport` API for fixed bottom bars; scroll the focused field into view.
@@ -201,7 +201,7 @@ Use when a component appears in containers of different widths (card in sidebar 
 
 ## Testing protocol
 
-Check at minimum (automate with `agent-browser` — commands in `browser-verification.md`; real devices are still preferred for touch and keyboard feel):
+The minimum sizes to check are the single list in `browser-verification.md` (Responsive sizes); automate them with the commands there. Real devices are still preferred for touch and keyboard feel. The table below is reference coverage for layout-heavy work, not an extra minimum:
 
 | Width × height | Represents |
 |---|---|

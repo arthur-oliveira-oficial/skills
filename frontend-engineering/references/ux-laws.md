@@ -77,8 +77,8 @@ False urgency; fabricated scarcity; invented progress; extra steps to retain use
 
 ## Response format
 
-**Implementation:** what changed, where, why (law + real problem), validations run, open items. Cite all seven laws, including N/A ones.
+**Implementation:** what changed, where, why (law + real problem), validations run, open items. Cite only the laws that drove a change.
 
-**Audit:** prioritized findings — screen/file, evidence, law or heuristic, recommendation, risk/effort. No code edits. Cover all seven laws: the violated ones inside the findings, the rest in one closing line ("N/A: Zeigarnik, goal gradient — single short screen"). Compliance and legal findings (consent and privacy under LGPD/GDPR, consumer law such as CDC on misleading offers, accessibility law) go first in priority with the rule cited, flagged as **needs legal review** — never stated as a legal conclusion. Claims like countdowns or "only N left" are checked against the code or by observing over time, not taken at face value.
+**Audit:** findings labeled P0/P1/P2 (scale in SKILL.md) — screen/file, evidence, law or heuristic, recommendation, effort. No code edits. Cover all seven laws: the violated ones inside the findings, the rest in one closing line ("N/A: Zeigarnik, goal gradient — single short screen"). Compliance and legal findings (consent and privacy under LGPD/GDPR, consumer law such as CDC on misleading offers, accessibility law) go first in priority with the rule cited, flagged as **needs legal review** — never stated as a legal conclusion. Claims like countdowns or "only N left" are checked against the code or by observing over time, not taken at face value.
 
-Never claim a conversion lift without measurement; present impact as a hypothesis and suggest how to measure it.
+Never claim a conversion lift without measurement; present impact as a hypothesis and suggest how to measure it. End an audit by offering to implement the P0/P1 fixes.

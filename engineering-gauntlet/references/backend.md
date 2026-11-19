@@ -24,7 +24,7 @@
 
 - One structured format; for HTTP prefer **RFC 9457 (Problem Details)**: `type`, `title`, `status`, `detail`, `instance` + a stable machine-readable code.
 - Messages useful to the client, with no stack traces, SQL, or internal details.
-- Distinguish client errors (4xx, don't retry) from transient errors (5xx/503, retry with backoff).
+- Distinguish client errors (4xx, don't retry; except 408 and 429, retried honoring `Retry-After`) from transient errors (5xx/503, retry with backoff only if the operation is idempotent).
 - Don't swallow exceptions; log with context and rethrow or handle.
 
 ## Validation and boundaries
@@ -38,7 +38,7 @@
 - Migrations are versioned, reviewed, and reversible when possible.
 - Breaking changes via **expand → migrate → contract**: add the new column/table; write to both; backfill in batches; read from the new one; remove the old one in a later deploy.
 - Never mass `DROP`/`DELETE` without a verified backup, human confirmation, and a rollback plan.
-- Indexes for new queries; check the plan (`EXPLAIN ANALYZE`). Lock-free index creation on large tables (`CREATE INDEX CONCURRENTLY` in Postgres).
+- Indexes for new queries; check the plan (`EXPLAIN ANALYZE`). Lock-free index creation on large tables (`CREATE INDEX CONCURRENTLY` in Postgres; it cannot run inside a transaction, so put it in its own non-transactional migration).
 - Database constraints (NOT NULL, UNIQUE, FK, CHECK) for invariants — the application is not the only guardian.
 - Avoid N+1; measure.
 - Short transactions; no network calls inside a transaction.
@@ -72,10 +72,10 @@
 - **Uploads:** validate type and size, store outside the webroot, generated names.
 - Negative tests for every authorization rule.
 
-**Adding authentication to an existing API — design checklist** (settle these in discovery, before code):
+**Adding authentication to an existing API — design checklist** (settle these in discovery, before code; list order is not asking order — ask first what changes the build most):
 - **Ownership model:** single shared resource set (just close the door) vs. per-user data (owner column, per-resource checks on every route).
 - **Existing data:** what happens to rows without an owner (assign, migrate, delete, keep shared) — this is a migration with a rollback.
-- **Client type → mechanism:** browser on same site → session cookie (`HttpOnly`, `Secure`, `SameSite`, CSRF protection); mobile/CLI/service → bearer token or API key (rotation, revocation, storage); third parties → OAuth/OIDC via an established provider.
+- **Client type → mechanism:** browser on same site → session cookie (`HttpOnly`, `Secure`, `SameSite`, CSRF protection); browser SPA on another origin → cookie with `SameSite=None; Secure`, credentialed CORS for an explicit origin, and CSRF protection, or a bearer token kept in memory; mobile/CLI/service → bearer token or API key (rotation, revocation, storage); third parties → OAuth/OIDC via an established provider.
 - **Status codes:** `401` when credentials are missing/invalid, `403` when authenticated but not allowed, `404` instead of `403` when revealing existence leaks data.
 - **Lifecycle:** signup, login, logout, password reset, expiry/refresh, lockout/rate limit.
 - **Secrets:** from env/secret manager, never in the repo; test credentials only in fixtures.

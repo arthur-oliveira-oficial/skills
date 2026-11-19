@@ -26,11 +26,11 @@ Before any code, identify the real combination by reading files — never assume
 | `tailwindcss` v4 / `@import "tailwindcss"` / `@tailwindcss/vite` | Tailwind v4 (CSS config via `@theme`) |
 | `tailwind.config.*` and `@tailwind base` | Tailwind v3 |
 | `components.json` and `components/ui/*` | shadcn/ui installed |
-| `@radix-ui/*`, `@base-ui-components/*`, `react-aria-components`, `@headlessui/react` | Headless primitives without shadcn |
+| `@radix-ui/*`, `@base-ui/react`, `@base-ui-components/*`, `react-aria-components`, `@headlessui/react` | Headless primitives without shadcn |
 | `@mui/*`, `antd`, `@chakra-ui/*`, `@mantine/*` | Own component library — **use it**, do not introduce shadcn |
-| `pnpm-lock.yaml` / `yarn.lock` / `bun.lock` / `package-lock.json` | Package manager to use |
+| `pnpm-lock.yaml` / `yarn.lock` / `bun.lock` / `bun.lockb` / `package-lock.json` | Package manager to use |
 
-Record the detected combination in the final report. For a new project with no stated stack, use the default: **Next.js App Router + TypeScript + Tailwind + shadcn/ui + lucide-react**. If the user asks for an SPA, a serverless app, an internal dashboard, or "Vite", use **Vite + React + TypeScript + Tailwind** (with shadcn only if requested or accepted).
+Record the detected combination in the final report. For a new project with no stated stack: a single page or prototype → plain HTML/CSS (no React); an app → **Next.js App Router + TypeScript + Tailwind + shadcn/ui + lucide-react**. If the user asks for an SPA, a serverless app, an internal dashboard, or "Vite", use **Vite + React + TypeScript + Tailwind** (with shadcn only if requested or accepted).
 
 ## Supported stacks and defaults
 
@@ -80,7 +80,7 @@ Treat shadcn as editable source code, not a visual constraint.
 
 1. Read `components.json` (style, aliases, `rsc: true/false`, Radix or Base UI base).
 2. Inspect the existing `components/ui/*`.
-3. Add only what is needed with the CLI using the project's package manager (`pnpm dlx shadcn@latest add …`, `npx shadcn@latest add …`, `bunx …`).
+3. Add only what is needed with the CLI using the project's package manager (`pnpm dlx shadcn@latest add --yes …`, `npx shadcn@latest add --yes …`, `bunx …`); pass `--yes` so the CLI does not block on prompts.
 4. In **Vite**, confirm `rsc: false` and the `@/` alias are configured; `"use client"` in components is irrelevant.
 5. Compose from existing primitives; customize to the visual direction while preserving accessible behavior.
 6. Do not hand-recreate a complex primitive (Dialog, Popover, Combobox, DropdownMenu, Tabs, Tooltip) that shadcn already provides.
