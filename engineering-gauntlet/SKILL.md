@@ -3,7 +3,7 @@ name: engineering-gauntlet
 description: Evidence-driven software engineering process for AI coding agents. Use when designing, planning, implementing, debugging, reviewing, refactoring, or shipping code in any language; when a request needs clarifying before building; when writing a PRD, spec, implementation plan, backlog, test plan, or Definition of Done; when executing a plan with subagents; when responding to code review or finishing a branch (merge, PR); for backend work (APIs, databases, migrations, queues, auth, security); for writing prompts, skills, or AGENTS.md/CLAUDE.md; and whenever correctness must be demonstrated rather than assumed. Também: planejar, especificar, implementar, depurar, bug, teste, revisão de código, refatorar, API, banco de dados, migração, plano de implementação, prompt.
 license: MIT
 metadata:
-  version: "2.2.0"
+  version: "2.3.0"
 ---
 
 # Engineering Gauntlet
@@ -38,11 +38,19 @@ Respond in the user's language (default: Brazilian Portuguese).
 | Respond to code review feedback; finish a branch (merge, PR, keep, discard) | [delivery.md](references/delivery.md) |
 | Writing prompts, skills, AGENTS.md/CLAUDE.md, orchestrating subagents | [prompts-and-agents.md](references/prompts-and-agents.md) |
 
+When several rows match (e.g. a vague auth request → discovery + backend + risk), read all of them and apply them in workflow order: discovery first, then risk and contract, then the domain references during implementation.
+
 For interface changes, also use the `frontend-engineering` skill. For anything that runs in a browser, verification and bug reproduction use `agent-browser` (see [verification-and-evidence.md](references/verification-and-evidence.md) and [debugging.md](references/debugging.md)).
 
 ## Default workflow
 
-Scale depth to **risk** (not just size). Copy and track:
+Scale depth to **risk** (not just size). Size, for deciding whether a plan is needed:
+
+- **Small:** one behavior, a few files, done in one sitting (a bug fix, a field, a validation). No written plan; contract can live in the report.
+- **Medium:** several behaviors or modules, or a new endpoint/screen. Short written plan.
+- **Large:** a feature spanning layers, a migration, or work for several sessions/agents. Full plan executed per [execution.md](references/execution.md).
+
+Copy and track:
 
 ```
 - [ ] 0. Discovery: clarify intent, approve a design (skip if small and clear)
@@ -69,6 +77,8 @@ Scale depth to **risk** (not just size). Copy and track:
 | Medium | + written contract, regression/boundary tests, independent review |
 | High | + tested invariants, negative security tests, mutation testing on critical modules, rollback plan, recorded human approval |
 
+Gates scale to the change, not just the level: a one-line high-risk fix still needs the invariant tests, mutation check (manual if no tool, see [verification-and-evidence.md](references/verification-and-evidence.md)), and human approval, but its rollback plan can be "revert the commit". When no human is available, do the work, do not merge or deploy, and list the approval as pending under **Decisions needed**.
+
 **3. Contract.** Short. Relevant ambiguity → ask before implementing; minor ambiguity → record the assumption and proceed.
 
 **4–5. Slices + TDD.** One slice = one primary outcome. Run the new test **before** the code and confirm it fails for the expected reason. Implement the minimum. Refactor with everything green.
@@ -79,7 +89,7 @@ Scale depth to **risk** (not just size). Copy and track:
 
 **8. Report** using the format below.
 
-**9. Finish.** Follow [delivery.md](references/delivery.md). Merge, push, and PR are external side effects: only after the human chooses.
+**9. Finish.** Commit verified work locally on a feature branch (never directly on the default branch) with a message describing the behavior, unless the project or the human says otherwise; a local commit is reversible and makes "keep" and "PR" meaningful. Then follow [delivery.md](references/delivery.md). Merge, push, and PR are external side effects: only after the human chooses.
 
 For medium/large work, write a plan ([implementation-plan.md](references/implementation-plan.md)) and execute it with [execution.md](references/execution.md) — inline, or a fresh subagent per task with independent spec and quality reviews.
 
@@ -98,6 +108,9 @@ What changed and why (1–3 sentences).
 
 Regression test: failed before the fix (`<short output>`), passes after.
 Browser (web changes): `agent-browser` flow ✅, screenshots in `.verification/`, `errors` empty.
+
+## Decisions needed
+Business or product choices you made as assumptions and the human must confirm (rounding policy, defaults, copy, URLs), and pending approvals. Omit if none.
 
 ## Not verified
 Skipped checks and why.

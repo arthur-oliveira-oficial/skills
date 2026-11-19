@@ -23,10 +23,14 @@ Turn "check it in a browser" into concrete commands and recorded evidence. Uses 
 
 1. Check: `agent-browser --version`. If missing, tell the user and suggest `npm i -g agent-browser && agent-browser install`; do not install it without approval. Without it, fall back to the static checks and declare the browser checks as **not verified**.
 2. Before the first use in a session, load the version-matched guide: `agent-browser skills get core` (it is the source of truth for command syntax; this file only maps checks to commands).
-3. Serve the app with the project's own dev or preview server (`pnpm dev`, `next dev`, `vite`, `vite preview`). Prefer a production build (`next build && next start`, `vite build && vite preview`) for performance and layout-shift checks.
-4. Use a named session per task so runs do not collide: `agent-browser --session <task> …`. Close it at the end: `agent-browser --session <task> close`.
+3. Serve the app with the project's own dev or preview server (`pnpm dev`, `next dev`, `vite`, `vite preview`). Prefer a production build (`next build && next start`, `vite build && vite preview`) for performance and layout-shift checks. For plain HTML/CSS with no build step, serve the folder over HTTP (`python3 -m http.server <free port>` in the background); `file://` URLs change CORS, module, and storage behavior.
+4. Use a named session per task so runs do not collide: `agent-browser --session <task> …`.
+5. Set the evidence directory as an **absolute** path (see [Evidence and recording](#evidence-and-recording)): `V="$PWD/.verification"; mkdir -p "$V/screenshots"`.
+6. **Clean up at the end:** `agent-browser --session <task> close`, and stop any server you started (kill the background process). Leave nothing running.
 
-Examples below omit `--session` for brevity and use `http://localhost:3000`; replace it with the real URL and route.
+Examples below omit `--session` for brevity and use `http://localhost:3000`; replace it with the real URL and route. Shell snippets are POSIX `sh`/`bash`; in zsh, unquoted `$var` is not word-split (`set -- $wh` breaks), so keep the `while read -r w h` form or run the snippet with `bash -c`.
+
+This file's evidence rules override the `core` guide's "take a screenshot only when the user asks": screenshots here are verification evidence, which the task requires.
 
 ## Core loop and rules
 
@@ -39,12 +43,15 @@ agent-browser snapshot -i                 # refs go stale after navigation/DOM c
 ```
 
 - Prefer snapshots to screenshots for checking state; they are faster and cheaper. Take screenshots for **visual** checks and **evidence**.
+- Always take refs from the **latest** snapshot. Ref numbers are not reset between snapshots or page loads (`@e10` may become `@e30`); never hard-code them in scripts.
 - Wait for a concrete condition (`--text`, `--url`, a ref); avoid fixed sleeps and generic `networkidle` on SPAs.
 - A failed click (hidden, disabled, covered, off-viewport) is a finding, not something to work around.
 
 ## Standard verification pass
 
-Run this for every substantial UI change. Copy and track:
+**Small change** (one component, a style or copy tweak, no new flow): load the route, `errors`/`console`, screenshots at 375 and 1440, overflow check at 320, keyboard path only if the change is interactive, and `a11y --selector` scoped to the changed area. Everything else is **not verified** by choice; say so.
+
+Run the full pass for every substantial UI change. Copy and track:
 
 ```
 - [ ] Page loads with no errors (errors, console)
@@ -62,12 +69,12 @@ Run this for every substantial UI change. Copy and track:
 Size classes and the full matrix are in [responsive-layout.md](responsive-layout.md). Minimum pass:
 
 ```bash
-mkdir -p .verification/screenshots
+V="$PWD/.verification"; mkdir -p "$V/screenshots"
 printf '%s\n' "375 812" "768 1024" "1024 768" "1440 900" | while read -r w h; do
   agent-browser set viewport "$w" "$h"
   agent-browser open http://localhost:3000/route
   agent-browser wait --load load
-  agent-browser screenshot --full ".verification/screenshots/route-${w}x${h}.png"
+  agent-browser screenshot --full "$V/screenshots/route-${w}x${h}.png"
 done
 ```
 
@@ -99,10 +106,10 @@ Look at each screenshot: navigation pattern, columns, content width cap, sticky 
 ```bash
 agent-browser set device "iPhone 16"
 agent-browser open http://localhost:3000/route
-agent-browser screenshot .verification/screenshots/route-iphone16.png
+agent-browser screenshot "$V/screenshots/route-iphone16.png"
 agent-browser set device "iPad Pro"          # 1024×1366 portrait
 agent-browser open http://localhost:3000/route
-agent-browser screenshot .verification/screenshots/route-ipad-pro.png
+agent-browser screenshot "$V/screenshots/route-ipad-pro.png"
 ```
 
 Verify touch behavior with these checks instead of trusting emulation:
@@ -124,7 +131,7 @@ agent-browser eval "({w: innerWidth, h: innerHeight, dpr: devicePixelRatio})"
 agent-browser open http://localhost:3000/route
 agent-browser press Tab
 agent-browser eval "document.activeElement.outerHTML.slice(0, 200)"
-agent-browser screenshot .verification/screenshots/focus-1.png   # focus ring visible?
+agent-browser screenshot "$V/screenshots/focus-1.png"   # focus ring visible?
 ```
 
 Repeat `press Tab` through the primary flow. Verify: logical order, visible focus on every stop, no focus traps outside dialogs, `Escape` closes overlays and focus returns to the trigger, `Enter`/`Space` activate controls. For dialogs, check that background content is inert:
@@ -138,7 +145,7 @@ agent-browser eval "document.querySelector('main')?.inert"
 ```bash
 agent-browser set media dark
 agent-browser open http://localhost:3000/route
-agent-browser screenshot .verification/screenshots/route-dark.png
+agent-browser screenshot "$V/screenshots/route-dark.png"
 
 agent-browser set media light reduced-motion
 agent-browser open http://localhost:3000/route
@@ -156,6 +163,12 @@ agent-browser a11y --selector "#main" --json        # scope to the changed area
 ```
 
 Pass when the change introduces no new `serious`/`critical` violations. Report pre-existing violations separately. axe catches roughly a third to half of issues; keyboard, focus, and screen-reader semantics still need the manual checks above.
+
+Known axe blind spots that need a manual check:
+- **Placeholder-only labels pass axe** (the placeholder counts as an accessible name). Count real labels: `eval "[...document.querySelectorAll('input:not([type=hidden]),select,textarea')].filter(el => !el.labels?.length && !el.getAttribute('aria-labelledby')).length"` must be `0`.
+- **Clickable non-controls** (`<div onclick>`) are not flagged; they show as `generic` in `snapshot -i` and are skipped by `press Tab`.
+- **Focus visibility**: axe does not check it; take a screenshot after `press Tab`.
+- **Encoding**: a missing `<meta charset="utf-8">` shows as mojibake (`Ã§`) only when the server omits the charset; check the source.
 
 The snapshot itself is the accessibility tree: icon-only buttons without names, unlabeled inputs, and wrong roles are visible in `snapshot -i`.
 
@@ -198,9 +211,9 @@ agent-browser react suspense --json         # Suspense boundaries (Next.js)
 Before editing existing UI, capture baselines; after, compare:
 
 ```bash
-agent-browser screenshot .verification/baseline/route-375.png
+agent-browser screenshot "$V/baseline/route-375.png"
 # … implement …
-agent-browser diff screenshot --baseline .verification/baseline/route-375.png
+agent-browser diff screenshot --baseline "$V/baseline/route-375.png"
 agent-browser diff snapshot                       # structural diff vs. last snapshot
 ```
 
@@ -208,11 +221,15 @@ Unexpected changes outside the task's scope are findings.
 
 ## Evidence and recording
 
-- Save artifacts under `.verification/` (or a path the user names). Suggest adding it to `.gitignore`; do not commit artifacts unless asked.
-- Record a video for flows and bug reproductions:
+- **Always pass absolute paths** to `screenshot`, `record`, and `diff --baseline`. Tested on agent-browser 0.43: `screenshot .verification/x.png` treats `.verification` as a CSS **selector** and silently saves to `~/.agent-browser/tmp/`, and other relative paths resolve against the browser daemon's working directory, not your shell's. Both print "✓ saved". Use `"$V/…"` with `V="$PWD/.verification"`, and confirm with `ls` that the files exist before citing them.
+- **Where artifacts go:**
+  - Implementation work: `.verification/` in the project (or a path the user names). Suggest adding it to `.gitignore`; do not commit artifacts unless asked.
+  - **Audit-only work**: do not write into the project. Use a directory outside it (the session's scratchpad if there is one, otherwise `V="$(mktemp -d)/verification"`), unless the user names a path.
+  - Report artifacts with their full absolute paths.
+- Record a video for multi-step flows and bug reproductions. Recording needs **ffmpeg**; if `record start` reports it missing, do not install it unasked: fall back to a numbered screenshot per step and note "video: not recorded (ffmpeg missing)".
 
 ```bash
-agent-browser record start .verification/videos/checkout.webm
+agent-browser record start "$V/videos/checkout.webm"
 # perform the flow
 agent-browser record stop
 ```
@@ -230,13 +247,15 @@ Checks that could not run are listed as **not verified**, with the reason.
 
 ## Exploratory QA (dogfood)
 
-For UX audits, QA, or "find issues in this app", use the bundled exploratory-testing workflow, which produces a report with screenshots, videos, and repro steps per issue:
+For QA or "find issues in this app" across **several pages or a multi-step flow**, use the bundled exploratory-testing workflow, which produces a report with screenshots, videos, and repro steps per issue:
 
 ```bash
 agent-browser skills get dogfood
 ```
 
-Combine its findings with [ux-laws.md](ux-laws.md) (which law or heuristic each issue violates) and the quality checklist. In audit-only mode, do not edit code.
+For a **single screen or component**, skip dogfood: the standard pass plus targeted `snapshot -i`, `eval`, and `get box` checks give the same evidence with far less overhead.
+
+Combine its findings with [ux-laws.md](ux-laws.md) (which law or heuristic each issue violates) and, for accessibility, [interface-guidelines.md](interface-guidelines.md). Report in this skill's audit format, not dogfood's template. In audit-only mode, do not edit code, and point dogfood's output directory outside the project (see Evidence and recording).
 
 For applying Chrome's Modern Web Guidance and verifying it in the browser (layout shift, reduced motion, color scheme, dialog focus and inertness): `agent-browser skills get modern-web-guidance`.
 

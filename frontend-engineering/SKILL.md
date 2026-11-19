@@ -3,7 +3,7 @@ name: frontend-engineering
 description: Designs, builds, audits, and verifies production web interfaces. Use for pages, dashboards, SaaS apps, landing pages, admin panels, forms, onboarding, checkout, navigation, components, redesigns, visual polish, responsive layout (mobile, tablet, desktop), UX/usability/accessibility audits, browser verification or QA of a web app, and any change to layout, styling, themes, tokens, or visual states; with Next.js or Vite + React, Tailwind CSS, shadcn/ui or other component libraries, Vue, Nuxt, Angular, Svelte, or plain HTML/CSS; and for creating, validating, exporting, or applying a DESIGN.md design system (tokens, Tailwind theme, Figma variables, tokens.json). Not for backend-only work. Também: tela, página, formulário, painel, componente, layout, responsivo, acessibilidade, usabilidade, redesign, design system.
 license: MIT
 metadata:
-  version: "2.2.0"
+  version: "2.3.0"
 ---
 
 # Frontend Engineering
@@ -31,15 +31,18 @@ Identify the mode before acting and read **only** the references you need:
 |---|---|---|
 | Create or validate a design system, `DESIGN.md`, export/import tokens | Design system | [references/design-md.md](references/design-md.md) |
 | Any frontend change when `docs/design/DESIGN.md` exists | Apply design system | [references/apply-design-md.md](references/apply-design-md.md) |
-| New screen, page, component, or app | Build | [references/visual-direction.md](references/visual-direction.md), [references/react.md](references/react.md), [references/interface-guidelines.md](references/interface-guidelines.md), [references/responsive-layout.md](references/responsive-layout.md) |
+| New screen, page, component, or app | Build | [references/visual-direction.md](references/visual-direction.md), [references/interface-guidelines.md](references/interface-guidelines.md), [references/responsive-layout.md](references/responsive-layout.md); [references/react.md](references/react.md) only when React is detected or chosen |
 | Improve existing UI | Redesign | [references/visual-direction.md](references/visual-direction.md), [references/ux-laws.md](references/ux-laws.md) |
-| Audit usability, flow, conversion, friction | UX audit | [references/ux-laws.md](references/ux-laws.md) |
+| Audit usability, flow, conversion, friction | UX audit | [references/ux-laws.md](references/ux-laws.md); [references/browser-verification.md](references/browser-verification.md) when the app can run |
+| Audit accessibility (WCAG, keyboard, screen reader, contrast) | A11y audit | [references/interface-guidelines.md](references/interface-guidelines.md), [references/browser-verification.md](references/browser-verification.md) (axe + manual checks and axe blind spots), [references/quality-checklist.md](references/quality-checklist.md) (Accessibility section) |
 | Mobile, tablet, desktop layouts, breakpoints, touch vs. pointer | Responsive | [references/responsive-layout.md](references/responsive-layout.md) |
 | Forms, interactions, a11y, fine details | Polish | [references/interface-guidelines.md](references/interface-guidelines.md) |
 | Verify in a real browser: widths, touch, keyboard, a11y, CLS, console; exploratory QA | Browser verification | [references/browser-verification.md](references/browser-verification.md) |
-| Before declaring any visual work done | QA | [references/quality-checklist.md](references/quality-checklist.md) |
+| Before declaring any implementation work done | QA | [references/quality-checklist.md](references/quality-checklist.md) |
 
-If the request is **audit only**, do not edit files. If it is implementation, change the code; do not deliver only an audit.
+Several rows can apply at once (e.g. "UX and accessibility audit" → UX audit + A11y audit): read the union, and deliver one report.
+
+If the request is **audit only**, do not edit or create files in the project; evidence (screenshots, videos) goes outside it (see [browser-verification.md](references/browser-verification.md)). If it is implementation, change the code; do not deliver only an audit.
 
 ## Workflow
 
@@ -77,7 +80,7 @@ New project with no stack specified: Next.js App Router + TypeScript + Tailwind 
 
 **4–6. Build.** Structure and responsiveness before decoration. Mobile-first: base classes for the smallest viewport, `sm:`/`md:`/`lg:` only to enhance. Reuse existing components, tokens, validation, state, and translations.
 
-**7. Validate.** Run the available lint, typecheck, tests, and build. Then verify the running app in a real browser with `agent-browser` following [browser-verification.md](references/browser-verification.md): widths per size class, touch emulation, keyboard path, dark mode/reduced motion, axe audit, CLS, and console errors, saving screenshots as evidence. If `agent-browser` is not installed or the app cannot run, say exactly which checks are not verified. Never claim it passed without running it.
+**7. Validate.** Run the available lint, typecheck, tests, and build. Then verify the running app in a real browser with `agent-browser` following [browser-verification.md](references/browser-verification.md): widths per size class, touch emulation, keyboard path, dark mode/reduced motion, axe audit, CLS, and console errors, saving screenshots as evidence (absolute paths). Scale the pass to the change: small changes get the short pass described there. Close the browser session and stop any server you started. If `agent-browser` is not installed or the app cannot run, say exactly which checks are not verified. Never claim it passed without running it.
 
 **8. Report.** Files changed, design decisions and why, UX laws applied (when relevant), validations run with results, open items and risks.
 
@@ -88,7 +91,8 @@ New project with no stack specified: Next.js App Router + TypeScript + Tailwind 
 - **Accessibility is a design constraint, not a final audit:** semantic HTML, keyboard, visible focus, labels, accessible names, contrast, `prefers-reduced-motion`. Never rely on color alone.
 - **Touch targets:** the normative WCAG 2.2 AA 2.5.8 minimum is 24×24 CSS px; prefer 44×44 px for important touch controls.
 - **Real states:** loading, empty, error, and success are part of the design, not an afterthought.
-- **Honesty:** do not invent logos, testimonials, metrics, awards, or conversion lifts. No dark patterns (false urgency, fabricated scarcity, fake progress, hidden cancellation, pre-checked opt-ins).
+- **Honesty:** do not invent logos, testimonials, metrics, awards, "most popular" badges, or conversion lifts. No dark patterns (false urgency, fabricated scarcity, fake progress, hidden cancellation, pre-checked opt-ins). Prices: when showing a per-month equivalent of an annual plan, also show the total actually billed.
+- **Links and data you don't have:** do not invent URLs, routes, or content. Link to destinations that don't exist yet only as a recorded assumption, and list them in the report as open items.
 - **Tokens, not literals:** use theme variables and semantic tokens; never replace tokens with hard-coded approximations.
 - **Sensitive data:** never in `localStorage`.
 
@@ -100,7 +104,7 @@ New project with no stack specified: Next.js App Router + TypeScript + Tailwind 
 
 **Dashboard / SaaS.** Task completion and information scent over spectacle: clear active navigation, a useful title and action area, sensible defaults, search/filter when needed, contextual actions near the object they affect, responsive data representation. Do not wrap every metric in a floating card.
 
-**UX audit.** Prioritized findings with file/screen, evidence, law/heuristic, recommendation, and risk. No code edits. When the app can run, explore it with `agent-browser skills get dogfood` for screenshot/video evidence per issue (see [browser-verification.md](references/browser-verification.md)).
+**UX / a11y audit.** Prioritized findings with file/screen, evidence, law/heuristic or WCAG criterion, recommendation, and risk. No code edits, no files written into the project. When the app can run, verify findings in the browser ([browser-verification.md](references/browser-verification.md)); use `agent-browser skills get dogfood` only for multi-page apps or flows, not for a single screen. End with the checks run and what was **not verified**.
 
 ## Relationship with the `engineering-gauntlet` skill
 

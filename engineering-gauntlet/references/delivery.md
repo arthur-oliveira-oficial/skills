@@ -37,7 +37,7 @@ Technical correctness over social comfort. Verify before implementing; ask befor
 
 ## Finishing a development branch
 
-Run when implementation is complete and reviewed.
+Run when implementation is complete and reviewed. The work should already be committed on a feature branch (see `SKILL.md`, step 9); if it is not, commit it first so every option below operates on a known state.
 
 1. **Verify:** run the full test suite (plus lint, types, build). Any failure → report and stop; no options until it passes.
 2. **Detect the environment:**

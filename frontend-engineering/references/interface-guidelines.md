@@ -60,7 +60,8 @@ For every screen, make clear: what is clickable, editable, selected, loading, fa
 
 ## Content and accessibility
 
-- Native HTML before ARIA. Correct heading hierarchy; a "Skip to content" link.
+- Every document declares `<html lang="…">` and `<meta charset="utf-8">` (missing charset shows as mojibake when the server omits it).
+- Native HTML before ARIA: `<button>` for actions, `<a>` for navigation, `<form>` for submission — never a clickable `<div>`. Correct heading hierarchy (one `<h1>`, landmarks like `<main>`); a "Skip to content" link.
 - Icon-only buttons with a descriptive `aria-label`; decorative icons with `aria-hidden`. Check the accessibility tree.
 - Contrast: WCAG 2.2 AA (4.5:1 normal text, 3:1 large text and UI components). APCA is useful as a complementary check.
 - Text scales to 200% without breaking the layout.

@@ -41,6 +41,10 @@ If the project or `DESIGN.md` defines breakpoints, use them. Otherwise use the T
 
 Gutters between columns: 16px compact, 24px medium+.
 
+The Tailwind column is only a mapping: in plain CSS or other frameworks use the same widths as `min-width` media queries (640, 1024, 1280, 1536px, or their rem equivalents).
+
+The Navigation column is for **apps** (dashboards, SaaS, tools) with several top-level destinations. Content and marketing sites with a handful of links keep a simple top nav that wraps or collapses into a menu on compact; do not add a bottom bar or rail to them.
+
 ## Mobile (compact)
 
 **Layout**

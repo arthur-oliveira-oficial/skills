@@ -52,6 +52,8 @@ High line coverage doesn't prove tests are effective. On critical or changed log
 
 Common tools: Stryker (JS/TS, C#), PIT (Java), mutmut / cosmic-ray (Python), cargo-mutants (Rust), go-mutesting (Go).
 
+**No tool installed?** Don't add one unasked for a small change; mutate by hand. Copy the original aside **inside the project's scratch area** (never outside the working directory), apply one plausible defect at a time (drop the rounding, `<` → `<=`, `floor`/`ceil`/`trunc` instead of `round`, remove a guard, swap operands), run the tests, and restore the original with `git checkout -- <file>` or the copy. Record each mutant and whether it was killed.
+
 - Define the scope (changed or critical modules).
 - Review surviving mutants.
 - Document equivalent mutants.

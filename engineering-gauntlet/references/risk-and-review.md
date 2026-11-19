@@ -25,6 +25,8 @@ Criteria: level stated; factors listed; gates derived from the level (table in `
 
 ❌ The same lightweight process for changing a label and for payment logic.
 
+**Proportionality.** The level picks which gates apply; the size of the change decides how heavy each one is. A one-line fix in billing is high risk: it still gets invariant tests, a mutation check on the changed expression, an independent review, and human approval, but the rollback plan is one line and the review is focused on that expression. Never drop a gate silently; if one cannot run (no tool, no human), report it under **Not verified** or **Decisions needed**.
+
 ## Human review for high impact
 
 Require targeted human review for: security, authorization, payments, destructive migrations, privacy, concurrency, and irreversible behavior. The human inspects the contract, threat assumptions, rollback plan, and critical paths — not the whole diff generically.

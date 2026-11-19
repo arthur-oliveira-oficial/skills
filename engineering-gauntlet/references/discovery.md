@@ -17,14 +17,16 @@ Find out what the person actually wants, and why, before building. The first gue
 
 Use for new features, components, behavior changes, integrations, and non-trivial refactors where intent, scope, or approach is open.
 
+When adding a capability to an existing system (auth, multi-tenancy, permissions, billing), the first open question is usually the **data and ownership model** (who owns what, who may see it, what happens to existing data), because it changes the schema and every route.
+
 Skip when:
 - The request is small and clear → do it and say what you did.
-- The person says to skip the questions → proceed; the gate goes with it.
+- The person says to skip the questions → proceed; the gate goes with it. **Except for high-risk work** (auth, money, data loss, destructive migrations): skipping questions does not skip approval. Pick the safest reasonable option, show it as a short design (≤ 10 lines: approach, data changes, risks, rollback), and wait for an explicit yes before building.
 - A complete spec or plan already exists and nothing material is open → confirm briefly and go to the contract/plan.
 
 ## The design gate
 
-Nothing gets built until the person approves the design. "Building" includes product code, scaffolding, installing dependencies, creating projects, and starting implementation. Reading and exploring the repository are allowed.
+Nothing gets built until the person approves the design. "Building" includes product code, scaffolding, installing dependencies, creating projects, adding test infrastructure, and starting implementation. Reading and exploring the repository are allowed. If the project has no test setup, propose the minimal one as part of the design (e.g. the runtime's built-in test runner) so it is approved together.
 
 Exception: a **spike** the person agreed to may be built. It stays labeled throwaway; keeping it requires a new request that passes through the gate.
 
