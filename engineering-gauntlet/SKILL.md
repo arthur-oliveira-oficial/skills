@@ -1,12 +1,12 @@
 ---
-name: engineering
+name: engineering-gauntlet
 description: Evidence-driven software engineering process for working with AI agents — behavioral contract before code, TDD in small slices, systematic root-cause debugging, deep-module architecture, layered verification, mutation testing, adversarial review, and reports backed by reproducible evidence. Includes backend practices (APIs, data, migrations, idempotency, concurrency, OWASP security, observability) and prompt engineering (writing prompts, skills, AGENTS.md/CLAUDE.md, orchestrating subagents). Use when planning, implementing, debugging, reviewing, or refactoring code; when writing implementation docs (PRD, contract, stories, acceptance criteria, backlog, test plan, Definition of Done); and whenever correctness must be demonstrated rather than assumed. Também: planejar, implementar, depurar, bug, teste, revisão de código, refatorar, API, banco de dados, migração, plano de implementação, prompt.
 license: MIT
 metadata:
   version: "2.1.0"
 ---
 
-# Engineering
+# Engineering Gauntlet
 
 The human owns intent and acceptance. AI may generate and refactor code, but **completion requires reproducible evidence**.
 
@@ -35,7 +35,7 @@ Respond in the user's language (default: Brazilian Portuguese).
 | Request to plan, document, or break down work | [implementation-plan.md](references/implementation-plan.md) |
 | Writing prompts, skills, AGENTS.md/CLAUDE.md, orchestrating subagents | [prompts-and-agents.md](references/prompts-and-agents.md) |
 
-For interface changes, also use the `frontend` skill.
+For interface changes, also use the `frontend-engineering` skill.
 
 ## Default workflow
 

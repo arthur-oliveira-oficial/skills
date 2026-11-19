@@ -1,12 +1,12 @@
 ---
-name: frontend
+name: frontend-engineering
 description: Designs, implements, audits, and refines production web interfaces with a distinct visual direction, UX grounded in cognitive laws, accessibility, and mobile-first behavior. Adapts to the detected stack — Next.js or Vite + React, Tailwind CSS v3/v4, with or without shadcn/ui (or another component library), Lucide — and also Vue, Nuxt, Angular, Svelte, and plain HTML/CSS. Also creates, validates, exports, and applies DESIGN.md design systems (tokens, Tailwind, Figma, tokens.json). Use for pages, dashboards, SaaS apps, landing pages, admin panels, forms, onboarding, checkout, navigation, components, redesigns, visual polish, UX/usability/accessibility audits, and any change to layout, styling, themes, tokens, or visual states. Not for backend-only work. Também: tela, página, formulário, painel, componente, layout, responsivo, acessibilidade, usabilidade, redesign, design system.
 license: MIT
 metadata:
   version: "2.1.0"
 ---
 
-# Frontend
+# Frontend Engineering
 
 Build interfaces that look designed for **this** product, not generated for any product. The goal is not maximum decoration: it is a clear visual point of view, strong hierarchy, excellent interaction, responsive behavior, accessible semantics, and production-quality code.
 
@@ -100,6 +100,6 @@ New project with no stack specified: Next.js App Router + TypeScript + Tailwind 
 
 **UX audit.** Prioritized findings with file/screen, evidence, law/heuristic, recommendation, and risk. No code edits.
 
-## Relationship with the `engineering` skill
+## Relationship with the `engineering-gauntlet` skill
 
-For medium/high-risk frontend changes (authentication, payments, data, critical flows), also apply the `engineering` skill's process: behavioral contract, tests before implementation, and reproducible evidence.
+For medium/high-risk frontend changes (authentication, payments, data, critical flows), also apply the `engineering-gauntlet` skill's process: behavioral contract, tests before implementation, and reproducible evidence.
