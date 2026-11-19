@@ -82,7 +82,26 @@ For each relevant risk: description, impact, likelihood (Low/Medium/High), mitig
 Items `SB-01`, `SB-02`… with title, linked requirement/story, objective, dependencies, priority (`P0`/`P1`/`P2`), completion signal and verification signal. Foundations before dependents. No story points or hours unless requested.
 
 ### 11. Engineering tasks
-Atomic tasks `TASK-01.1`: action, component/file, expected result, dependency, verification step. Vertical slices when possible. No "implement backend" or "add tests".
+Write tasks for an implementer who has not seen the codebase or the spec: record the decisions they cannot make alone (paths, names, signatures, spec values, the tests that prove each task).
+
+A task (`TASK-01.1`) is the **smallest unit with its own test cycle and a deliverable a reviewer could reject independently**. Setup and docs fold into the task that needs them. Vertical slices when possible. No "implement backend" or "add tests".
+
+Each task contains:
+- **Files:** to create/modify, each with one clear responsibility.
+- **Interfaces:** what it consumes from earlier tasks and produces for later ones (types, functions, endpoints, events).
+- **Steps** as checkboxes in TDD order:
+  ```markdown
+  - [ ] Write test `rejects_cancel_when_shipped` asserting 409 + `ORDER_ALREADY_SHIPPED`
+  - [ ] Run `pnpm test orders/cancel` → expect FAIL (missing guard)
+  - [ ] Implement guard in `src/orders/cancel.ts` (`cancelOrder(id, actor): Result<Order, CancelError>`)
+  - [ ] Run `pnpm test orders/cancel` → expect PASS
+  - [ ] Commit `feat(orders): reject cancel after shipping (TASK-02.1)`
+  ```
+  Test steps name the test and its assertion; code steps give signature, location, and spec-pinned values — not full bodies, unless an exact algorithm or copy is required; verification steps give the command and expected result.
+
+Put two blocks in the plan header, before the tasks:
+- **Global constraints:** project-wide requirements copied verbatim from the spec; they apply to every task.
+- **Review focus:** the most likely real-world failure inputs the spec implies but does not spell out (empty lists, concurrent edits, timezone edges, huge payloads), each tied to a test in the task that owns it.
 
 ### 12. TDD / regression strategy
 Bugs: a regression test that reproduces the failure before the fix. Critical changes: a Red → Green → Refactor sequence. Don't force ceremony on trivial changes, but all behavior must be verifiable.
@@ -121,7 +140,8 @@ Save to `docs/plan-implementation/<feature-slug>.md` (lowercase kebab-case), cre
 - [ ] Acceptance criteria are verifiable.
 - [ ] Invariants and critical failures captured.
 - [ ] Architecture boundaries explicit for cross-cutting changes.
-- [ ] Tasks small and verifiable; sequencing and dependencies visible.
+- [ ] Tasks small and verifiable, with files, interfaces, and TDD steps; sequencing and dependencies visible.
+- [ ] Global constraints and review focus listed; review focus tied to tests.
 - [ ] Verification depth proportional to risk.
 - [ ] Bugs have regression-first coverage.
 - [ ] High risk has independent/adversarial review.
@@ -130,4 +150,17 @@ Save to `docs/plan-implementation/<feature-slug>.md` (lowercase kebab-case), cre
 - [ ] Risks have mitigations and residual uncertainty.
 - [ ] Non-goals prevent scope creep; optional work separated from required.
 
-At the end, respond with a short summary: path of the created document, highest-impact decisions, risk level, and open questions.
+## Self-review before handoff
+
+Check the plan against the spec:
+1. **Coverage:** every requirement maps to a task; add tasks for gaps.
+2. **Step clarity:** no vague steps, no over-detailed code bodies.
+3. **Consistency:** types and names match across tasks' interfaces.
+4. **Review focus:** each item is covered by a test.
+5. **Proportion:** a plan several times longer than its spec has become a transcript of the code — trim it.
+
+If the spec covers several independent subsystems, split it into separate plans, each producing testable software on its own.
+
+## Handoff
+
+At the end, respond with a short summary: path of the created document, highest-impact decisions, risk level, and open questions. If implementation is also requested, recommend an execution mode (inline or subagent-driven, see [execution.md](execution.md)) with a reason, and wait for approval before implementing.

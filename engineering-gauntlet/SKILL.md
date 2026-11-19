@@ -1,9 +1,9 @@
 ---
 name: engineering-gauntlet
-description: Evidence-driven software engineering process for working with AI agents — behavioral contract before code, TDD in small slices, systematic root-cause debugging, deep-module architecture, layered verification, mutation testing, adversarial review, and reports backed by reproducible evidence. Includes backend practices (APIs, data, migrations, idempotency, concurrency, OWASP security, observability) and prompt engineering (writing prompts, skills, AGENTS.md/CLAUDE.md, orchestrating subagents). Use when planning, implementing, debugging, reviewing, or refactoring code; when writing implementation docs (PRD, contract, stories, acceptance criteria, backlog, test plan, Definition of Done); and whenever correctness must be demonstrated rather than assumed. Também: planejar, implementar, depurar, bug, teste, revisão de código, refatorar, API, banco de dados, migração, plano de implementação, prompt.
+description: Evidence-driven software engineering process for AI coding agents. Use when designing, planning, implementing, debugging, reviewing, refactoring, or shipping code in any language; when a request needs clarifying before building; when writing a PRD, spec, implementation plan, backlog, test plan, or Definition of Done; when executing a plan with subagents; when responding to code review or finishing a branch (merge, PR); for backend work (APIs, databases, migrations, queues, auth, security); for writing prompts, skills, or AGENTS.md/CLAUDE.md; and whenever correctness must be demonstrated rather than assumed. Também: planejar, especificar, implementar, depurar, bug, teste, revisão de código, refatorar, API, banco de dados, migração, plano de implementação, prompt.
 license: MIT
 metadata:
-  version: "2.1.0"
+  version: "2.2.0"
 ---
 
 # Engineering Gauntlet
@@ -27,12 +27,15 @@ Respond in the user's language (default: Brazilian Portuguese).
 
 | Situation | Read |
 |---|---|
+| New feature or unclear request: clarify intent and approve a design before building | [discovery.md](references/discovery.md) |
 | Feature, behavior change, refactor | [contract-and-tdd.md](references/contract-and-tdd.md), [verification-and-evidence.md](references/verification-and-evidence.md) |
 | Bug, failing test, regression, performance problem | [debugging.md](references/debugging.md) |
 | Module design, interfaces, boundaries, complexity | [architecture.md](references/architecture.md) |
 | API, database, migration, queues, auth, integrations | [backend.md](references/backend.md) |
 | Risk classification, human review, code review, adversarial review | [risk-and-review.md](references/risk-and-review.md) |
 | Request to plan, document, or break down work | [implementation-plan.md](references/implementation-plan.md) |
+| Execute an approved plan (inline or subagent per task), worktrees, ledger | [execution.md](references/execution.md) |
+| Respond to code review feedback; finish a branch (merge, PR, keep, discard) | [delivery.md](references/delivery.md) |
 | Writing prompts, skills, AGENTS.md/CLAUDE.md, orchestrating subagents | [prompts-and-agents.md](references/prompts-and-agents.md) |
 
 For interface changes, also use the `frontend-engineering` skill. For anything that runs in a browser, verification and bug reproduction use `agent-browser` (see [verification-and-evidence.md](references/verification-and-evidence.md) and [debugging.md](references/debugging.md)).
@@ -42,15 +45,19 @@ For interface changes, also use the `frontend-engineering` skill. For anything t
 Scale depth to **risk** (not just size). Copy and track:
 
 ```
+- [ ] 0. Discovery: clarify intent, approve a design (skip if small and clear)
 - [ ] 1. Investigate the repository and the current execution path
 - [ ] 2. Classify risk (low / medium / high) and set gates
 - [ ] 3. Write the contract: observable outcomes, non-goals, failures, invariants
-- [ ] 4. Split into verifiable behavior slices
+- [ ] 4. Split into verifiable behavior slices (a plan for medium/large work)
 - [ ] 5. For each slice: red test → minimal green code → refactor
 - [ ] 6. Verify in layers (lint, types, tests, build; mutation if critical)
 - [ ] 7. Independent/adversarial review (medium/high risk)
 - [ ] 8. Report evidence and residual risk
+- [ ] 9. Finish the branch: verify, then merge / PR / keep / discard as the human chooses
 ```
+
+**0. Discovery.** If intent, scope, or approach is open, follow [discovery.md](references/discovery.md): one question at a time, approaches with a recommendation, and no building until the design is approved. Small and clear requests skip this.
 
 **1. Investigate.** `AGENTS.md`/`CLAUDE.md`/README, manifests, entry points, relevant domain code, tests, CI, lint/type/build commands. For a bug or existing feature, trace the current execution path. Run independent reads in parallel.
 
@@ -71,6 +78,10 @@ Scale depth to **risk** (not just size). Copy and track:
 **7. Review.** Reviewer in a clean context, given contract + diff and an attack checklist — not "review this".
 
 **8. Report** using the format below.
+
+**9. Finish.** Follow [delivery.md](references/delivery.md). Merge, push, and PR are external side effects: only after the human chooses.
+
+For medium/large work, write a plan ([implementation-plan.md](references/implementation-plan.md)) and execute it with [execution.md](references/execution.md) — inline, or a fresh subagent per task with independent spec and quality reviews.
 
 ## Final report format
 
@@ -104,3 +115,5 @@ Assumptions, uncovered areas, recommended monitoring.
 - Urge to adjust the test/threshold so it passes.
 - Hard-coding values to satisfy specific test cases. Tests verify the solution; they don't define it. If a test looks wrong, say so instead of working around it.
 - Trusting a subagent's success report without checking the diff.
+- Building before the design was approved, or treating "sounds good" as approval.
+- Agreeing with review feedback before verifying it against the code.

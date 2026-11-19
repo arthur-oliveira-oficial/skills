@@ -1,9 +1,9 @@
 ---
 name: frontend-engineering
-description: Designs, implements, audits, and refines production web interfaces with a distinct visual direction, UX grounded in cognitive laws, accessibility, and mobile-first behavior. Adapts to the detected stack — Next.js or Vite + React, Tailwind CSS v3/v4, with or without shadcn/ui (or another component library), Lucide — and also Vue, Nuxt, Angular, Svelte, and plain HTML/CSS. Also creates, validates, exports, and applies DESIGN.md design systems (tokens, Tailwind, Figma, tokens.json). Use for pages, dashboards, SaaS apps, landing pages, admin panels, forms, onboarding, checkout, navigation, components, redesigns, visual polish, UX/usability/accessibility audits, and any change to layout, styling, themes, tokens, or visual states. Not for backend-only work. Também: tela, página, formulário, painel, componente, layout, responsivo, acessibilidade, usabilidade, redesign, design system.
+description: Designs, builds, audits, and verifies production web interfaces. Use for pages, dashboards, SaaS apps, landing pages, admin panels, forms, onboarding, checkout, navigation, components, redesigns, visual polish, responsive layout (mobile, tablet, desktop), UX/usability/accessibility audits, browser verification or QA of a web app, and any change to layout, styling, themes, tokens, or visual states; with Next.js or Vite + React, Tailwind CSS, shadcn/ui or other component libraries, Vue, Nuxt, Angular, Svelte, or plain HTML/CSS; and for creating, validating, exporting, or applying a DESIGN.md design system (tokens, Tailwind theme, Figma variables, tokens.json). Not for backend-only work. Também: tela, página, formulário, painel, componente, layout, responsivo, acessibilidade, usabilidade, redesign, design system.
 license: MIT
 metadata:
-  version: "2.1.0"
+  version: "2.2.0"
 ---
 
 # Frontend Engineering
