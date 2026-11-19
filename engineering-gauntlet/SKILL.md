@@ -3,14 +3,14 @@ name: engineering-gauntlet
 description: Evidence-driven software engineering process for AI coding agents. Use when designing, planning, implementing, debugging, reviewing, refactoring, or shipping code in any language; when a request needs clarifying before building; when writing a PRD, spec, implementation plan, backlog, test plan, or Definition of Done; when executing a plan with subagents; when responding to code review or finishing a branch (merge, PR); for backend work (APIs, databases, migrations, queues, auth, security); for writing prompts, skills, or AGENTS.md/CLAUDE.md; and whenever correctness must be demonstrated rather than assumed. Também: planejar, especificar, implementar, depurar, bug, teste, revisão de código, refatorar, API, banco de dados, migração, plano de implementação, prompt.
 license: MIT
 metadata:
-  version: "2.3.0"
+  version: "2.3.1"
 ---
 
 # Engineering Gauntlet
 
 The human owns intent and acceptance. AI may generate and refactor code, but **completion requires reproducible evidence**.
 
-Respond in the user's language (default: Brazilian Portuguese).
+Respond in the user's language (default: Brazilian Portuguese), including the headings of the report format below; keep commands, code, and identifiers as they are.
 
 ## Iron laws
 
@@ -29,7 +29,7 @@ Respond in the user's language (default: Brazilian Portuguese).
 |---|---|
 | New feature or unclear request: clarify intent and approve a design before building | [discovery.md](references/discovery.md) |
 | Feature, behavior change, refactor | [contract-and-tdd.md](references/contract-and-tdd.md), [verification-and-evidence.md](references/verification-and-evidence.md) |
-| Bug, failing test, regression, performance problem | [debugging.md](references/debugging.md) |
+| Bug, failing test, regression, performance problem | [debugging.md](references/debugging.md), then [contract-and-tdd.md](references/contract-and-tdd.md) (regression test first; money and calculation rules) and, for high risk, the mutation section of [verification-and-evidence.md](references/verification-and-evidence.md) |
 | Module design, interfaces, boundaries, complexity | [architecture.md](references/architecture.md) |
 | API, database, migration, queues, auth, integrations | [backend.md](references/backend.md) |
 | Risk classification, human review, code review, adversarial review | [risk-and-review.md](references/risk-and-review.md) |
@@ -73,7 +73,7 @@ Copy and track:
 
 | Risk | Minimum gates |
 |---|---|
-| Low | focused tests, lint, types, build |
+| Low | focused tests, lint, types, build (a check the project has no tooling for is reported as N/A in **Not verified**; don't add tooling unasked) |
 | Medium | + written contract, regression/boundary tests, independent review |
 | High | + tested invariants, negative security tests, mutation testing on critical modules, rollback plan, recorded human approval |
 

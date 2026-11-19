@@ -2,6 +2,8 @@
 
 Normative rules for adapting interfaces across screen sizes and input types. Mobile-first is mandatory; tablet and desktop are deliberate enhancements, not stretched or shrunk versions of each other.
 
+**Content and marketing pages** (landing, pricing, docs, blog) need only: Principles, Size classes and breakpoints (ignore the Navigation column), the **Layout** and **Content** parts of each size class, Fluid typography and spacing, Responsive media, Anti-patterns, and Testing protocol. Skip the Navigation, Overlays, and Orientation parts, the Pattern transformation table, and the virtual-keyboard and foldables sections unless the page has those elements.
+
 ## Contents
 - Principles
 - Size classes and breakpoints

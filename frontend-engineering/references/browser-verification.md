@@ -43,6 +43,7 @@ agent-browser snapshot -i                 # refs go stale after navigation/DOM c
 ```
 
 - Prefer snapshots to screenshots for checking state; they are faster and cheaper. Take screenshots for **visual** checks and **evidence**.
+- Before a screenshot used as evidence after an interaction, wait for transitions to finish, or the capture shows a mid-animation state: `agent-browser wait --fn "document.getAnimations().every(a => a.playState !== 'running')"`.
 - Always take refs from the **latest** snapshot. Ref numbers are not reset between snapshots or page loads (`@e10` may become `@e30`); never hard-code them in scripts.
 - Wait for a concrete condition (`--text`, `--url`, a ref); avoid fixed sleeps and generic `networkidle` on SPAs.
 - A failed click (hidden, disabled, covered, off-viewport) is a finding, not something to work around.
@@ -98,6 +99,18 @@ EOF
 ```
 
 Look at each screenshot: navigation pattern, columns, content width cap, sticky elements, dialogs fitting the viewport.
+
+**Text at 200% (WCAG 1.4.4).** Reflow at 320px covers 1.4.10; for text resize, double the root font size at a desktop width and check for overflow and clipped text (both must be `false`/`0`; elements of 1px, like screen-reader-only regions, are excluded):
+
+```bash
+agent-browser set viewport 1280 800
+agent-browser open http://localhost:3000/route
+agent-browser eval "document.documentElement.style.fontSize = '200%'; document.documentElement.scrollWidth > document.documentElement.clientWidth"
+agent-browser eval "[...document.querySelectorAll('body *')].filter(el => { const s = getComputedStyle(el); return el.clientWidth > 1 && (s.overflow.includes('hidden') || s.textOverflow === 'ellipsis') && (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1); }).map(el => el.tagName.toLowerCase() + '.' + [...el.classList].join('.')).slice(0, 10)"
+agent-browser screenshot --full "$V/screenshots/route-text200.png"
+```
+
+This only works when type uses `rem`/`em`; a page sized in `px` will not scale, which is itself a finding.
 
 ## Input modality and touch
 

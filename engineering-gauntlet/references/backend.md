@@ -72,6 +72,14 @@
 - **Uploads:** validate type and size, store outside the webroot, generated names.
 - Negative tests for every authorization rule.
 
+**Adding authentication to an existing API — design checklist** (settle these in discovery, before code):
+- **Ownership model:** single shared resource set (just close the door) vs. per-user data (owner column, per-resource checks on every route).
+- **Existing data:** what happens to rows without an owner (assign, migrate, delete, keep shared) — this is a migration with a rollback.
+- **Client type → mechanism:** browser on same site → session cookie (`HttpOnly`, `Secure`, `SameSite`, CSRF protection); mobile/CLI/service → bearer token or API key (rotation, revocation, storage); third parties → OAuth/OIDC via an established provider.
+- **Status codes:** `401` when credentials are missing/invalid, `403` when authenticated but not allowed, `404` instead of `403` when revealing existence leaks data.
+- **Lifecycle:** signup, login, logout, password reset, expiry/refresh, lockout/rate limit.
+- **Secrets:** from env/secret manager, never in the repo; test credentials only in fixtures.
+
 ## Observability
 
 - Structured (JSON) logs with level, correlation/request ID, and domain context; no PII or secrets.

@@ -53,7 +53,7 @@ Each invariant has a **verification method** (property test, database constraint
 
 Good tests: one behavior each; descriptive name; use real code; mocks only at unavoidable boundaries (network, clock, randomness, external services); verify through the same interface callers use.
 
-A test that passes on the first run hasn't proven it detects the missing behavior. Investigate.
+A test that passes on the first run hasn't proven it detects the missing behavior. Investigate. This includes tests added **after** the code is green (to pin a policy or close a review gap): show each one failing against a plausible wrong implementation (a targeted mutant) before counting it as evidence.
 
 **Discriminating tests for calculations.** For arithmetic, rounding, dates, and boundaries, list the plausible wrong implementations (floor vs. round vs. ceil, half-up vs. half-even, `<` vs. `<=`, inclusive vs. exclusive ranges, time zones) and pick inputs where each one gives a different result from the chosen rule. A test that passes for two different rules does not pin the behavior.
 

@@ -18,7 +18,7 @@ Treat each principle as a **design hypothesis**, never a blind rule. Every inter
 3. **Evaluate the seven laws.** For each: observed symptom, component/flow, and intervention — or **N/A** with a reason. Do not invent friction.
 4. **Prioritize:** task blockers > accessibility/errors > decision clarity > progression/orientation > visual differentiation.
 5. **Implement** in the existing code (unless audit only). Fix the actual interaction, not just colors. Cohesive, reversible change.
-6. **Validate** with lint, types, tests, build, and the browser verification pass (`agent-browser`; see `browser-verification.md`) at least at one mobile and one desktop width. For audits of a running app, the `dogfood` workflow (`agent-browser skills get dogfood`) produces screenshot/video evidence per issue.
+6. **Validate** with lint, types, tests, build, and the browser verification pass (`agent-browser`; see `browser-verification.md`) at least at one mobile and one desktop width. For audits of a running **multi-page app or flow**, the `dogfood` workflow (`agent-browser skills get dogfood`) produces screenshot/video evidence per issue; for a single screen, use the standard pass and targeted checks instead.
 7. **Report** (format at the end).
 
 ## The seven cognitive laws
@@ -78,6 +78,8 @@ False urgency; fabricated scarcity; invented progress; extra steps to retain use
 ## Response format
 
 **Implementation:** what changed, where, why (law + real problem), validations run, open items. Cite all seven laws, including N/A ones.
+
+**Audit:** also cover all seven — the violated ones inside the findings, and the rest in one closing line ("N/A: Zeigarnik, goal gradient — single short screen"). Compliance and legal findings (consent and privacy under LGPD/GDPR, consumer law such as CDC on misleading offers, accessibility law) go first in priority with the rule cited, flagged as **needs legal review** — never stated as a legal conclusion.
 
 **Audit:** prioritized findings — screen/file, evidence, law or heuristic, recommendation, risk/effort. No code edits.
 
