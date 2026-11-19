@@ -26,6 +26,7 @@ Before any success claim — "done", "fixed", "passing", a commit, a PR, moving 
 | Regression test is valid | fails with the fix reverted, passes with it |
 | Subagent work | the VCS diff shows the changes |
 | Requirements met | line-by-line checklist against the plan/contract |
+| UI/web behavior works | `agent-browser` run against the running app: snapshot/screenshot of the expected state, `errors` empty (see below) |
 
 Partial checks don't count: a passing linter doesn't prove the code compiles. Words like "should", "probably", "I think" in a completion report signal a violation.
 
@@ -70,6 +71,21 @@ A compact table tied to repository commands and the current revision:
 - Result and exit code.
 - Metrics with scope and tool (e.g., "mutation score 87% on `src/billing/` via Stryker").
 - Failures and skipped items visible, with reasons.
+
+## Browser evidence for web behavior
+
+Unit and integration tests do not prove a web page works for a user. For changes with a web UI or browser-facing behavior (pages, forms, auth flows, redirects, client-side state), verify the running app with [agent-browser](https://github.com/vercel-labs/agent-browser):
+
+1. Load the version-matched guide once per session: `agent-browser skills get core`.
+2. Start the app with the project's dev/preview server; use a named session: `agent-browser --session <task> open <url>`.
+3. Drive the changed flow with the snapshot → act → re-snapshot loop; wait on concrete conditions (`wait --text`, `wait --url`).
+4. Capture evidence: final-state snapshot or screenshot, `record start/stop` video for multi-step flows, `errors` and `console` output, `network requests --filter api` for API calls.
+5. For a bug fix, capture the same flow **before** (symptom visible) and **after** (symptom gone).
+6. `agent-browser --session <task> close`.
+
+The full UI checklist (widths, touch, keyboard, axe, CLS) lives in the `frontend-engineering` skill, `references/browser-verification.md`. If `agent-browser` is unavailable or the app cannot run, list the browser checks as **not verified** — never as passed.
+
+Prefer encoding critical flows as committed E2E tests (Playwright, Cypress) when the project has that layer; `agent-browser` evidence complements them and covers checks not yet automated.
 
 ## Residual risk
 

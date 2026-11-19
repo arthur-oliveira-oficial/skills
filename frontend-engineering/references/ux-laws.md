@@ -18,7 +18,7 @@ Treat each principle as a **design hypothesis**, never a blind rule. Every inter
 3. **Evaluate the seven laws.** For each: observed symptom, component/flow, and intervention — or **N/A** with a reason. Do not invent friction.
 4. **Prioritize:** task blockers > accessibility/errors > decision clarity > progression/orientation > visual differentiation.
 5. **Implement** in the existing code (unless audit only). Fix the actual interaction, not just colors. Cohesive, reversible change.
-6. **Validate** with lint, types, tests, build, and at least one mobile and one desktop width.
+6. **Validate** with lint, types, tests, build, and the browser verification pass (`agent-browser`; see `browser-verification.md`) at least at one mobile and one desktop width. For audits of a running app, the `dogfood` workflow (`agent-browser skills get dogfood`) produces screenshot/video evidence per issue.
 7. **Report** (format at the end).
 
 ## The seven cognitive laws

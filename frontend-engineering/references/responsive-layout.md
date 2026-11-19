@@ -195,7 +195,7 @@ Use when a component appears in containers of different widths (card in sidebar 
 
 ## Testing protocol
 
-Check at minimum (browser devtools device mode is acceptable; real devices preferred for touch and keyboard behavior):
+Check at minimum (automate with `agent-browser` — commands in `browser-verification.md`; real devices are still preferred for touch and keyboard feel):
 
 | Width × height | Represents |
 |---|---|
@@ -212,6 +212,6 @@ Check at minimum (browser devtools device mode is acceptable; real devices prefe
 Also verify:
 - Rotation and live resize keep state.
 - 200% zoom and large text settings without loss of content or function (WCAG 1.4.4 / 1.4.10 reflow at 320 CSS px).
-- Touch emulation / `pointer: coarse` and a hover-capable pointer.
+- Touch behavior: no hover-only actions, target sizes, and a real device or DevTools device mode with touch enabled for gesture/`pointer: coarse` changes (agent-browser `set device` emulates size, DPR, and user agent only).
 - Virtual keyboard open on forms (mobile).
 - Keyboard-only navigation at mobile and desktop widths.

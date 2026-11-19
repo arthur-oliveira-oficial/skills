@@ -35,7 +35,7 @@ Respond in the user's language (default: Brazilian Portuguese).
 | Request to plan, document, or break down work | [implementation-plan.md](references/implementation-plan.md) |
 | Writing prompts, skills, AGENTS.md/CLAUDE.md, orchestrating subagents | [prompts-and-agents.md](references/prompts-and-agents.md) |
 
-For interface changes, also use the `frontend-engineering` skill.
+For interface changes, also use the `frontend-engineering` skill. For anything that runs in a browser, verification and bug reproduction use `agent-browser` (see [verification-and-evidence.md](references/verification-and-evidence.md) and [debugging.md](references/debugging.md)).
 
 ## Default workflow
 
@@ -86,6 +86,7 @@ What changed and why (1–3 sentences).
 | `pnpm build` | ❌ failed — see below |
 
 Regression test: failed before the fix (`<short output>`), passes after.
+Browser (web changes): `agent-browser` flow ✅, screenshots in `.verification/`, `errors` empty.
 
 ## Not verified
 Skipped checks and why.

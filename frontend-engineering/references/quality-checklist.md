@@ -47,6 +47,14 @@ Run before declaring any visual work done. If several answers are "no", iterate 
 - [ ] State does not depend on color alone.
 - [ ] `prefers-reduced-motion` respected in custom animations.
 
+## Browser evidence
+
+- [ ] Standard verification pass from `browser-verification.md` run with `agent-browser` (or each skipped check declared **not verified** with the reason).
+- [ ] Screenshots saved per size class; video for multi-step flows.
+- [ ] `errors` empty; no hydration or failed-request warnings in `console`.
+- [ ] `a11y` shows no new serious/critical violations.
+- [ ] `vitals` CLS ≤ 0.1 and not worse than baseline on changed routes.
+
 ## Code
 
 - [ ] `"use client"` only where needed.

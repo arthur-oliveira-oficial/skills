@@ -43,6 +43,7 @@ Signals from the human that you're off track: questions showing you assumed with
 
 ## Supporting techniques
 
+- **Browser reproduction (web bugs):** reproduce the exact user path with `agent-browser` (`agent-browser skills get core` first): `open` → `snapshot -i` → act → observe. Collect `errors`, `console`, and `network requests` at the failing step; `record start <file>.webm` to capture the repro. For React apps, `--enable react-devtools` at launch, then `react tree` / `react inspect` to read props and state. Keep the recorded repro as evidence and turn it into a failing automated test when the project has an E2E layer.
 - **Defense in depth:** after finding the cause, validate at more than one layer (input, domain, database) when the cost of recurrence is high.
 - **Condition-based waiting:** replace arbitrary `sleep`/timeouts with polling for the real condition (eliminates flaky tests).
 - **Bisect:** `git bisect run <test-command>` to find the commit that introduced the regression.

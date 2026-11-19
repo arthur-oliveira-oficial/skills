@@ -36,6 +36,7 @@ Identify the mode before acting and read **only** the references you need:
 | Audit usability, flow, conversion, friction | UX audit | [references/ux-laws.md](references/ux-laws.md) |
 | Mobile, tablet, desktop layouts, breakpoints, touch vs. pointer | Responsive | [references/responsive-layout.md](references/responsive-layout.md) |
 | Forms, interactions, a11y, fine details | Polish | [references/interface-guidelines.md](references/interface-guidelines.md) |
+| Verify in a real browser: widths, touch, keyboard, a11y, CLS, console; exploratory QA | Browser verification | [references/browser-verification.md](references/browser-verification.md) |
 | Before declaring any visual work done | QA | [references/quality-checklist.md](references/quality-checklist.md) |
 
 If the request is **audit only**, do not edit files. If it is implementation, change the code; do not deliver only an audit.
@@ -51,7 +52,7 @@ Copy and track for substantial work:
 - [ ] 4. Build semantic, responsive structure
 - [ ] 5. Compose from existing primitives
 - [ ] 6. Polish typography, spacing, surfaces, states
-- [ ] 7. Validate (lint, types, tests, build, mobile and desktop widths)
+- [ ] 7. Validate (lint, types, tests, build) and verify in the browser
 - [ ] 8. Run the quality checklist and report
 ```
 
@@ -76,7 +77,7 @@ New project with no stack specified: Next.js App Router + TypeScript + Tailwind 
 
 **4–6. Build.** Structure and responsiveness before decoration. Mobile-first: base classes for the smallest viewport, `sm:`/`md:`/`lg:` only to enhance. Reuse existing components, tokens, validation, state, and translations.
 
-**7. Validate.** Run the available lint, typecheck, tests, and build. If a browser is available, check at least ~375px and ~1280px. If something could not be run, say exactly what. Never claim it passed without running it.
+**7. Validate.** Run the available lint, typecheck, tests, and build. Then verify the running app in a real browser with `agent-browser` following [browser-verification.md](references/browser-verification.md): widths per size class, touch emulation, keyboard path, dark mode/reduced motion, axe audit, CLS, and console errors, saving screenshots as evidence. If `agent-browser` is not installed or the app cannot run, say exactly which checks are not verified. Never claim it passed without running it.
 
 **8. Report.** Files changed, design decisions and why, UX laws applied (when relevant), validations run with results, open items and risks.
 
@@ -99,7 +100,7 @@ New project with no stack specified: Next.js App Router + TypeScript + Tailwind 
 
 **Dashboard / SaaS.** Task completion and information scent over spectacle: clear active navigation, a useful title and action area, sensible defaults, search/filter when needed, contextual actions near the object they affect, responsive data representation. Do not wrap every metric in a floating card.
 
-**UX audit.** Prioritized findings with file/screen, evidence, law/heuristic, recommendation, and risk. No code edits.
+**UX audit.** Prioritized findings with file/screen, evidence, law/heuristic, recommendation, and risk. No code edits. When the app can run, explore it with `agent-browser skills get dogfood` for screenshot/video evidence per issue (see [browser-verification.md](references/browser-verification.md)).
 
 ## Relationship with the `engineering-gauntlet` skill
 
