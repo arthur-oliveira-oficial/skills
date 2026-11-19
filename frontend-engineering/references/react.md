@@ -129,15 +129,9 @@ When the project does not use shadcn (or the user does not want it):
 
 ## Responsiveness
 
-Check ~320–375px, 390–430px, ~768px, ~1024px, and 1280–1440px (ultra-wide: zoom to 50%).
+Follow `responsive-layout.md` for size classes, per-device patterns, input modality, and the testing protocol. In code:
 
-| Desktop | Mobile |
-|---|---|
-| table | cards, stacked rows, or an intentional scrollable region |
-| sidebar | sheet/drawer |
-| secondary actions | overflow menu |
-| filters in columns | filter sheet |
-| split pane | sequential screens or tabs |
-| inline actions | bottom action bar, when appropriate |
-
-Single-column forms; reachable primary action; navigation collapses intentionally; dialogs fit the height (`dvh`); sticky UI does not eat too much space; inputs with font size ≥ 16px; never disable zoom.
+- Mobile-first Tailwind: base classes for compact, then `sm:`/`md:`/`lg:`/`xl:`.
+- Reusable components use container queries (`@container`, `@md:`) instead of viewport breakpoints.
+- Layout switches that change the component tree (e.g. sidebar ↔ drawer) prefer CSS; when JS is needed, use a `matchMedia` hook that is SSR-safe in Next.js (render a CSS-hidden fallback first, avoid hydration mismatch).
+- Never branch on user agent.

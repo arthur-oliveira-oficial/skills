@@ -30,7 +30,12 @@ Run before declaring any visual work done. If several answers are "no", iterate 
 ## Responsiveness
 
 - [ ] No horizontal scrolling at 320px.
-- [ ] Checked at ~375px, ~768px, ~1024px, and ~1280–1440px.
+- [ ] Checked at ~375px, phone landscape, ~768px (tablet portrait), ~1024px (tablet landscape), and ~1280–1440px.
+- [ ] Each size class uses the right navigation and layout pattern (bottom bar / rail / sidebar; sequential / two-pane).
+- [ ] Rotation and live resize preserve state, scroll, and form input.
+- [ ] No hover-only actions; works with `pointer: coarse` and with mouse/keyboard on tablet.
+- [ ] Content width capped on large screens; no stretched lines or cards.
+- [ ] 200% zoom and reflow at 320 CSS px without loss of content.
 - [ ] Dialogs, sheets, and sticky elements fit the viewport.
 - [ ] Touch targets ≥ 24px (44px preferred for important ones).
 

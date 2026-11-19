@@ -31,9 +31,10 @@ Identify the mode before acting and read **only** the references you need:
 |---|---|---|
 | Create or validate a design system, `DESIGN.md`, export/import tokens | Design system | [references/design-md.md](references/design-md.md) |
 | Any frontend change when `docs/design/DESIGN.md` exists | Apply design system | [references/apply-design-md.md](references/apply-design-md.md) |
-| New screen, page, component, or app | Build | [references/visual-direction.md](references/visual-direction.md), [references/react.md](references/react.md), [references/interface-guidelines.md](references/interface-guidelines.md) |
+| New screen, page, component, or app | Build | [references/visual-direction.md](references/visual-direction.md), [references/react.md](references/react.md), [references/interface-guidelines.md](references/interface-guidelines.md), [references/responsive-layout.md](references/responsive-layout.md) |
 | Improve existing UI | Redesign | [references/visual-direction.md](references/visual-direction.md), [references/ux-laws.md](references/ux-laws.md) |
 | Audit usability, flow, conversion, friction | UX audit | [references/ux-laws.md](references/ux-laws.md) |
+| Mobile, tablet, desktop layouts, breakpoints, touch vs. pointer | Responsive | [references/responsive-layout.md](references/responsive-layout.md) |
 | Forms, interactions, a11y, fine details | Polish | [references/interface-guidelines.md](references/interface-guidelines.md) |
 | Before declaring any visual work done | QA | [references/quality-checklist.md](references/quality-checklist.md) |
 
@@ -82,7 +83,7 @@ New project with no stack specified: Next.js App Router + TypeScript + Tailwind 
 ## Non-negotiable rules
 
 - **Scope:** do only what was asked or is clearly necessary. Do not rewrite architectures, restyle unrelated screens, or add libraries (components, icons, CSS, animation, state) without real need.
-- **Mobile-first:** no horizontal scrolling at 320px; important features do not disappear on mobile.
+- **Mobile-first:** no horizontal scrolling at 320px; important features do not disappear on mobile; tablet and desktop are deliberate enhancements (size classes in [responsive-layout.md](references/responsive-layout.md)).
 - **Accessibility is a design constraint, not a final audit:** semantic HTML, keyboard, visible focus, labels, accessible names, contrast, `prefers-reduced-motion`. Never rely on color alone.
 - **Touch targets:** the normative WCAG 2.2 AA 2.5.8 minimum is 24×24 CSS px; prefer 44×44 px for important touch controls.
 - **Real states:** loading, empty, error, and success are part of the design, not an afterthought.
