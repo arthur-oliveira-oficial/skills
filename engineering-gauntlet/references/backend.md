@@ -63,7 +63,7 @@
 
 - **Access control:** authorization checked on the server for **every** endpoint and per resource (avoid IDOR: does this user own this ID?). Deny by default.
 - **Injection:** parameterized queries/ORM; never concatenate input into SQL, shell, LDAP, or templates.
-- **Authentication:** use established libraries; hash passwords with Argon2id/bcrypt; rate limit login and recovery; sessions with `HttpOnly`, `Secure`, `SameSite` cookies.
+- **Authentication:** use established libraries; hash passwords with Argon2id, bcrypt, or the runtime's built-in scrypt; rate limit login and recovery; sessions with `HttpOnly`, `Secure`, `SameSite` cookies.
 - **Secrets:** never in code or logs; environment variables or a vault; rotation possible.
 - **Sensitive data:** encryption in transit (TLS) and at rest when required; collect the minimum; mask in logs.
 - **SSRF:** validate/restrict URLs the server fetches.
@@ -75,7 +75,7 @@
 **Adding authentication to an existing API — design checklist** (settle these in discovery, before code; list order is not asking order — ask first what changes the build most):
 - **Ownership model:** single shared resource set (just close the door) vs. per-user data (owner column, per-resource checks on every route).
 - **Existing data:** what happens to rows without an owner (assign, migrate, delete, keep shared) — this is a migration with a rollback.
-- **Client type → mechanism:** browser on same site → session cookie (`HttpOnly`, `Secure`, `SameSite`, CSRF protection); browser SPA on another origin → cookie with `SameSite=None; Secure`, credentialed CORS for an explicit origin, and CSRF protection, or a bearer token kept in memory; mobile/CLI/service → bearer token or API key (rotation, revocation, storage); third parties → OAuth/OIDC via an established provider.
+- **Client type → mechanism:** browser on the same site (same origin, or the API on a subdomain of the SPA's site, e.g. `app.example.com` + `api.example.com`) → session cookie (`HttpOnly`, `Secure`, `SameSite=Lax`, `Domain` only if subdomains must share it), credentialed CORS for the explicit origin when origins differ, CSRF protection; SPA on a different site → do not rely on cookies: Safari blocks cross-site cookies by default and Firefox partitions them (Total Cookie Protection), so `SameSite=None; Secure` alone is not reliable. Prefer same-site deployment (API on a subdomain of the SPA's site, or proxied under the app's origin), else a bearer token kept in memory; mobile/CLI/service → bearer token or API key (rotation, revocation, storage); third parties → OAuth/OIDC via an established provider.
 - **Status codes:** `401` when credentials are missing/invalid, `403` when authenticated but not allowed, `404` instead of `403` when revealing existence leaks data.
 - **Lifecycle:** signup, login, logout, password reset, expiry/refresh, lockout/rate limit.
 - **Secrets:** from env/secret manager, never in the repo; test credentials only in fixtures.

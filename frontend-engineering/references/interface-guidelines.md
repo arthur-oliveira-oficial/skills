@@ -31,7 +31,7 @@ Concrete, verifiable rules for interaction, forms, content, and accessibility. A
 - Correct `type`, `inputmode`, `autocomplete`, and `name`. Disable spellcheck for email, codes, and usernames.
 - Accept any typing and validate with feedback; do not block keystrokes. Trim surrounding whitespace.
 - Do not disable submit before submission. On submit: disable, show progress while keeping the label, and send an idempotency key when the API supports one (never invent a header the backend does not read).
-- No backend or endpoint yet: implement loading and error states only, no fake success screen; list success as not verified.
+- No backend or endpoint yet: loading and error states, no fake success screen; the 2xx branch follows a redirect if present, else one neutral status line, listed as NOT VERIFIED (see quality-checklist.md).
 - Errors next to the field, associated via `aria-describedby`; on submit, focus the first error. Preserve what the user typed.
 - Enter submits when there is a single input; in a textarea, Cmd/Ctrl+Enter submits and Enter inserts a newline.
 - Warn before leaving with unsaved changes.

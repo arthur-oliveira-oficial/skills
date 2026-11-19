@@ -30,7 +30,7 @@ Before any code, identify the real combination by reading files — never assume
 | `@mui/*`, `antd`, `@chakra-ui/*`, `@mantine/*` | Own component library — **use it**, do not introduce shadcn |
 | `pnpm-lock.yaml` / `yarn.lock` / `bun.lock` / `bun.lockb` / `package-lock.json` | Package manager to use |
 
-Record the detected combination in the final report. For a new project with no stated stack: a single page or prototype → plain HTML/CSS (no React); an app → **Next.js App Router + TypeScript + Tailwind + shadcn/ui + lucide-react**. If the user asks for an SPA, a serverless app, an internal dashboard, or "Vite", use **Vite + React + TypeScript + Tailwind** (with shadcn only if requested or accepted).
+Record the detected combination in the final report. Defaults for new projects: see SKILL.md (Detect the stack).
 
 ## Supported stacks and defaults
 
@@ -124,7 +124,7 @@ When the project does not use shadcn (or the user does not want it):
 - Minimize JS and re-renders; uncontrolled inputs or cheap controlled updates.
 - Large lists: virtualization (`@tanstack/react-virtual` if already present) or `content-visibility: auto`.
 - Batch DOM reads/writes; long tasks in Web Workers.
-- Test with CPU and network throttling and in Safari.
+- Test with CPU and network throttling (DevTools) and in Safari; whichever you could not run is reported as NOT VERIFIED.
 - Remove dead code, unused imports, placeholders, and `console.log` before finishing.
 
 ## Responsiveness

@@ -24,7 +24,7 @@
 - Don't understand something? Say so, research, or ask.
 
 ### 4. Implement
-- A failing test first (or a reproduction script if there is no framework).
+- A failing test first (no test infrastructure: Iron law 3 in `SKILL.md`).
 - One fix at the root cause, with no unrelated changes.
 - Verify: the test passes, nothing else broke, the original problem is gone.
 - Fix failed? Count attempts. Fewer than 3 → back to phase 1. **3 or more → stop and discuss the architecture with the human.** Repeated failures indicate a structural problem, not a wrong hypothesis.
@@ -36,16 +36,16 @@
 - Several changes bundled before running tests.
 - Skipping the test and relying on manual verification.
 - Proposing a fix before tracing the data flow.
-- "Just one more attempt" after two failures.
+- "Just one more attempt" without returning to phase 1.
 - Each fix reveals a new problem somewhere else.
 
 Signals from the human that you're off track: questions showing you assumed without checking; requests for evidence you skipped; frustration with the approach.
 
 ## Supporting techniques
 
-- **Browser reproduction (web bugs):** reproduce the exact user path with `agent-browser` (`agent-browser skills get core` first): `open` → `snapshot -i` → act → observe. Collect `errors`, `console`, and `network requests` at the failing step; capture the repro with screenshots at absolute paths (`/abs/project/.verification/repro-1.png`), or `record start /abs/project/.verification/repro.webm` if ffmpeg is installed. Session names, paths, and cleanup follow "Browser evidence for web behavior" in verification-and-evidence.md. For React apps, `--enable react-devtools` at launch (fresh session), then `react tree` / `react inspect` to read props and state. Keep the repro as evidence and turn it into a failing automated test when the project has an E2E layer.
+- **Browser reproduction (web bugs):** reproduce the exact user path with `agent-browser` (setup per verification-and-evidence.md): `open` → `snapshot -i` → act → observe. Collect `errors`, `console`, and `network requests` at the failing step; capture the repro with screenshots at absolute paths in the evidence directory (`<evidence>/repro-1.png`), or `record start <evidence>/repro.webm` if ffmpeg is installed. Session names, paths, and cleanup follow "Browser evidence for web behavior" in verification-and-evidence.md. For React apps, `--enable react-devtools` at launch (fresh session), then `react tree` / `react inspect` to read props and state. Keep the repro as evidence and turn it into a failing automated test when the project has an E2E layer.
 - **Defense in depth:** after finding the cause, validate at more than one layer (input, domain, database) when the cost of recurrence is high.
 - **Condition-based waiting:** replace arbitrary `sleep`/timeouts with polling for the real condition (eliminates flaky tests).
-- **Bisect:** on a clean tree, `git bisect start <bad> <good>`, then `git bisect run <test-command>` to find the commit that introduced the regression; `git bisect reset` when done.
+- **Bisect:** never in the user's checkout. `git worktree add --detach <scratch>/bisect <bad>`, install deps there, `git -C <scratch>/bisect bisect start <bad> <good>`, `bisect run <test-command>` (exit 125 skips an unbuildable commit), then `bisect reset` and `git worktree remove <scratch>/bisect`.
 - **Performance:** measure first (profiler, flame graph, `EXPLAIN ANALYZE`), change one thing, measure again. Never optimize without measurement.
 - **Genuinely environmental or timing cause:** document what was investigated, add appropriate handling (retry with backoff, timeout, clear error message), and add logging.

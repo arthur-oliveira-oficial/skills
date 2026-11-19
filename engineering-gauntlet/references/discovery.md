@@ -21,14 +21,16 @@ When adding a capability to an existing system (auth, multi-tenancy, permissions
 
 Skip when:
 - The request is small and clear → do it and say what you did.
-- The person says to skip the questions → proceed; the gate goes with it. **Except for high-risk work** (auth, money, data loss, destructive migrations): skipping questions does not skip approval. Pick the safest reasonable option, show it as a short design (≤ 10 lines: approach, data changes, risks, rollback), and wait for an explicit yes before building.
+- The person says to skip the questions → proceed; the gate goes with it, except as below.
 - A complete spec or plan already exists and nothing material is open → confirm briefly and go to the contract/plan.
 
-**No human can answer (headless run, subagent, batch):** do not wait. Low/medium risk: take the recommended approach, write the short design as **your proposal**, build in the working tree, and list every assumed answer under **Decisions needed**. High risk: produce the ≤ 10-line design and stop unless the task text explicitly authorizes building. Never merge, push, or deploy.
+Skipping discovery never skips approval for **high-risk work** (auth, money, data loss, destructive migrations): pick the safest reasonable option, show it as a short design (≤ 10 lines: approach, data changes, risks, rollback), and wait for an explicit yes before editing.
+
+**No-human rule.** No human = the prompt says so, the run is non-interactive, or you are a subagent whose caller cannot relay questions. Do not wait. A task that names the change (fix X, implement Y) authorizes building in the working tree; an open-ended one (improve, look into) does not. Low/medium risk and authorized: take the recommended approach, write the short design as **your proposal**, build, and list every assumed answer under **Decisions needed**. High risk and authorized: build the most conservative option, commit nothing, list every assumption and the pending approval under **Decisions needed**. Not authorized: design only, then stop. Never merge, push, or deploy.
 
 ## The design gate
 
-Nothing gets built until the person approves the design (no human available: the no-human rule above). "Building" includes product code, scaffolding, installing dependencies, creating projects, adding test infrastructure, and starting implementation. Reading and exploring the repository are allowed. If the project has no test setup, propose the minimal one as part of the design (e.g. the runtime's built-in test runner) so it is approved together.
+Nothing gets built until the person approves the design (no human available: the no-human rule above). "Building" includes product code, scaffolding, installing dependencies, creating projects, adding test infrastructure, and starting implementation. Reading and exploring the repository are allowed. No test setup: state the choice from [contract-and-tdd.md](contract-and-tdd.md) (No test infrastructure) in the design so it is approved together.
 
 Exception: a **spike** the person agreed to may be built. It stays labeled throwaway; keeping it requires a new request that passes through the gate.
 
@@ -65,7 +67,7 @@ Two or three genuinely different approaches, each with trade-offs (complexity, r
 
 - **Small change:** a short doc in the conversation covering the agreed points.
 - **Small but high risk** (auth, money, migration): short doc in the conversation; writing a doc file is not "building".
-- **Project:** a full doc saved as `<feature-slug>-design.md` in the path the user names, else the repository's existing plans/specs/ADR folder, else `docs/plan-implementation/`; committed only if the user wants.
+- **Project:** a full doc as `<feature-slug>-design.md` in the path the user names, else the repository's existing plans/specs/ADR folder; with neither, ask before creating `docs/plan-implementation/`. Never staged or committed unless the user asks.
 
 Contents:
 - intent and why

@@ -21,6 +21,8 @@ Before implementing, set the level and the gates. Factors:
 | Reversibility | Can a deploy undo it? Does it need a backfill? |
 | Blast radius | How many users/systems are affected if it fails? |
 
+Levels: **High** — any of auth/authorization, secrets or personal data, money, possible data loss, destructive or irreversible migration. **Medium** — none of those, but a public contract change, concurrency/retries, a reversible migration, or a failure reaching many users. **Low** — everything else.
+
 Criteria: level stated; factors listed; gates derived from the level (table in `SKILL.md`).
 
 Anti-pattern: the same lightweight process for changing a label and for payment logic.
@@ -47,7 +49,7 @@ When risk justifies it, use separate roles or isolated sessions: specification, 
 
 ## Adversarial review
 
-An independent reviewer (clean context) receives **contract + diff** and an attack checklist — not "review this code". The reviewer is **read-only**: say so in its prompt ("Do not create, modify, or delete files in the repository; run probes with `node -e`/a REPL or in the host scratch directory."). Record `git rev-parse HEAD` and `git status --porcelain` before dispatch; both must be identical afterwards. No reviewer can be spawned: run the checklist as a self-review and report "independent review: NOT VERIFIED". Checklist:
+An independent reviewer (clean context) receives **contract + diff** and an attack checklist — not "review this code". The reviewer is **read-only**: say so in its prompt ("Do not create, modify, or delete files in the repository; run probes with `node -e`/a REPL or in the host scratch directory."). No commits: run `git add -N <new files>` before dispatch so the diff shows them. Record `git rev-parse HEAD` and `git status --porcelain` before dispatch; both must be identical afterwards. No reviewer can be spawned: run the checklist as a self-review and report "independent review: NOT VERIFIED". For high risk this gate is unmet: put it first under **Decisions needed**, and offer only keep-as-is or a PR for human review; offer local merge only after the human waives or performs the review. Checklist:
 
 - missing or partially met requirements
 - incorrect assumptions
@@ -63,7 +65,7 @@ Findings map to the contract or risks; unresolved ones are reported. Don't hand 
 
 ## Two-axis code review
 
-Review the diff against a fixed point (`git diff <base>...HEAD`) along two independent axes, without merging or re-ranking across them:
+Review the diff against a fixed point (`git diff <base>...HEAD`; no commits: `git diff HEAD -- <changed paths>` after `git add -N` for new files) along two independent axes, without merging or re-ranking across them:
 
 **Standards** — does the code follow documented conventions (`CONTRIBUTING.md`, `AGENTS.md`, style guides)? Documented violations are definite. Code smells are judgment calls, labeled as such ("possible Feature Envy"). Reference smells: Long Function, Long Parameter List, Duplicated Code, Feature Envy, Data Clumps, Primitive Obsession, Shotgun Surgery, Divergent Change, Speculative Generality, Message Chains, Middle Man, Mysterious Name.
 

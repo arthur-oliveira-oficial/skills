@@ -1,16 +1,16 @@
 ---
 name: frontend-engineering
-description: "Designs, builds, audits, and verifies production web interfaces (UI, frontend). Use for pages, sites, dashboards, SaaS apps, landing pages, admin panels, forms, onboarding, checkout, navigation, components, redesigns, visual polish, CSS, themes, dark mode, responsive layout (mobile, tablet, desktop), UI bugs, frontend code review, UX/usability/accessibility audits, browser verification or QA of a web app, and any change to layout, styling, tokens, or visual states; with Next.js or Vite + React, Tailwind CSS, shadcn/ui or other component libraries, Vue, Nuxt, Angular, Svelte, or plain HTML/CSS; and for creating, validating, exporting, or applying a DESIGN.md design system (tokens, Tailwind theme, tokens.json). Not for backend-only work, native mobile apps, HTML email, or charts. Também: tela, página, site, interface, formulário, painel, componente, layout, estilo, tema, responsivo, acessibilidade, usabilidade, redesign, design system."
+description: "Designs, builds, audits, and verifies production web interfaces (UI, frontend). Use for pages, sites, dashboards, SaaS apps, landing pages, admin panels, forms, onboarding, checkout, navigation, components, redesigns, visual polish, CSS, themes, dark mode, responsive layout (mobile, tablet, desktop), UI bugs, slow pages, layout shift, frontend code review, UX/usability/accessibility audits, browser verification or QA of a web app, and any change to layout, styling, tokens, or visual states; with Next.js or Vite + React, Tailwind CSS, shadcn/ui or other component libraries, Vue, Nuxt, Angular, Svelte, or plain HTML/CSS; and for creating, validating, exporting, or applying a DESIGN.md design system (tokens, Tailwind theme, tokens.json). Not for backend-only work, native mobile apps, HTML email, or chart internals. Também: tela, página, página lenta, desempenho de UI, site, interface, formulário, painel, componente, layout, estilo, tema, responsivo, acessibilidade, usabilidade, redesign, design system."
 license: MIT
 metadata:
-  version: "2.4.0"
+  version: "2.4.1"
 ---
 
 # Frontend Engineering
 
 Build interfaces that look designed for **this** product, not generated for any product. The goal is not maximum decoration: it is a clear visual point of view, strong hierarchy, excellent interaction, responsive behavior, accessible semantics, and production-quality code.
 
-Respond in the language of the user's messages (Brazilian Portuguese if undeterminable), including report headings; persisted artifacts (comments, commits, docs, identifiers) follow the repository's language. Preserve the product's language, terminology, and i18n. Match reply length to the user's; reserve the full report for the final delivery.
+Respond in the language of the user's messages (Brazilian Portuguese if undeterminable), including report headings; persisted artifacts (comments, commits, docs, identifiers) follow the repository's language. Preserve the product's language, terminology, and i18n. Match reply length to the user's, except the final report: only what the reader must act on (≤ 8 Evidence rows, related checks grouped; tests as counts with the path).
 
 ## Order of precedence
 
@@ -33,10 +33,11 @@ Identify the mode and read **only** the references it needs:
 | Any frontend change when a DESIGN.md exists | Apply design system | [apply-design-md.md](references/apply-design-md.md) |
 | New screen, page, component, or app | Build | [visual-direction.md](references/visual-direction.md), [interface-guidelines.md](references/interface-guidelines.md), [responsive-layout.md](references/responsive-layout.md); [react.md](references/react.md) only when React is detected or chosen |
 | Improve existing UI | Redesign | [visual-direction.md](references/visual-direction.md), [ux-laws.md](references/ux-laws.md), [responsive-layout.md](references/responsive-layout.md) |
-| UI bug | Debug | `engineering-gauntlet` debugging for root cause; [browser-verification.md](references/browser-verification.md) to reproduce and prove the fix |
+| UI bug | Debug | `engineering-gauntlet` debugging if installed, else reproduce → root cause → failing check → fix → re-run; [browser-verification.md](references/browser-verification.md) ([browser-quick.md](references/browser-quick.md) for one component) |
 | Slow page, layout shift, heavy bundle | Performance | [react.md](references/react.md) (Performance) or framework equivalent; [browser-verification.md](references/browser-verification.md) (vitals) |
 | Dark mode, motion | Theme/motion | [visual-direction.md](references/visual-direction.md) (Color, Motion); [browser-verification.md](references/browser-verification.md) (Color scheme) |
-| Review a frontend diff or PR | Review | [quality-checklist.md](references/quality-checklist.md) as a scan list, [interface-guidelines.md](references/interface-guidelines.md) |
+| Review a frontend diff or PR | Review | [quality-checklist.md](references/quality-checklist.md) as a scan list, [interface-guidelines.md](references/interface-guidelines.md); findings P0/P1/P2 as in UX audit |
+| Copy/microcopy, trivial style tweak | Trivial | [interface-guidelines.md](references/interface-guidelines.md) (Content) only; quick check if rendered |
 | Audit usability, flow, conversion, friction | UX audit | [ux-laws.md](references/ux-laws.md); [browser-verification.md](references/browser-verification.md) when the app can run |
 | Audit accessibility (WCAG, keyboard, screen reader, contrast) | A11y audit | [interface-guidelines.md](references/interface-guidelines.md), [browser-verification.md](references/browser-verification.md) (axe and its blind spots), [quality-checklist.md](references/quality-checklist.md) (Accessibility) |
 | Mobile, tablet, desktop layouts, breakpoints, touch vs. pointer | Responsive | [responsive-layout.md](references/responsive-layout.md) |
@@ -64,7 +65,7 @@ Copy and track for substantial work:
 - [ ] 8. Run the quality checklist and report
 ```
 
-**1. Inspect.** Read `AGENTS.md`/`CLAUDE.md`/README and `package.json`. List `components/ui` and the app tree; open only the files you will change, their imports, and the token/global CSS file. Never speculate about unopened code. DESIGN.md: `docs/design/DESIGN.md`, else at the root or under `docs/`; one found elsewhere is canonical (no duplicate). Changing existing UI that can run: capture a baseline before the first edit (screenshots at 375 and 1440, `a11y --json`, `vitals --json`; see [browser-verification.md](references/browser-verification.md)).
+**1. Inspect.** Read `AGENTS.md`/`CLAUDE.md`/README and `package.json`. List `components/ui` and the app tree; open only the files you will change, their imports, and the token/global CSS file. Never speculate about unopened code. DESIGN.md: `docs/design/DESIGN.md`, else at the root or under `docs/`; one found elsewhere is canonical (no duplicate). Substantial change to existing UI that can run: capture a baseline before the first edit (375 and 1440 screenshots, `a11y --json`, `vitals --json` in `<abs>/baseline/`; see [browser-verification.md](references/browser-verification.md)). Small change: none ("baseline: not captured").
 
 **Detect the stack** from files and adapt:
 
@@ -76,7 +77,7 @@ Copy and track for substantial work:
 | `vue`/`nuxt`, `@angular/core`, `svelte` | Other framework | Same principles; the framework's idioms |
 | No `package.json` | Plain HTML/CSS | Semantic HTML, CSS custom properties as tokens |
 
-New project with no stack specified: a single page or prototype → plain HTML/CSS; an app → Next.js App Router + TypeScript + Tailwind + shadcn/ui + lucide-react. Request for an SPA or "Vite": Vite + React + TypeScript + Tailwind (shadcn only if requested or accepted). Never add shadcn or another UI library to a project without the user's agreement.
+New project with no stack specified: a single page or prototype → plain HTML/CSS; an SPA, serverless app, internal dashboard, or "Vite" → Vite + React + TypeScript + Tailwind; other apps → Next.js App Router + TypeScript + Tailwind + lucide-react. shadcn/ui or any UI library: propose it in the first reply, add only if accepted.
 
 **2. Frame the UX.** Determine product type, primary user and job-to-be-done, the screen's primary action, information hierarchy, appropriate density, required trust level, and every state: loading, empty, error, success, disabled, partial.
 
@@ -84,9 +85,9 @@ New project with no stack specified: a single page or prototype → plain HTML/C
 
 **4–6. Build.** Structure and responsiveness before decoration. Mobile-first: base classes for the smallest viewport, `sm:`/`md:`/`lg:` only to enhance. Reuse existing components, tokens, validation, state, and translations.
 
-**7. Validate.** Run the available lint, typecheck, tests, and build. Then verify in a real browser with `agent-browser`: small change → [browser-quick.md](references/browser-quick.md); otherwise the full pass in [browser-verification.md](references/browser-verification.md) (`agent-browser skills get core` only for it, unless the host already provides agent-browser tools), with screenshots as evidence (absolute paths). Close the session and stop any server you started. If `agent-browser` is missing or the app cannot run, list the checks not verified; never claim a pass you did not run.
+**7. Validate.** Run the available lint, typecheck, tests, and build. Then verify in a real browser with `agent-browser`: small change → [browser-quick.md](references/browser-quick.md); otherwise the full pass in [browser-verification.md](references/browser-verification.md) (`skills get core` only there, unless the host provides agent-browser tools), with screenshots as evidence (absolute paths). Close the session and stop any server you started. If the `agent-browser` CLI is missing, use the host's browser tools (agent-browser MCP, built-in browser) and name them; with no browser tool or an app that cannot run, list the checks as **NOT VERIFIED**; never claim a pass you did not run.
 
-**8. Report.** With `engineering-gauntlet` active, use its report, browser checks as Evidence rows. Otherwise: files changed, design decisions and why, UX laws that drove a change, checks run with `PASS`/`FAIL` and the command, open items and risks, then **Not verified**.
+**8. Report.** With `engineering-gauntlet` active, use its report, browser checks as Evidence rows. Otherwise: files changed, design decisions and why, UX laws that drove a change, checks run with `PASS`/`FAIL` and the command, open items and risks, then **Not verified**. Either way, label each check `input` (real keyboard/click), `dom` (DOM/computed-style read), or `stub` (intercepted/scripted); a branch only stubbed or untested (4xx, 2xx with no backend) goes under **Not verified**, not into a pass total. Rerun invalid measurements in the changed area.
 
 ## Non-negotiable rules
 
@@ -97,7 +98,7 @@ New project with no stack specified: a single page or prototype → plain HTML/C
 - **Real states:** loading, empty, error, and success are part of the design, not an afterthought.
 - **Honesty:** do not invent logos, testimonials, metrics, awards, "most popular" badges, or conversion lifts. No dark patterns (false urgency, fabricated scarcity, fake progress, hidden cancellation, pre-checked opt-ins). Prices: when showing a per-month equivalent of an annual plan, also show the total actually billed.
 - **Missing content, links, and data:** do not invent URLs, routes, facts, or content. Use neutral copy and visibly marked placeholders for facts; link to destinations that don't exist yet only as a recorded assumption; list all of them in the report as open items.
-- **Ask or assume:** a business rule or destination the repo cannot answer → human reachable: ask before building (up to 3 questions at once); otherwise build with the assumption visible and listed as open. A requested claim you cannot verify ("Mais popular", "N customers") → ask whether it is true first; offer a neutral alternative ("Recomendado").
+- **Ask or assume:** a business rule or destination the repo cannot answer → human reachable: ask before building (up to 3 questions at once); otherwise build with the assumption visible and listed as open. Meanwhile build the unblocked parts; after "go", assume visibly, no second round of questions. A requested claim you cannot verify ("Mais popular", "N customers") → ask whether it is true first; offer a neutral alternative ("Recomendado").
 - **Tokens, not literals:** use theme variables and semantic tokens; never replace tokens with hard-coded approximations.
 - **Sensitive data:** never in `localStorage`.
 
@@ -113,4 +114,4 @@ New project with no stack specified: a single page or prototype → plain HTML/C
 
 ## Relationship with the `engineering-gauntlet` skill
 
-For interface work this skill leads. For medium/high-risk changes (auth, payments, data, critical flows), also apply the `engineering-gauntlet` process: behavioral contract, tests first, reproducible evidence. State which gauntlet gates you applied. Static pages with no test infrastructure: scripted browser checks run red-then-green count as the tests.
+For interface work this skill leads. For medium/high-risk changes (auth, payments, data, critical flows), also load `engineering-gauntlet` if installed and apply its gates; without it, these suffice: behavioral contract, tests first, reproducible evidence. State which gates you applied. Static pages with no test infrastructure: scripted browser checks run red-then-green count as the tests.

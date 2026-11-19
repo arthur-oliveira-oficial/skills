@@ -37,9 +37,9 @@ Technical correctness over social comfort. Verify before implementing; ask befor
 
 ## Finishing a development branch
 
-Run when implementation is complete and reviewed. The work should already be committed on a feature branch (see `SKILL.md`, step 9). If it is not committed and commits are allowed, commit it (staging only the paths you changed); otherwise present "commit" as the first option and run nothing below until the human allows it.
+Run when implementation is complete and reviewed. The work should already be committed on a feature branch (see `SKILL.md`, step 9). If it is not committed and the human asked for or approved commits (and the host/project allow them), commit it (staging only the paths you changed, never a path dirty before you started); otherwise list "commit" first under **Decisions needed** and run nothing below until the human allows it.
 
-1. **Verify:** run the full test suite (plus lint, types, build). Compare with the recorded baseline: any failure not in the baseline → report and stop; no options until it passes. Baseline failures are listed as pre-existing and do not block.
+1. **Verify:** run the full test suite (plus lint, types, build); reuse the last full-suite, lint, types and build results if HEAD and the working tree are unchanged since that run (state the revision). Compare with the recorded baseline: any failure not in the baseline → report and stop; no options until it passes. Baseline failures are listed as pre-existing and do not block.
 2. **Detect the environment:**
    ```bash
    git rev-parse --git-dir --git-common-dir   # differ → inside a worktree
@@ -51,12 +51,12 @@ Run when implementation is complete and reviewed. The work should already be com
    2. Push and open a pull request.
    3. Keep the branch as-is.
    4. Discard the work.
-   (Detached HEAD: push as a new branch and open a PR, or keep as-is.)
+   (Detached HEAD: push as a new branch and open a PR, or keep as-is. High risk with independent review NOT VERIFIED: offer only keep-as-is or a PR; merge only after the human waives or performs the review, per [risk-and-review.md](risk-and-review.md).)
 5. **Execute:**
    - **Merge** (the option text says the feature branch will be deleted): run in the checkout that has the base branch (`git worktree list`); if it has uncommitted changes, stop and ask. Update it only with `git pull --ff-only`, merge, **re-run tests on the merged result**. Failure → stop and investigate, leaving branch and worktree intact. Success → clean up and `git branch -d` (never `-D`).
    - **PR:** push, open the PR against the base branch (`gh pr create`), include the evidence report and residual risk in the body, report the URL, keep the worktree for feedback. No `gh` or a non-GitHub remote: push and report the compare URL.
    - **Keep:** report where the branch and worktree are.
-   - **Discard:** only on explicit request. Show what will be deleted (branch, commits, worktree) and require a confirmation that names the branch, in any language; then delete the branch (force) and worktree.
+   - **Discard:** only on explicit request. Show what will be deleted (branch, commits, worktree) and require a confirmation that names the branch, in any language; then delete the branch (force) and worktree. Uncommitted work: list the paths you modified and files you created; after confirmation revert only those (`git apply -R` of your saved patch, or `git checkout -- <path>` only for paths clean before you started) and delete only files you created. Never `git reset --hard`, `git checkout -- .`, `git clean`, or stash.
 6. **Clean up** (after merge or confirmed discard):
    - Worktrees this workflow created: `git worktree remove <path>` then `git worktree prune`.
    - If removal is refused because of uncommitted files, **never force it**: show the files and let the human commit, move, or delete them.

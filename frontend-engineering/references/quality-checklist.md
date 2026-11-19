@@ -6,7 +6,7 @@ Run before declaring any implementation work done. If several answers are "no", 
 
 - [ ] Does it look designed for this product rather than generated for any product?
 - [ ] Is the primary action obvious without being loud?
-- [ ] Is the hierarchy still readable in grayscale? (check: `eval "document.documentElement.style.filter='grayscale(1)'"`, then screenshot)
+- [ ] Is the hierarchy still readable in grayscale? (check: `eval "document.documentElement.style.filter='grayscale(1)'"`, then screenshot; reload afterwards)
 - [ ] Are there unnecessary gradients, pills, cards, shadows, or icons? Can any decorative element be removed without losing meaning?
 - [ ] Are components reused because they fit, not because they exist?
 - [ ] Does the result feel calm, intentional, and production-ready?
@@ -29,18 +29,18 @@ Run before declaring any implementation work done. If several answers are "no", 
 
 ## Forcing states
 
-Items above without a command are judgment items: say how you checked them (code read, fixture data) or mark them **not verified**. To force states in the browser:
+Items above without a command are judgment items: say how you checked them (code read, fixture data) or mark them `NOT VERIFIED`. To force states in the browser (undo afterwards with `network unroute`, `set offline off`, and a reload, or force them in a separate `--session`):
 - Network failure: `agent-browser network route "<api-url>" --abort`; offline: `agent-browser set offline on`.
 - Empty/long/1000+ data: a fixture, mock, or the app's seed; never edit production data.
-- No backend or endpoint exists: implement loading and error only, no success screen, and list success as **not verified**.
+- No backend or endpoint exists: implement loading and error, no success screen; the 2xx branch follows a redirect if present, else shows one neutral status line, and is listed as `NOT VERIFIED`.
 
 ## Responsiveness
 
 - [ ] No horizontal scrolling at 320px.
 - [ ] Checked at every size in the Responsive sizes list of `browser-verification.md` (the single minimum; small changes: the sizes in `browser-quick.md`).
 - [ ] Each size class uses the right navigation and layout pattern (apps: bottom bar / rail / sidebar, sequential / two-pane; content sites: a top nav that wraps or collapses).
-- [ ] Rotation and live resize preserve state, scroll, and form input.
-- [ ] No hover-only actions; works with `pointer: coarse` and with mouse/keyboard on tablet.
+- [ ] Rotation and live resize preserve state, scroll, and form input (check: fill a field, `set viewport` to the swapped width/height, confirm value and scroll).
+- [ ] No hover-only actions; works with `pointer: coarse` and with mouse/keyboard on tablet (hover-only: code search per `browser-verification.md`; `pointer: coarse` needs a real device or touch-enabled DevTools, else `NOT VERIFIED`).
 - [ ] Content width capped on large screens; no stretched lines or cards.
 - [ ] 200% zoom and reflow at 320 CSS px without loss of content.
 - [ ] Dialogs, sheets, and sticky elements fit the viewport.
@@ -57,7 +57,7 @@ Items above without a command are judgment items: say how you checked them (code
 
 ## Browser evidence
 
-- [ ] Browser pass run with `agent-browser` (`browser-quick.md` for small changes, otherwise the standard pass in `browser-verification.md`) (or each skipped check declared **not verified** with the reason).
+- [ ] Browser pass run with `agent-browser` or the host's browser tools (`browser-quick.md` for small changes, otherwise the standard pass in `browser-verification.md`) (or each skipped check declared `NOT VERIFIED` with the reason).
 - [ ] Screenshots saved per required size with absolute paths, and confirmed to exist; older captures of the changed area retaken or listed as stale; video for multi-step flows (or "not recorded" with the reason).
 - [ ] Browser session closed and any server you started stopped.
 - [ ] `errors` empty; no hydration or failed-request warnings in `console`.

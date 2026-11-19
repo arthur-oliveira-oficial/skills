@@ -23,13 +23,18 @@ Turn "check it in a browser" into concrete commands and recorded evidence. Uses 
 
 1. **Tool.** Check `agent-browser --version`. If the CLI is missing but the host provides other browser tools (agent-browser MCP tools, a built-in browser), run the same checks with them and name the tool in the report. If none is available, tell the user and suggest `npm i -g agent-browser && agent-browser install`; do not install it without approval. Fall back to the static checks and report the browser checks as **NOT VERIFIED**.
 2. **Command guide.** `agent-browser skills get core` is the version-matched source of truth for syntax (this file only maps checks to commands). Load it only for the full pass or when a command fails, and skip it if the host already provides an agent-browser skill or MCP tools.
-3. **Server.** If the app is already running, reuse it; never stop it or run a build over it (Next ≤ 15: `next build` breaks a running `next dev`). Otherwise start the project's own dev or preview server (`pnpm dev`, `vite preview`; a production build for performance and layout-shift checks) in the background and record its PID. Plain HTML/CSS with no build step: `python3 -u -m http.server 0 --bind 127.0.0.1 --directory <abs dir>` (port 0 picks a free port; `-u` makes the "Serving HTTP on … port N" line appear in the log). Not `file://`: it changes CORS, module, and storage behavior.
-4. **Confirm the server serves this project** before any check: `curl -s <url> | grep -c '<text unique to this page>'` must be ≥ 1 (or `wait --text`). Another agent's server on the same port gives "passing" checks on the wrong page. After editing a file, reload with a cache-busting query (`<url>?v=2`, then `?v=3`) so the browser does not show the stale version.
+3. **Server.** If the app is already running, reuse it; never stop it or run a build over it (Next ≤ 15: `next build` breaks a running `next dev`). Otherwise start the project's own dev or preview server (`pnpm dev`, `vite preview`; a production build for performance and layout-shift checks) in the background and record its PID. Plain HTML/CSS with no build step: `python3 -u -m http.server 0 --bind 127.0.0.1 --directory <abs dir>` (port 0 picks a free port; `-u` makes the "Serving HTTP on … port N" line appear in the log). Not `file://`: it changes CORS, module, and storage behavior. **Audit-only:** starting the server is allowed, installing dependencies is not (ask); run `git status --porcelain` before and after and report any tracked file the server changed; bind to `127.0.0.1` when the tool allows.
+4. **Confirm the server serves this project** before any check: `curl -s <url> | grep -c '<text unique to this page>'` must be ≥ 1 (or `wait --text`). Client-rendered SPA (content not in the HTML): grep the `<title>` or bundle name, then after `open` confirm with `wait --text '<page text>'`. Route behind login: see [Security](#security). Another agent's server on the same port gives "passing" checks on the wrong page. After editing a file, reload with a cache-busting query (`<url>?v=2`, then `?v=3`) and confirm the edit is live (`get text <sel>` or `eval "getComputedStyle(document.querySelector('<sel>')).<prop>"` on something you changed); if stale, `close` the session and reopen; do not re-edit.
 5. **Session.** Every command needs `--session <name>` (letters, digits, `-`, `_`; dots and spaces are rejected). The default session is shared by every agent on the machine. Emulation (`set device`, `set media`) persists for the session's lifetime.
-6. **Evidence directory, absolute and literal.** Shell variables, functions, and cwd do not persist between tool calls in most harnesses. Resolve the directory once: `mkdir -p <abs project root>/.verification/{screenshots,baseline,videos}`. **Audit-only work:** use the scratchpad or one `mktemp -d` outside the project (echo it once), never the project. Then write that literal absolute path in every command, or re-declare `V=…` (and `S=…`) at the top of every block.
-7. **Clean up at the end:** `agent-browser --session <name> close`, and kill only the PID of a server you started. Leave nothing of yours running; never stop a server you did not start.
+6. **Evidence directory, absolute and literal.** Shell variables, functions, and cwd do not persist between tool calls in most harnesses. Resolve the directory once, then `mkdir -p <abs>/screenshots <abs>/baseline <abs>/videos`, where `<abs>` is:
+   - main checkout: `<abs project root>/.verification`;
+   - git worktree: `<output of git rev-parse --path-format=absolute --git-common-dir>/verification/<task-slug>` (survives worktree removal);
+   - **audit-, review- or diagnose-only work:** the host scratchpad or one `mktemp -d` outside the project (echo it once), never the project.
 
-Snippets below omit `--session` for width only and use `http://localhost:3000` and `"$V/…"`; replace them with the real session, URL, and absolute path. Shell is POSIX `sh`/`bash`. In zsh, unquoted `$var` is not word-split, so `AB="agent-browser --session x"; $AB open …` fails; use a function (`ab() { agent-browser --session x "$@"; }`) defined in the same block, or `bash -c`.
+   Then write that literal absolute path in every command, or re-declare `V=…` (and `S=…`) at the top of every block.
+7. **Clean up at the end:** `agent-browser --session <name> close`, and kill only the PID of a server you started; then confirm the port is free (`lsof -nP -iTCP:<port> -sTCP:LISTEN` prints nothing) and kill a child that still holds it. Undo any state you forced (`network unroute`, `set offline off`) or keep it in its own `--session`. Leave nothing of yours running; never stop a server you did not start.
+
+Snippets below omit `--session` for width only and use `http://localhost:3000` and `"$V/…"`; replace them with the real session, URL, and absolute path. Shell is POSIX `sh`/`bash`. In zsh, unquoted `$var` is not word-split, so `AB="agent-browser --session x"; $AB open …` fails; use a function (`ab() { agent-browser --session x "$@"; }`) defined in the same block, or `bash -c`. For width/height pairs use the `while read -r w h` loop below or `bash -c`; in zsh `set -- $pair` does not split and the previous viewport is silently kept.
 
 This file's evidence rules override the `core` guide's "take a screenshot only when the user asks": screenshots here are verification evidence, which the task requires.
 
@@ -68,7 +73,7 @@ Run the full pass for every substantial UI change; small changes use [browser-qu
 - [ ] Every state touched by the change (empty, loading, error, success)
 ```
 
-**Baseline.** When changing existing UI that can run, capture a baseline **before the first edit**: screenshots at 375 and 1440 into `baseline/`, `a11y --json`, `vitals --json`. **No baseline** (UI did not run, or you joined mid-task): report absolute results, attribute violations by whether their selector is inside the changed area, and state "baseline: not captured". Never stash or revert user work to create one.
+**Baseline (full pass only).** For a substantial change to existing UI that can run, capture a baseline **before the first edit**: screenshots at 375 and 1440 into `<abs>/baseline/`, and `a11y --json` / `vitals --json` saved there (`> <abs>/baseline/a11y.json`). The quick pass takes no baseline and reports "baseline: not captured". **No baseline** (UI did not run, or you joined mid-task): report absolute results, attribute violations by whether their selector is inside the changed area, and state "baseline: not captured". Never stash or revert user work to create one.
 
 ## Responsive sizes
 
@@ -87,9 +92,9 @@ printf '%s\n' "320 568" "375 812" "768 1024" "1024 768" "1440 900" | while read 
 done
 ```
 
-The second eval lists the offending elements (`[]` when clean). `</dev/null` keeps the commands from consuming the loop's input. Add 844×390 and 1920×1080 for layout-heavy changes.
+The second eval lists the offending elements (`[]` when clean). A non-empty list passes only if every entry is an intentional scroll region (`overflow-x: auto` container) or a closed off-canvas panel, named in the report; anything else is FAIL. `</dev/null` keeps the commands from consuming the loop's input. Add 844×390 and 1920×1080 for layout-heavy changes.
 
-Look at each screenshot: navigation pattern, columns, content width cap, sticky elements, dialogs fitting the viewport.
+Look at each screenshot: sibling controls (equal height, no uneven wrapping), navigation pattern, columns, content width cap, sticky elements, dialogs fitting the viewport.
 
 **Missing `<meta name="viewport">`.** `set viewport` gives a true CSS width, so the page may look fine at 375px in the tool while a real phone renders it at ~980px and zooms out. Check the source; a missing or zoom-disabling viewport meta (`user-scalable=no`, `maximum-scale=1`) is a finding.
 
@@ -148,16 +153,20 @@ Repeat `press Tab` through the primary flow. Verify: logical order, visible focu
 **Dialogs: check containment by behavior.** Open the dialog, then repeat `press Tab` more times than it has controls, checking after each:
 
 ```bash
-agent-browser eval "(a => a === document.body || !!a.closest('dialog,[role=dialog]'))(document.activeElement)"   # must stay true
+agent-browser eval "(a => a === document.body || !!a.closest('dialog,[role=dialog],[role=alertdialog]'))(document.activeElement)"   # must stay true
 ```
+
+False failures to avoid: `<input type="date">` has several Tab stops in Chrome and the host does not match `:focus-visible` on the picker stop (check `:focus-within`); open custom controls with a real `click` on the label ref, not `label.click()` in `eval`; radio groups move with arrow keys, not Tab.
 
 `body` means focus passed to the browser UI, which native modals allow. Any of `dialog:modal`, `inert` on the background, or `aria-hidden` on its siblings is an acceptable implementation; do not fail one for lacking another.
 
 ## Color scheme and reduced motion
 
 ```bash
+agent-browser eval "getComputedStyle(document.body).backgroundColor"   # light value
 agent-browser set media dark
 agent-browser open http://localhost:3000/route
+agent-browser eval "getComputedStyle(document.body).backgroundColor"   # must differ
 agent-browser screenshot "$V/screenshots/route-dark.png"
 
 agent-browser set media light reduced-motion
@@ -166,7 +175,7 @@ agent-browser eval "matchMedia('(prefers-reduced-motion: reduce)').matches"     
 agent-browser eval "getComputedStyle(document.querySelector('<animated selector>')).transitionDuration"
 ```
 
-Emulated media persists for the session: run this block last or in its own session. Pass when dark mode preserves hierarchy and contrast, and animated elements have no or minimal motion under reduced motion.
+Same background in both → the theme is class/attribute-driven: use the app's toggle or set the class/`data-theme` the project uses, then re-check and screenshot. Dark mode claimed but unchanged = FAIL. Emulated media persists for the session: run this block last or in its own session, or reset with `set media light`. Pass when dark mode preserves hierarchy and contrast, and animated elements have no or minimal motion under reduced motion.
 
 ## Accessibility audit
 
@@ -205,7 +214,7 @@ agent-browser errors --clear; agent-browser console --clear
 # open / interact
 agent-browser errors           # uncaught exceptions — must be empty
 agent-browser console          # warnings: hydration, key, a11y, deprecations
-agent-browser network requests --filter api
+agent-browser network requests --status 400-599
 ```
 
 Hydration mismatch warnings (Next.js, shown by `console`), failed requests (4xx/5xx), and duplicate requests are findings.
@@ -242,10 +251,11 @@ Unexpected changes outside the task's scope are findings.
 
 - **Always pass absolute paths** to `screenshot`, `record`, `diff --baseline`, and `-o`. Tested on agent-browser 0.43: `screenshot .verification/x.png` treats `.verification` as a CSS **selector** and silently saves to `~/.agent-browser/tmp/`, and other relative paths resolve against the browser daemon's working directory, not your shell's. Both print "✓ saved". Confirm with `ls` that the files exist before citing them.
 - **Where artifacts go:**
-  - Implementation work: `.verification/` in the project (or a path the user names). Suggest adding it to `.gitignore` in the report — don't create or edit `.gitignore` unasked; do not commit artifacts unless asked.
-  - Audit-only work: outside the project (setup step 6), unless the user names a path.
+  - Implementation work: `.verification/` in the project (or a path the user names). Keep it out of git without touching tracked files: ``echo .verification/ >> "$(git rev-parse --git-common-dir)/info/exclude"`` (works in worktrees; do not edit `.gitignore` unasked); do not commit artifacts unless asked. Worktree: see setup step 6.
+  - Audit-, review- or diagnose-only work: outside the project (setup step 6), unless the user names a path.
   - Report artifacts with their full absolute paths.
 - **Evidence must show the final state.** If you change code after taking screenshots (a bug found during verification), retake every screenshot that shows the changed area and rerun the checks it affects. Retake, don't just delete: a check without its evidence counts as **NOT VERIFIED**. Never deliver pre-fix screenshots as evidence. The small pass retakes only the sizes it requires and lists older captures of the changed area as stale.
+- **Invalid or inconclusive measurement** in the changed area (eval error, wrong viewport, stale page, timed-out wait): rerun it before reporting; never report it as PASS.
 - Record a video for multi-step flows and bug reproductions. Recording needs **ffmpeg**; if `record start` reports it missing, do not install it unasked: fall back to a numbered screenshot per step and note "video: not recorded (ffmpeg missing)".
 
 ```bash
@@ -254,15 +264,16 @@ agent-browser record start "$V/videos/checkout.webm"
 agent-browser record stop
 ```
 
-Report each check as a row with its command and result, using `PASS`, `FAIL`, or `NOT VERIFIED` (text, no emoji). When `engineering-gauntlet` is also in use, put these rows in its report's Evidence table; otherwise use this table plus a **Not verified** list:
+Report each check as a row with its method (`input` real keyboard/click, `dom` rendered DOM or computed style, `stub` intercepted or scripted), command and result. A branch exercised only by `stub` or not at all goes under **Not verified**, not in a pass count. Use `PASS`, `FAIL`, or `NOT VERIFIED` (text, no emoji). When `engineering-gauntlet` is also in use, put these rows in its report's Evidence table; otherwise use this table plus a **Not verified** list:
 
-| Check | Command | Result |
-|---|---|---|
-| Overflow 320–1440px | `eval scrollWidth > clientWidth` | PASS false at all 5 widths |
-| axe (WCAG 2.2 AA) | `a11y --tags …` | PASS 0 new serious/critical |
-| CLS `/products` | `vitals --json` | PASS 0.02 (baseline 0.23) |
-| Console | `console` | FAIL 1 hydration warning (see below) |
-| Touch interaction | — | NOT VERIFIED (no real device) |
+| Check | Method | Command | Result |
+|---|---|---|---|
+| Overflow 320–1440px | dom | `eval scrollWidth > clientWidth` | PASS false at all 5 widths |
+| Keyboard path | input | `press Tab` ×8, `eval activeElement` | PASS logical order, ring visible |
+| axe (WCAG 2.2 AA) | dom | `a11y --tags …` | PASS 0 new serious/critical |
+| CLS `/products` | dom | `vitals --json` | PASS 0.02 (baseline 0.23) |
+| Console | dom | `console` | FAIL 1 hydration warning (see below) |
+| Touch interaction | — | — | NOT VERIFIED (no real device) |
 
 ## Exploratory QA (dogfood)
 

@@ -9,7 +9,12 @@ Implementation-ready documentation grounded in the actual repository. The docume
 
 Don't implement the feature unless the user also asks for implementation.
 
+## Short plan (medium work)
+
+Sections 1, 3, 5, 8, 11, 13, 18 only, written in the conversation or the host's plan/task mechanism. Create a file only when the user asks for a document or the work is large (see Output location). Then skip to Engineering tasks and Handoff.
+
 ## Contents
+- Short plan (medium work)
 - Principles
 - Repository discovery
 - Planning depth
@@ -45,7 +50,7 @@ For an existing feature or bug, trace the current execution path before proposin
 
 Size as defined in [SKILL.md](../SKILL.md), crossed with risk ([risk-and-review.md](risk-and-review.md)): small + auth = high risk. Read only the references the routing table selects.
 
-- **Short plan (medium):** sections 1, 3, 5, 8, 11, 13, 18.
+- **Short plan (medium):** see Short plan above.
 - **Full plan (large or high risk):** all relevant sections.
 
 Omit irrelevant sections; avoid unnecessary Scrum ceremony.
@@ -96,7 +101,7 @@ Each task contains:
   - [ ] Run `pnpm test orders/cancel` → expect FAIL (missing guard)
   - [ ] Implement guard in `src/orders/cancel.ts` (`cancelOrder(id, actor): Result<Order, CancelError>`)
   - [ ] Run `pnpm test orders/cancel` → expect PASS
-  - [ ] Commit `feat(orders): reject cancel after shipping (TASK-02.1)` (commits restricted → stage the changed files instead)
+  - [ ] Commit `feat(orders): reject cancel after shipping (TASK-02.1)` (commit rule: SKILL.md step 9; not approved → stage the changed files instead)
   ```
   Test steps name the test and its assertion; code steps give signature, location, and spec-pinned values — not full bodies, unless an exact algorithm or copy is required; verification steps give the command and expected result.
 
@@ -131,7 +136,7 @@ Lightweight, proportional to size: `REQ-*` requirements, `BC-*`/`INV-*` contract
 
 ## Output location
 
-Save as `<feature-slug>.md` (lowercase kebab-case) in the path the user names; otherwise in the repository's existing plans/specs/ADR folder if one exists; otherwise in `docs/plan-implementation/`, creating it if needed. Write the plan in the repository's language. If the user asks for content only, respond without creating a file.
+Short plan (medium): in the conversation or the host's plan/task mechanism; create a file only when the user asks for a document or the work is large. Full plan: `<feature-slug>.md` (lowercase kebab-case) in the path the user names, else the repository's existing plans/specs/ADR folder; with neither, ask before creating `docs/plan-implementation/`. Plan and design files are never staged or committed unless the user asks. Write the plan in the repository's language.
 
 ## Final quality gate
 
@@ -164,4 +169,4 @@ If the spec covers several independent subsystems, split it into separate plans,
 
 ## Handoff
 
-At the end, respond with a short summary: path of the created document, highest-impact decisions, risk level, and open questions. If implementation is also requested, recommend an execution mode (inline or subagent-driven, see [execution.md](execution.md)) with a reason, and wait for approval before implementing.
+At the end, respond with a short summary: path of the created document, highest-impact decisions, risk level, and open questions. If implementation is also requested, recommend an execution mode (inline or subagent-driven, see [execution.md](execution.md)) with a reason, and wait for approval before implementing. An explicit "start building" after design approval covers inline mode; ask again only to propose subagents or commits the human has not mentioned.

@@ -152,7 +152,7 @@ components:
 - No duplicate sections; sections in the prescribed order.
 - Every `{...}` reference resolves to an existing value (primitive, except composites in `components`).
 - Dimensions with a valid unit.
-- Declared text/background pairs meet WCAG AA (compute contrast in sRGB).
+- Declared text/background pairs meet WCAG AA: compute each ratio with a script (WCAG relative luminance in sRGB), never estimate by eye.
 
 Report each problem with its exact line/path.
 

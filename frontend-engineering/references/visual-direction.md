@@ -27,7 +27,7 @@ Every later decision should serve this direction. Draw visual references from th
 
 **Spend your boldness in one place.** One or two memorable decisions; everything else disciplined.
 
-If the project already has a font, palette, or brand, keep it — unless the request includes a rebrand. If `docs/design/DESIGN.md` exists, the direction comes from it.
+If the project already has a font, palette, or brand, keep it — unless the request includes a rebrand. If a DESIGN.md exists (location in SKILL.md step 1), the direction comes from it.
 
 ## Process
 

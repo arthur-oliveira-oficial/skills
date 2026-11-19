@@ -1,6 +1,6 @@
 # Responsive layout: mobile, tablet, desktop
 
-Normative rules for adapting interfaces across screen sizes and input types. Mobile-first is mandatory; tablet and desktop are deliberate enhancements, not stretched or shrunk versions of each other.
+Normative rules for adapting interfaces across screen sizes and input types. Mobile-first is the default for new code (an existing desktop-first codebase keeps its convention); tablet and desktop are deliberate enhancements, not stretched or shrunk versions of each other.
 
 **Content and marketing pages** (landing, pricing, docs, blog) need only: Principles, Size classes and breakpoints (ignore the Navigation column), the **Layout** and **Content** parts of each size class, Fluid typography and spacing, Responsive media, Anti-patterns, and Testing protocol. Skip the Navigation, Overlays, and Orientation parts, the Pattern transformation table, and the virtual-keyboard and foldables sections unless the page has those elements.
 
@@ -22,7 +22,7 @@ Normative rules for adapting interfaces across screen sizes and input types. Mob
 
 ## Principles
 
-1. **Mobile-first.** Base styles target the smallest viewport; larger breakpoints only add (`sm:`, `md:`, `lg:`…). Never write desktop styles and patch mobile with `max-width` overrides.
+1. **Mobile-first.** Base styles target the smallest viewport; larger breakpoints only add (`sm:`, `md:`, `lg:`…). In new code, do not write desktop styles and patch mobile with `max-width` overrides.
 2. **Same capabilities everywhere.** A smaller screen may reorganize or defer features (progressive disclosure), never remove what users need.
 3. **Breakpoints follow content, not devices.** Add a breakpoint where the layout breaks, not where "an iPad" is. Device names are only test references.
 4. **Width ≠ input type.** A tablet can have a mouse; a laptop can have a touchscreen; an iPad in Split View can be phone-width. Detect capabilities with media queries, never by user agent.
