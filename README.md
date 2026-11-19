@@ -51,6 +51,7 @@ Both skills were exercised with subagents on fixture projects (a money bug fix, 
 
 ## Versions
 
+- **2.3.2** — Third round: retake evidence after fixes, zsh-safe session wrapper, audit evidence path in setup, missing viewport meta, no-JS defaults, WCAG 2.5.8 exceptions, high-risk step order, handling of reviewer suggestions, displayed vs. charged amounts.
 - **2.3.1** — Second round from the retest: bug route covers regression/money/mutation, auth design checklist, compliance findings in audits, 200% text check, lighter responsive subset for content pages.
 - **2.3.0** — Fixes from behavioral tests: absolute evidence paths, audit-only evidence outside the project, risk proportionality, commit before delivery, discriminating tests.
 

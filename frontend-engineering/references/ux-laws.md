@@ -79,8 +79,6 @@ False urgency; fabricated scarcity; invented progress; extra steps to retain use
 
 **Implementation:** what changed, where, why (law + real problem), validations run, open items. Cite all seven laws, including N/A ones.
 
-**Audit:** also cover all seven — the violated ones inside the findings, and the rest in one closing line ("N/A: Zeigarnik, goal gradient — single short screen"). Compliance and legal findings (consent and privacy under LGPD/GDPR, consumer law such as CDC on misleading offers, accessibility law) go first in priority with the rule cited, flagged as **needs legal review** — never stated as a legal conclusion.
-
-**Audit:** prioritized findings — screen/file, evidence, law or heuristic, recommendation, risk/effort. No code edits.
+**Audit:** prioritized findings — screen/file, evidence, law or heuristic, recommendation, risk/effort. No code edits. Cover all seven laws: the violated ones inside the findings, the rest in one closing line ("N/A: Zeigarnik, goal gradient — single short screen"). Compliance and legal findings (consent and privacy under LGPD/GDPR, consumer law such as CDC on misleading offers, accessibility law) go first in priority with the rule cited, flagged as **needs legal review** — never stated as a legal conclusion. Claims like countdowns or "only N left" are checked against the code or by observing over time, not taken at face value.
 
 Never claim a conversion lift without measurement; present impact as a hypothesis and suggest how to measure it.

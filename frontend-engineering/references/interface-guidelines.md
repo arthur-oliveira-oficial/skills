@@ -61,6 +61,7 @@ For every screen, make clear: what is clickable, editable, selected, loading, fa
 ## Content and accessibility
 
 - Every document declares `<html lang="…">` and `<meta charset="utf-8">` (missing charset shows as mojibake when the server omits it).
+- Progressive enhancement: core content and links work without JavaScript; JS-driven controls (toggles, tabs) have a sensible no-JS default (e.g. the monthly prices shown).
 - Native HTML before ARIA: `<button>` for actions, `<a>` for navigation, `<form>` for submission — never a clickable `<div>`. Correct heading hierarchy (one `<h1>`, landmarks like `<main>`); a "Skip to content" link.
 - Icon-only buttons with a descriptive `aria-label`; decorative icons with `aria-hidden`. Check the accessibility tree.
 - Contrast: WCAG 2.2 AA (4.5:1 normal text, 3:1 large text and UI components). APCA is useful as a complementary check.
@@ -73,7 +74,7 @@ For every screen, make clear: what is clickable, editable, selected, loading, fa
 
 ## Mobile and touch
 
-- Targets: minimum 24×24 CSS px (WCAG 2.5.8); prefer 44×44 px on touch.
+- Targets: minimum 24×24 CSS px (WCAG 2.5.8); prefer 44×44 px on touch. 2.5.8 exceptions: inline links in text, controls with an equivalent target (a small checkbox whose wrapping `<label>` is clickable passes if the label is ≥ 24px), and targets with enough spacing. Undersized targets the change did not create are reported as pre-existing, not fixed unasked.
 - `touch-action: manipulation` on controls (no double-tap delay).
 - `-webkit-tap-highlight-color` consistent with the design.
 - Inputs with font size ≥ 16px.

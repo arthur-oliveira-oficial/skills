@@ -25,10 +25,10 @@ Turn "check it in a browser" into concrete commands and recorded evidence. Uses 
 2. Before the first use in a session, load the version-matched guide: `agent-browser skills get core` (it is the source of truth for command syntax; this file only maps checks to commands).
 3. Serve the app with the project's own dev or preview server (`pnpm dev`, `next dev`, `vite`, `vite preview`). Prefer a production build (`next build && next start`, `vite build && vite preview`) for performance and layout-shift checks. For plain HTML/CSS with no build step, serve the folder over HTTP (`python3 -m http.server <free port>` in the background); `file://` URLs change CORS, module, and storage behavior.
 4. Use a named session per task so runs do not collide: `agent-browser --session <task> …`.
-5. Set the evidence directory as an **absolute** path (see [Evidence and recording](#evidence-and-recording)): `V="$PWD/.verification"; mkdir -p "$V/screenshots"`.
+5. Set the evidence directory as an **absolute** path (see [Evidence and recording](#evidence-and-recording)): `V="$PWD/.verification"; mkdir -p "$V/screenshots"` for implementation work. **Audit-only work:** point `V` outside the project (scratchpad or `$(mktemp -d)`), never into it.
 6. **Clean up at the end:** `agent-browser --session <task> close`, and stop any server you started (kill the background process). Leave nothing running.
 
-Examples below omit `--session` for brevity and use `http://localhost:3000`; replace it with the real URL and route. Shell snippets are POSIX `sh`/`bash`; in zsh, unquoted `$var` is not word-split (`set -- $wh` breaks), so keep the `while read -r w h` form or run the snippet with `bash -c`.
+Examples below omit `--session` for brevity and use `http://localhost:3000`; replace it with the real URL and route. Shell snippets are POSIX `sh`/`bash`. In zsh, unquoted `$var` is not word-split, so `AB="agent-browser --session x"; $AB open …` fails (`command not found`) and so does `set -- $wh`. Use a function (`ab() { agent-browser --session x "$@"; }`), keep the `while read -r w h` form, or run the snippet with `bash -c`.
 
 This file's evidence rules override the `core` guide's "take a screenshot only when the user asks": screenshots here are verification evidence, which the task requires.
 
@@ -99,6 +99,8 @@ EOF
 ```
 
 Look at each screenshot: navigation pattern, columns, content width cap, sticky elements, dialogs fitting the viewport.
+
+**Missing `<meta name="viewport">`.** `set viewport` gives a true CSS width, so the page may look fine at 375px in the tool while a real phone renders it at ~980px and zooms out. Check the source; a missing or zoom-disabling viewport meta (`user-scalable=no`, `maximum-scale=1`) is a finding.
 
 **Text at 200% (WCAG 1.4.4).** Reflow at 320px covers 1.4.10; for text resize, double the root font size at a desktop width and check for overflow and clipped text (both must be `false`/`0`; elements of 1px, like screen-reader-only regions, are excluded):
 
@@ -236,7 +238,8 @@ Unexpected changes outside the task's scope are findings.
 
 - **Always pass absolute paths** to `screenshot`, `record`, and `diff --baseline`. Tested on agent-browser 0.43: `screenshot .verification/x.png` treats `.verification` as a CSS **selector** and silently saves to `~/.agent-browser/tmp/`, and other relative paths resolve against the browser daemon's working directory, not your shell's. Both print "✓ saved". Use `"$V/…"` with `V="$PWD/.verification"`, and confirm with `ls` that the files exist before citing them.
 - **Where artifacts go:**
-  - Implementation work: `.verification/` in the project (or a path the user names). Suggest adding it to `.gitignore`; do not commit artifacts unless asked.
+  - Implementation work: `.verification/` in the project (or a path the user names). Suggest adding it to `.gitignore` in the report — don't create or edit `.gitignore` unasked; do not commit artifacts unless asked.
+- **Evidence must show the final state.** If you change code after taking screenshots (a bug found during verification), retake every screenshot that shows the changed area and rerun the checks it affects. Never deliver pre-fix screenshots as evidence.
   - **Audit-only work**: do not write into the project. Use a directory outside it (the session's scratchpad if there is one, otherwise `V="$(mktemp -d)/verification"`), unless the user names a path.
   - Report artifacts with their full absolute paths.
 - Record a video for multi-step flows and bug reproductions. Recording needs **ffmpeg**; if `record start` reports it missing, do not install it unasked: fall back to a numbered screenshot per step and note "video: not recorded (ffmpeg missing)".

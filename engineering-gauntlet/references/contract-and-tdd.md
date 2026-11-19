@@ -57,7 +57,7 @@ A test that passes on the first run hasn't proven it detects the missing behavio
 
 **Discriminating tests for calculations.** For arithmetic, rounding, dates, and boundaries, list the plausible wrong implementations (floor vs. round vs. ceil, half-up vs. half-even, `<` vs. `<=`, inclusive vs. exclusive ranges, time zones) and pick inputs where each one gives a different result from the chosen rule. A test that passes for two different rules does not pin the behavior.
 
-**Money.** Work in integer minor units (cents) and integer rates (basis points) where possible. Any fix that changes amounts charged forces a rounding policy (nearest/half-up, half-even, truncate, in whose favor): that is a business decision. State it explicitly, test it, and put it under **Decisions needed** unless the project already defines it.
+**Money.** Work in integer minor units (cents) and integer rates (basis points) where possible. Any fix that changes amounts charged forces a rounding policy (nearest/half-up, half-even, truncate, in whose favor): that is a business decision. State it explicitly, test it, and put it under **Decisions needed** unless the project already defines it. Check that the amount **displayed** (formatters, receipts, emails) equals the amount **charged** for the same inputs; a mismatch is a bug even when each path is "correct". If the ideal representation (e.g. basis points) would change a public signature, don't do it inside the fix: propose it under **Decisions needed**.
 
 ## Small slices
 

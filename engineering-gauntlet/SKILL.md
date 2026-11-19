@@ -3,7 +3,7 @@ name: engineering-gauntlet
 description: Evidence-driven software engineering process for AI coding agents. Use when designing, planning, implementing, debugging, reviewing, refactoring, or shipping code in any language; when a request needs clarifying before building; when writing a PRD, spec, implementation plan, backlog, test plan, or Definition of Done; when executing a plan with subagents; when responding to code review or finishing a branch (merge, PR); for backend work (APIs, databases, migrations, queues, auth, security); for writing prompts, skills, or AGENTS.md/CLAUDE.md; and whenever correctness must be demonstrated rather than assumed. Também: planejar, especificar, implementar, depurar, bug, teste, revisão de código, refatorar, API, banco de dados, migração, plano de implementação, prompt.
 license: MIT
 metadata:
-  version: "2.3.1"
+  version: "2.3.2"
 ---
 
 # Engineering Gauntlet
@@ -38,7 +38,7 @@ Respond in the user's language (default: Brazilian Portuguese), including the he
 | Respond to code review feedback; finish a branch (merge, PR, keep, discard) | [delivery.md](references/delivery.md) |
 | Writing prompts, skills, AGENTS.md/CLAUDE.md, orchestrating subagents | [prompts-and-agents.md](references/prompts-and-agents.md) |
 
-When several rows match (e.g. a vague auth request → discovery + backend + risk), read all of them and apply them in workflow order: discovery first, then risk and contract, then the domain references during implementation.
+When several rows match (e.g. "export customers to CSV" → discovery + backend + risk, since it moves personal data), read all of them and apply them in workflow order: discovery first, then risk and contract, then the domain references during implementation.
 
 For interface changes, also use the `frontend-engineering` skill. For anything that runs in a browser, verification and bug reproduction use `agent-browser` (see [verification-and-evidence.md](references/verification-and-evidence.md) and [debugging.md](references/debugging.md)).
 
@@ -85,11 +85,13 @@ Gates scale to the change, not just the level: a one-line high-risk fix still ne
 
 **6. Verify.** Run the project's full suite, not just the new file. Pre-existing failures are reported too.
 
-**7. Review.** Reviewer in a clean context, given contract + diff and an attack checklist — not "review this".
+**7. Review.** Reviewer in a clean context, given contract + diff and an attack checklist — not "review this". Verify each finding against the code, then: blocking/important → fix and re-run step 6; suggestions → report, don't apply unasked (minimal scope).
 
 **8. Report** using the format below.
 
 **9. Finish.** Commit verified work locally on a feature branch (never directly on the default branch) with a message describing the behavior, unless the project or the human says otherwise; a local commit is reversible and makes "keep" and "PR" meaningful. Then follow [delivery.md](references/delivery.md). Merge, push, and PR are external side effects: only after the human chooses.
+
+For high risk the order is: green (5) → full suite (6) → local commit → mutation check on the committed change → review (7) → fixes, re-verify, amend or add commits → report (8) → delivery options (9).
 
 For medium/large work, write a plan ([implementation-plan.md](references/implementation-plan.md)) and execute it with [execution.md](references/execution.md) — inline, or a fresh subagent per task with independent spec and quality reviews.
 
