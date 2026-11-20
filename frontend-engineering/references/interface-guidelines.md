@@ -23,6 +23,11 @@ Concrete, verifiable rules for interaction, forms, content, and accessibility. A
 - `overscroll-behavior: contain` on modals and drawers.
 - Autofocus the primary input on desktop only; avoid it on mobile.
 - Keyboard shortcuts internationalized (non-QWERTY layouts) with platform symbols.
+- Hover is quieter than selected: when they look alike, hovering reads as a second selection. Bordered pieces darken only the border on hover; borderless pieces get a softer tint than selected (defaults; DESIGN.md or the project's convention wins).
+- Pressed responds instantly (no transition); hover-in fast (~150 ms), hover-out a little slower (~250 ms).
+- The focus ring follows the piece's corner radius.
+- The active item stands out from its container: a selected tab or segment on a grey track needs a clearly different fill or a border.
+- Actions inside rows and tables are real buttons (small secondary ones), not bare text.
 
 ## Forms
 
@@ -50,6 +55,11 @@ For every screen, make clear: what is clickable, editable, selected, loading, fa
 - Design empty, sparse, dense, and error states.
 - Skeletons identical to the final layout.
 - Status pairs color with text/icon.
+- Full state catalogue (concurrency, expired, slow, partial, roles): [screen-states.md](screen-states.md).
+- Nothing changes size between states: a loading button keeps the label in the layout (`visibility: hidden` or transparent) with the spinner centred on top; a label that swaps ("Copy" → "Copied", "Follow" → "Following") is sized to its longest label; selecting never changes font weight (use a background, or a border that is always present and transparent at rest); content swaps (tabs, steps, a success message replacing a form) reserve their height.
+- A whole-app problem goes in a top banner; a problem with one item goes inline on that item.
+- Toasts are the system's one toast component, in its usual position, never a one-off.
+- Failure is worded as failure ("Couldn't save"), never as a pause ("Stopped"); a deliberate pause looks neutral and offers Resume.
 
 ## Navigation and URL
 
@@ -71,7 +81,8 @@ For every screen, make clear: what is clickable, editable, selected, loading, fa
 - Non-breaking spaces to keep units, shortcuts, and names together (`10&nbsp;MB`).
 - `translate="no"` on brand names, code, and identifiers.
 - Detect language via `Accept-Language`/`navigator.languages`, not IP.
-- Tabular numbers for comparison; typographic quotes; avoid widows and orphans in headings.
+- Tabular numbers for comparison; typographic quotes; avoid widows and orphans in headings (`text-wrap: balance` on headings, `pretty` on short paragraphs).
+- Headings fit in at most 3 lines at phone width (smaller size at narrow widths); list and table row titles stay on one line with an ellipsis and the full text available (`title` or the detail view), details on a second line.
 
 ## Mobile and touch
 

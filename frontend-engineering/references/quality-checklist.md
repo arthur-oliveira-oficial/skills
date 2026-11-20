@@ -5,7 +5,12 @@ Run before declaring any implementation work done. If several answers are "no", 
 ## Design
 
 - [ ] Does it look designed for this product rather than generated for any product?
-- [ ] Is the primary action obvious without being loud?
+- [ ] First glance (on the rendered screenshot): what do you see first, is it the most important thing, and what is the one next action?
+- [ ] Is the primary action obvious without being loud? At most one primary action per screen.
+- [ ] One strong colour moment: saturated colour reserved for status and the primary action, decorative accents neutralised.
+- [ ] No dead or oversized areas (boxes much bigger than their content); related items closer than unrelated ones; repeated rows align (icons, titles, trailing actions in fixed-width slots, even when a slot is empty).
+- [ ] Nothing changes size on loading, label swaps, selection, or content swaps (`interface-guidelines.md`, Feedback and states).
+- [ ] Selected/active items (nav, tabs, segments, rows) use the **same font weight** as their inactive siblings; selection shows through background, colour, or an always-present border. Check: grep the active branch of each conditional class for `font-medium`/`font-semibold`/`font-bold`, or compare computed `font-weight` of an active and an inactive item (`dom`).
 - [ ] Is the hierarchy still readable in grayscale? (check: `eval "document.documentElement.style.filter='grayscale(1)'"`, then screenshot; reload afterwards)
 - [ ] Are there unnecessary gradients, pills, cards, shadows, or icons? Can any decorative element be removed without losing meaning?
 - [ ] Are components reused because they fit, not because they exist?
@@ -14,7 +19,9 @@ Run before declaring any implementation work done. If several answers are "no", 
 
 ## UX and states
 
-- [ ] Loading, empty, error, success, disabled, and partial states represented?
+- [ ] Loading, empty, error, success, disabled, and partial states represented? For new screens, every group of [screen-states.md](screen-states.md) marked applies / doesn't apply / open.
+- [ ] Shared or live data: changed-while-viewing and already-done-by-someone-else handled (or "doesn't apply" with the reason).
+- [ ] Slow: every network request or operation that can take seconds shows progress, and after ~2 s says it is still working ("Ainda salvando…"), never a frozen screen. Force it with a delayed route or a server delay; local-only operations → "doesn't apply" with the reason.
 - [ ] Errors say what happened and how to fix it; user input preserved?
 - [ ] Destructive actions confirmed or undoable?
 - [ ] Every screen has a next step or recovery path?

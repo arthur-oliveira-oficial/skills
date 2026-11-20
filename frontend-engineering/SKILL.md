@@ -1,9 +1,9 @@
 ---
 name: frontend-engineering
-description: "Designs, builds, audits, and verifies production web interfaces (UI, frontend). Use for pages, sites, dashboards, SaaS apps, landing pages, admin panels, forms, onboarding, checkout, navigation, components, redesigns, visual polish, CSS, themes, dark mode, responsive layout (mobile, tablet, desktop), UI bugs, slow pages, layout shift, frontend code review, UX/usability/accessibility audits, browser verification or QA of a web app, and any change to layout, styling, tokens, or visual states; with Next.js or Vite + React, Tailwind CSS, shadcn/ui or other component libraries, Vue, Nuxt, Angular, Svelte, or plain HTML/CSS; and for creating, validating, exporting, or applying a DESIGN.md design system (tokens, Tailwind theme, tokens.json). Not for backend-only work, native mobile apps, HTML email, or chart internals. Também: tela, página, página lenta, desempenho de UI, site, interface, formulário, painel, componente, layout, estilo, tema, responsivo, acessibilidade, usabilidade, redesign, design system."
+description: "Designs, builds, audits, and verifies production web UIs (frontend). Use for pages, sites, dashboards, SaaS apps, landing pages, admin, forms, onboarding, checkout, navigation, components, redesigns, visual polish, design options, missing states, CSS, themes, dark mode, responsive layout (mobile, tablet, desktop), UI bugs, slow pages, layout shift, frontend code review, UX/usability/accessibility audits, browser verification or QA, and any change to layout, styling, tokens, or visual states; with Next.js or Vite + React, Tailwind CSS, shadcn/ui or other component libraries, Vue, Nuxt, Angular, Svelte, or plain HTML/CSS; and for creating, validating, exporting, or applying a DESIGN.md design system (tokens, Tailwind theme, tokens.json). Not for backend-only work, native mobile apps, HTML email, or chart internals. Também: tela, página, página lenta, desempenho de UI, site, interface, formulário, painel, componente, layout, estilo, tema, responsivo, acessibilidade, usabilidade, redesign, design system."
 license: MIT
 metadata:
-  version: "2.4.1"
+  version: "2.5.0"
 ---
 
 # Frontend Engineering
@@ -29,9 +29,11 @@ Identify the mode and read **only** the references it needs:
 
 | Request | Mode | Read |
 |---|---|---|
-| Create, validate, export, or import a `DESIGN.md` | Design system | [design-md.md](references/design-md.md) |
+| Create, validate, export, or import a `DESIGN.md`; audit design-system drift | Design system | [design-md.md](references/design-md.md) |
 | Any frontend change when a DESIGN.md exists | Apply design system | [apply-design-md.md](references/apply-design-md.md) |
-| New screen, page, component, or app | Build | [visual-direction.md](references/visual-direction.md), [interface-guidelines.md](references/interface-guidelines.md), [responsive-layout.md](references/responsive-layout.md); [react.md](references/react.md) only when React is detected or chosen |
+| New screen, page, component, or app | Build | [visual-direction.md](references/visual-direction.md), [interface-guidelines.md](references/interface-guidelines.md), [responsive-layout.md](references/responsive-layout.md), [screen-states.md](references/screen-states.md); [react.md](references/react.md) only when React is detected or chosen |
+| Options, alternatives, variations, "I don't like it", "rethink this" | Proposals | [proposals.md](references/proposals.md), plus the Build or Redesign references |
+| "Which states are missing?", "is this ready for dev?" | States | [screen-states.md](references/screen-states.md) |
 | Improve existing UI | Redesign | [visual-direction.md](references/visual-direction.md), [ux-laws.md](references/ux-laws.md), [responsive-layout.md](references/responsive-layout.md) |
 | UI bug | Debug | `engineering-gauntlet` debugging if installed, else reproduce → root cause → failing check → fix → re-run; [browser-verification.md](references/browser-verification.md) ([browser-quick.md](references/browser-quick.md) for one component) |
 | Slow page, layout shift, heavy bundle | Performance | [react.md](references/react.md) (Performance) or framework equivalent; [browser-verification.md](references/browser-verification.md) (vitals) |
@@ -79,7 +81,7 @@ Copy and track for substantial work:
 
 New project with no stack specified: a single page or prototype → plain HTML/CSS; an SPA, serverless app, internal dashboard, or "Vite" → Vite + React + TypeScript + Tailwind; other apps → Next.js App Router + TypeScript + Tailwind + lucide-react. shadcn/ui or any UI library: propose it in the first reply, add only if accepted.
 
-**2. Frame the UX.** Determine product type, primary user and job-to-be-done, the screen's primary action, information hierarchy, appropriate density, required trust level, and every state: loading, empty, error, success, disabled, partial.
+**2. Frame the UX.** Determine product type, primary user and job-to-be-done, the screen's primary action, information hierarchy, appropriate density, required trust level, and every state: loading, empty, error, success, disabled, partial; for a new screen or flow, walk the catalogue in [screen-states.md](references/screen-states.md). Several screens or a vague request: list each item with its job and primary action, and state your reading of ambiguous words ("pricing page = the bakery's price list, not subscription plans"); with a human reachable, confirm that list in the first questions.
 
 **3. Visual direction.** Write a 6-item internal brief (mood, visual anchor, density, surface strategy, typography, interaction character). Details in [visual-direction.md](references/visual-direction.md). If DESIGN.md exists, the direction comes from it.
 
@@ -87,7 +89,7 @@ New project with no stack specified: a single page or prototype → plain HTML/C
 
 **7. Validate.** Run the available lint, typecheck, tests, and build. Then verify in a real browser with `agent-browser`: small change → [browser-quick.md](references/browser-quick.md); otherwise the full pass in [browser-verification.md](references/browser-verification.md) (`skills get core` only there, unless the host provides agent-browser tools), with screenshots as evidence (absolute paths). Close the session and stop any server you started. If the `agent-browser` CLI is missing, use the host's browser tools (agent-browser MCP, built-in browser) and name them; with no browser tool or an app that cannot run, list the checks as **NOT VERIFIED**; never claim a pass you did not run.
 
-**8. Report.** With `engineering-gauntlet` active, use its report, browser checks as Evidence rows. Otherwise: files changed, design decisions and why, UX laws that drove a change, checks run with `PASS`/`FAIL` and the command, open items and risks, then **Not verified**. Either way, label each check `input` (real keyboard/click), `dom` (DOM/computed-style read), or `stub` (intercepted/scripted); a branch only stubbed or untested (4xx, 2xx with no backend) goes under **Not verified**, not into a pass total. Rerun invalid measurements in the changed area.
+**8. Report.** With `engineering-gauntlet` active, use its report, browser checks as Evidence rows. Otherwise: files changed, design decisions and why (also appended to DESIGN.md › Decisions log when that section exists), shared pieces changed and the screens they affect, what the quality checklist made you fix before showing, UX laws that drove a change, checks run with `PASS`/`FAIL` and the command, open items and risks, then **Not verified**. Either way, new screens or flows get a **States** section (one line per catalogue group: applies / doesn't apply with reason / open / checked; format in [screen-states.md](references/screen-states.md)), and label each check `input` (real keyboard/click), `dom` (DOM/computed-style read), or `stub` (intercepted/scripted); a branch only stubbed or untested (4xx, 2xx with no backend) goes under **Not verified**, not into a pass total. Rerun invalid measurements in the changed area.
 
 ## Non-negotiable rules
 
@@ -104,7 +106,7 @@ New project with no stack specified: a single page or prototype → plain HTML/C
 
 ## Specific modes
 
-**Redesign.** Do not rewrite everything. Fix the 3–5 highest-impact problems (unclear hierarchy, weak spacing rhythm, excessive cards, inconsistent radii, low contrast, mechanical responsiveness, weak empty/loading states, cluttered actions) in order of impact, preserving behavior.
+**Redesign.** Do not rewrite everything. Fix the 3–5 highest-impact problems (unclear hierarchy, weak spacing rhythm, excessive cards, inconsistent radii, low contrast, mechanical responsiveness, weak empty/loading states, cluttered actions) in order of impact, preserving behavior. A fix that changes a shared piece follows "Changing a shared piece" in [apply-design-md.md](references/apply-design-md.md). The user rejects the direction ("I don't like it") → [proposals.md](references/proposals.md), not tweaks.
 
 **Landing page.** Establish audience, value proposition, proof, objections, and conversion action before layout. Avoid the generic hero → logo cloud → 3 cards → testimonials → pricing sequence unless the content calls for it. Use real product visuals.
 

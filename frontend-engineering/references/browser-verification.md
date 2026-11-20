@@ -96,6 +96,8 @@ The second eval lists the offending elements (`[]` when clean). A non-empty list
 
 Look at each screenshot: sibling controls (equal height, no uneven wrapping), navigation pattern, columns, content width cap, sticky elements, dialogs fitting the viewport.
 
+**Evidence budget.** The full matrix (screenshots at every width) is for each route's **default state** only. Other states (empty, error, slow, offline, dialogs): one screenshot at the width where the state is most likely to break, usually 375. Data-stress states (long text, many items): run the overflow evals at every width, but screenshot only 320 and 1440. Every screenshot you take must be looked at; more captures than you will inspect are cost, not evidence.
+
 **Missing `<meta name="viewport">`.** `set viewport` gives a true CSS width, so the page may look fine at 375px in the tool while a real phone renders it at ~980px and zooms out. Check the source; a missing or zoom-disabling viewport meta (`user-scalable=no`, `maximum-scale=1`) is a finding.
 
 **Text resize (WCAG 1.4.4).** 1.4.4 is judged at 200% **browser zoom**, which halves the CSS viewport: `set viewport 640 400` equals 1280×800 at 200%. Run the overflow and clipping checks there; reflow at 320px covers 1.4.10.

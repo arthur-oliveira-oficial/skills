@@ -116,6 +116,7 @@ Motion is good when it explains a state change, preserves spatial continuity, co
 
 - One orchestrated moment beats scattered effects. Avoid fade-and-slide on every section and animated hover on every card.
 - Entrances use **ease-out**, not ease-in.
+- Closing is faster than opening (about two thirds of the opening time): people are waiting when they dismiss.
 - Animate only `transform` and `opacity`. Never `transition: all` — list the properties.
 - Anchor `transform-origin` where the motion physically starts.
 - Animations must be interruptible by user input.
