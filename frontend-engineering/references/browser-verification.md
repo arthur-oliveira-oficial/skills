@@ -96,7 +96,7 @@ The second eval lists the offending elements (`[]` when clean). A non-empty list
 
 Look at each screenshot: sibling controls (equal height, no uneven wrapping), navigation pattern, columns, content width cap, sticky elements, dialogs fitting the viewport.
 
-**Evidence budget.** The full matrix (screenshots at every width) is for each route's **default state** only. Other states (empty, error, slow, offline, dialogs): one screenshot at the width where the state is most likely to break, usually 375. Data-stress states (long text, many items): run the overflow evals at every width, but screenshot only 320 and 1440. Every screenshot you take must be looked at; more captures than you will inspect are cost, not evidence.
+**Evidence budget.** The full matrix (screenshots at every width) is for each route's **default state** only. Other states (empty, error, slow, offline, dialogs): one screenshot at the width where the state is most likely to break, usually 375. Data-stress states (long text, many items): run the overflow evals at every width, but screenshot only 320 and 1440. Every screenshot you take must be looked at (the report states "screenshots: N taken, N looked at"); more captures than you will inspect are cost, not evidence. Add one `--full` capture of the default state with enough data to scroll (content taller than the viewport).
 
 **Missing `<meta name="viewport">`.** `set viewport` gives a true CSS width, so the page may look fine at 375px in the tool while a real phone renders it at ~980px and zooms out. Check the source; a missing or zoom-disabling viewport meta (`user-scalable=no`, `maximum-scale=1`) is a finding.
 

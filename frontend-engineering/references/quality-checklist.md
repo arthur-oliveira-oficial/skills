@@ -21,7 +21,7 @@ Run before declaring any implementation work done. If several answers are "no", 
 
 - [ ] Loading, empty, error, success, disabled, and partial states represented? For new screens, every group of [screen-states.md](screen-states.md) marked applies / doesn't apply / open.
 - [ ] Shared or live data: changed-while-viewing and already-done-by-someone-else handled (or "doesn't apply" with the reason).
-- [ ] Slow: every network request or operation that can take seconds shows progress, and after ~2 s says it is still working ("Ainda salvando…"), never a frozen screen. Force it with a delayed route or a server delay; local-only operations → "doesn't apply" with the reason.
+- [ ] Slow: every network request or operation that can take seconds shows progress, and after ~2 s says it is still working ("Ainda salvando…"), never a frozen screen. Force it with a delayed route or a server delay. A request to a server on `localhost` is still a network request (the app may be deployed, or the database may stall): it applies. Only operations with no request at all (pure client state) → "doesn't apply" with the reason.
 - [ ] Errors say what happened and how to fix it; user input preserved?
 - [ ] Destructive actions confirmed or undoable?
 - [ ] Every screen has a next step or recovery path?
@@ -51,6 +51,8 @@ Items above without a command are judgment items: say how you checked them (code
 - [ ] Content width capped on large screens; no stretched lines or cards.
 - [ ] 200% zoom and reflow at 320 CSS px without loss of content.
 - [ ] Dialogs, sheets, and sticky elements fit the viewport.
+- [ ] Floating elements never cover content: with each toast, banner, or sticky/fixed bar visible, scroll to the end of the list and screenshot; the last item is fully readable and clickable. Fix by reserving space (bottom padding equal to the floating element's height plus a gap), not by shrinking the element.
+- [ ] Content taller than the viewport: the default state captured with `screenshot --full` and enough data to scroll; backgrounds, sidebars, and dividers reach the end of the page (`min-h-dvh` or a `sticky` sidebar, not `h-screen` on a container whose content can grow).
 - [ ] Touch targets ≥ 24px (44px preferred for important ones).
 
 ## Accessibility
@@ -65,7 +67,7 @@ Items above without a command are judgment items: say how you checked them (code
 ## Browser evidence
 
 - [ ] Browser pass run with `agent-browser` or the host's browser tools (`browser-quick.md` for small changes, otherwise the standard pass in `browser-verification.md`) (or each skipped check declared `NOT VERIFIED` with the reason).
-- [ ] Screenshots saved per required size with absolute paths, and confirmed to exist; older captures of the changed area retaken or listed as stale; video for multi-step flows (or "not recorded" with the reason).
+- [ ] Screenshots: the report states "screenshots: N taken, N looked at" and the two numbers match; a screenshot you did not look at is not evidence, so do not take it. Saved per required size with absolute paths, and confirmed to exist; older captures of the changed area retaken or listed as stale; video for multi-step flows (or "not recorded" with the reason).
 - [ ] Browser session closed and any server you started stopped.
 - [ ] `errors` empty; no hydration or failed-request warnings in `console`.
 - [ ] `a11y` shows no new serious/critical violations (no baseline: absolute results, "baseline: not captured").

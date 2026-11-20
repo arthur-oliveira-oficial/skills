@@ -3,7 +3,7 @@ name: frontend-engineering
 description: "Designs, builds, audits, and verifies production web UIs (frontend). Use for pages, sites, dashboards, SaaS apps, landing pages, admin, forms, onboarding, checkout, navigation, components, redesigns, visual polish, design options, missing states, CSS, themes, dark mode, responsive layout (mobile, tablet, desktop), UI bugs, slow pages, layout shift, frontend code review, UX/usability/accessibility audits, browser verification or QA, and any change to layout, styling, tokens, or visual states; with Next.js or Vite + React, Tailwind CSS, shadcn/ui or other component libraries, Vue, Nuxt, Angular, Svelte, or plain HTML/CSS; and for creating, validating, exporting, or applying a DESIGN.md design system (tokens, Tailwind theme, tokens.json). Not for backend-only work, native mobile apps, HTML email, or chart internals. Também: tela, página, página lenta, desempenho de UI, site, interface, formulário, painel, componente, layout, estilo, tema, responsivo, acessibilidade, usabilidade, redesign, design system."
 license: MIT
 metadata:
-  version: "2.5.0"
+  version: "2.5.1"
 ---
 
 # Frontend Engineering
