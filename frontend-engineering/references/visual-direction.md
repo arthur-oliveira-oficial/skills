@@ -2,6 +2,8 @@
 
 ## Contents
 - Design brief
+- Product vs. showcase
+- Defaults when the project has none
 - Process: plan → review → build → critique
 - Anti-generic ("AI slop" patterns)
 - Layout and spacing
@@ -29,6 +31,30 @@ Every later decision should serve this direction. Draw visual references from th
 
 If the project already has a font, palette, or brand, keep it — unless the request includes a rebrand. If a DESIGN.md exists (location in SKILL.md step 1), the direction comes from it.
 
+## Product vs. showcase
+
+Shipped apps and design showcases look different, and product UI follows shipped apps. In a 2026 sample of 128 real app screens (Mobbin), about 95% were light, neutral, and bordered; dark-with-neon, glass, glowing gradients, bento dashboards, and 3D renders appeared almost only in Behance showcases.
+
+- **Product UI** (apps, dashboards, tools): light neutral base (dark as an option that follows the system), one accent colour for the primary action and status, hairline borders or 5–10% rings, shadows only on floating layers.
+- **One highlight per screen is allowed and encouraged:** the visual anchor may be a tinted or gradient card (a progress card, the key metric, a welcome card), a brand mark with colour, or an illustration in an empty state. One, not one per section.
+- **Marketing and landing pages** may use the showcase vocabulary (dark-first, neon accent, glass, glow, bento, display type in two tones), one effect per screen.
+- The brand or DESIGN.md overrides both.
+
+## Defaults when the project has none
+
+Use these when there is no DESIGN.md and no existing theme; they are what current component libraries (shadcn/ui, Radix, Mantine, Chakra, Tailwind Catalyst, daisyUI) converge on. Define them as role tokens (`background`, `foreground`, `card`, `muted-foreground`, `border`, `input`, `primary`, `ring`, `destructive`/`success`/`warning`).
+
+| Area | Default |
+|---|---|
+| Type | One sans family (Geist, Inter, or `system-ui`); body 16px/1.5; UI labels 14px/500; page title 28–36px/600 at −0.025em; marketing display 48–72px/600 at −0.05em, `text-wrap: balance`; weight never above 600; nothing under 12px |
+| Spacing | 4px base: 4, 8, 12, 16, 24, 32, 40, 48, 64; card padding 24px; gaps 16–24px; page padding 24–40px desktop, 16px mobile |
+| Radius | `--radius` 10px; controls 8–10px; cards 12–16px; marketing CTAs may be pills; checkboxes 4px |
+| Controls | Heights 32px dense tools, 36–40px apps, 44px+ touch; sizes sm/md/lg with md default |
+| Layout | Sidebar 256px, shown from 1024px (drawer below); header 56–64px; forms ≤ 896px; prose 576–672px; containers 1152–1400px; breakpoints 640/768/1024/1280 |
+| Colour | Neutral greys plus one accent, written in `oklch`; dark mode: background ~#0a0a0a, cards ~#171717, borders white at 10%, inputs white at 15% |
+| Depth | Rings (`0 0 0 1px` at 5–10%) or 1px borders; at most two shadow levels, on menus, popovers, dialogs, toasts |
+| Motion | 150ms `cubic-bezier(0.4,0,0.2,1)` for hover and colour; 150–250ms to open small overlays, 250–350ms dialogs; closing ≈ two thirds of opening |
+
 ## Process
 
 1. **Plan:** 4–6 named colors (hex), type roles, a layout concept (ASCII wireframe if it helps), alignment principles.
@@ -54,7 +80,7 @@ If the project already has a font, palette, or brand, keep it — unless the req
 - perfect symmetry when the content wants editorial asymmetry
 - a dashboard that is just a grid of cards
 
-Use any of these **only** if the brief or brand explicitly asks for it.
+Use any of these **only** if the brief or brand explicitly asks for it, or on a marketing page (Product vs. showcase). Exception: the one highlight element per screen may use a tinted or gradient surface.
 
 ### Prefer
 - content-driven hierarchy

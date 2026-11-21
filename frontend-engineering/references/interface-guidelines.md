@@ -9,6 +9,7 @@ Concrete, verifiable rules for interaction, forms, content, and accessibility. A
 - Navigation and URL
 - Content and accessibility
 - Mobile and touch
+- AI interfaces
 
 ## Interaction and focus
 
@@ -91,3 +92,17 @@ For every screen, make clear: what is clickable, editable, selected, loading, fa
 - `-webkit-tap-highlight-color` consistent with the design.
 - Inputs with font size ≥ 16px.
 - Watch for sticky hover on touch, the `100vh` bug (use `dvh`/`svh`), and safe areas.
+
+## AI interfaces
+
+Patterns shipped by current AI products (ChatGPT, Claude, Gemini, Perplexity, ClickUp Brain, Manus) for chat, assistants, and agents:
+
+- **Empty state:** a short greeting, the prompt box, and 3–4 suggestion chips that fill the box when clicked (they do not send).
+- **Prompt box:** pill or rounded field that grows with the text; attach, voice, and model picker beside it; Enter sends, Shift+Enter adds a line; the send button is disabled while empty and turns into **Stop** while a response streams.
+- **Streaming:** text appears as it arrives in an `aria-live="polite"` region (announce completion, not every token); auto-scroll only while the user is at the bottom, with a "jump to latest" button otherwise.
+- **Sources:** citations next to the claim they support, opening the source; never invented links.
+- **Agent progress:** a step list (done ✓, current, next ○, "3 of 5") beside what the agent is working on; failures say which step failed and offer retry.
+- **Actions with effects** (sending, deleting, paying, changing data): show the plan in plain language and ask for confirmation first; offer undo afterwards.
+- **In-product assistant:** a side panel docked to the current screen, keeping its context, rather than a separate page.
+- **Errors and limits:** "Couldn't answer — try again" with the prompt kept in the box; rate limits say when the user can try again.
+

@@ -3,7 +3,7 @@ name: frontend-engineering
 description: "Designs, builds, audits, and verifies production web UIs (frontend). Use for pages, sites, dashboards, SaaS apps, landing pages, admin, forms, onboarding, checkout, navigation, components, redesigns, visual polish, design options, missing states, CSS, themes, dark mode, responsive layout (mobile, tablet, desktop), UI bugs, slow pages, layout shift, frontend code review, UX/usability/accessibility audits, browser verification or QA, and any change to layout, styling, tokens, or visual states; with Next.js or Vite + React, Tailwind CSS, shadcn/ui or other component libraries, Vue, Nuxt, Angular, Svelte, or plain HTML/CSS; and for creating, validating, exporting, or applying a DESIGN.md design system (tokens, Tailwind theme, tokens.json). Not for backend-only work, native mobile apps, HTML email, or chart internals. Também: tela, página, página lenta, desempenho de UI, site, interface, formulário, painel, componente, layout, estilo, tema, responsivo, acessibilidade, usabilidade, redesign, design system."
 license: MIT
 metadata:
-  version: "2.5.1"
+  version: "2.6.0"
 ---
 
 # Frontend Engineering
@@ -50,6 +50,16 @@ Identify the mode and read **only** the references it needs:
 
 Several rows can apply at once: read the union and deliver one report.
 
+**Required for any new screen or app.** Read the references your route lists before writing UI code: this list only summarizes them, and following this file alone produces incomplete work.
+
+1. No DESIGN.md or theme → the defaults in [visual-direction.md](references/visual-direction.md) (Defaults when the project has none); product UI is light and neutral with one highlight element per screen (Product vs. showcase).
+2. Every state from [screen-states.md](references/screen-states.md): loading, empty, empty after filter, error with retry, slow ("still saving…" after ~2 s), server unreachable, deleted elsewhere.
+3. Stable controls: a loading button keeps its width (invisible label, spinner on top); selected items keep the same font weight.
+4. Delete with undo for a few seconds; confirmation only when it cannot be undone.
+5. Tests for the logic and API, plus lint, types, and build.
+6. Browser check at 320, 375, 768, 1024, and 1440 px, light and dark, keyboard, axe, CLS; toasts and fixed bars never cover the last item.
+7. Report with a **States** section and "screenshots: N taken, N looked at".
+
 **Audit or review only:** do not edit or create files in the project; evidence goes outside it. Implementation: change the code, not just an audit.
 
 ## Workflow
@@ -87,9 +97,9 @@ New project with no stack specified: a single page or prototype → plain HTML/C
 
 **4–6. Build.** Structure and responsiveness before decoration. Mobile-first: base classes for the smallest viewport, `sm:`/`md:`/`lg:` only to enhance. Reuse existing components, tokens, validation, state, and translations.
 
-**7. Validate.** Run the available lint, typecheck, tests, and build. Then verify in a real browser with `agent-browser`: small change → [browser-quick.md](references/browser-quick.md); otherwise the full pass in [browser-verification.md](references/browser-verification.md) (`skills get core` only there, unless the host provides agent-browser tools), with screenshots as evidence (absolute paths). Close the session and stop any server you started. If the `agent-browser` CLI is missing, use the host's browser tools (agent-browser MCP, built-in browser) and name them; with no browser tool or an app that cannot run, list the checks as **NOT VERIFIED**; never claim a pass you did not run.
+**7. Validate.** Run the available lint, typecheck, tests, and build. Then verify in a real browser with `agent-browser`: small change → [browser-quick.md](references/browser-quick.md); otherwise the full pass in [browser-verification.md](references/browser-verification.md) (`skills get core` only there, unless the host provides agent-browser tools), with screenshots as evidence (absolute paths). Close the session and stop any server you started by its own PID (keep `$!` when you start it, or `lsof -ti tcp:<your port>`); never `pkill`, `killall`, or a name pattern, which also kills other projects' servers. If the `agent-browser` CLI is missing, use the host's browser tools (agent-browser MCP, built-in browser) and name them; with no browser tool or an app that cannot run, list the checks as **NOT VERIFIED**; never claim a pass you did not run.
 
-**8. Report.** With `engineering-gauntlet` active, use its report, browser checks as Evidence rows. Otherwise: files changed, design decisions and why (also appended to DESIGN.md › Decisions log when that section exists), shared pieces changed and the screens they affect, what the quality checklist made you fix before showing, UX laws that drove a change, checks run with `PASS`/`FAIL` and the command, open items and risks, then **Not verified**. Either way, new screens or flows get a **States** section (one line per catalogue group: applies / doesn't apply with reason / open / checked; format in [screen-states.md](references/screen-states.md)), and label each check `input` (real keyboard/click), `dom` (DOM/computed-style read), or `stub` (intercepted/scripted); a branch only stubbed or untested (4xx, 2xx with no backend) goes under **Not verified**, not into a pass total. Rerun invalid measurements in the changed area.
+**8. Report.** Keep these parts even when the host prefers short final messages: the checks with results, the **States** section for new screens, "screenshots: N taken, N looked at", and **Not verified**. With `engineering-gauntlet` active, use its report, browser checks as Evidence rows. Otherwise: files changed, design decisions and why (also appended to DESIGN.md › Decisions log when that section exists), shared pieces changed and the screens they affect, what the quality checklist made you fix before showing, UX laws that drove a change, checks run with `PASS`/`FAIL` and the command, open items and risks, then **Not verified**. Either way, new screens or flows get a **States** section (one line per catalogue group: applies / doesn't apply with reason / open / checked; format in [screen-states.md](references/screen-states.md)), and label each check `input` (real keyboard/click), `dom` (DOM/computed-style read), or `stub` (intercepted/scripted); a branch only stubbed or untested (4xx, 2xx with no backend) goes under **Not verified**, not into a pass total. Rerun invalid measurements in the changed area.
 
 ## Non-negotiable rules
 

@@ -14,6 +14,7 @@ Run before declaring any implementation work done. If several answers are "no", 
 - [ ] Is the hierarchy still readable in grayscale? (check: `eval "document.documentElement.style.filter='grayscale(1)'"`, then screenshot; reload afterwards)
 - [ ] Are there unnecessary gradients, pills, cards, shadows, or icons? Can any decorative element be removed without losing meaning?
 - [ ] Are components reused because they fit, not because they exist?
+- [ ] No dated patterns: shadows on every card, cards nested in cards, headings at 700+ weight with wide tracking, several competing accent colours, neon/glass/glowing gradients as the base of product UI (marketing only; `visual-direction.md`, Product vs. showcase), mixed icon sets, 16px admin tables with heavy frames.
 - [ ] Does the result feel calm, intentional, and production-ready?
 - [ ] If DESIGN.md exists: does every visual value map to a token/rule?
 
