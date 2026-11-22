@@ -6,8 +6,9 @@ Agent skills for Claude Code, Codex, and other agents that read `SKILL.md`.
 |---|---|
 | [`frontend-engineering`](frontend-engineering/SKILL.md) | Designing, building, auditing, and polishing web UIs: visual direction, UX laws, accessibility (WCAG 2.2 AA) and UX audits, responsive layout (mobile, tablet, desktop), React with Next.js or Vite, Tailwind, with or without shadcn/ui, plain HTML/CSS, `DESIGN.md` design systems, and browser verification. |
 | [`engineering-gauntlet`](engineering-gauntlet/SKILL.md) | Evidence-driven engineering with AI agents, end to end: discovery and design gate, risk-scaled gates, behavioral contracts, implementation plans, inline or subagent-driven execution, TDD, systematic debugging, architecture, backend practices (including adding auth to an existing API), risk and review, receiving review and finishing branches, prompt and skill authoring. |
+| [`mobile-engineering`](mobile-engineering/SKILL.md) | Building and reviewing Android and iOS app features with Kotlin, Swift and React Native, designing installable and offline PWAs for Android and iOS, and packaging web apps for Android using Trusted Web Activities (TWA). Includes [interaction patterns from 20 apps](mobile-engineering/references/app-interactions.md), [2026 mobile UI/UX patterns](mobile-engineering/references/mobile-design-2026.md), accessibility, Android Studio and USB/adb testing, Xcode and TestFlight, and release preparation for Google Play and the App Store. |
 
-Both skills are written in English and respond in the language of the user's messages (Brazilian Portuguese when it cannot be determined), including report headings; persisted artifacts (commits, PR text, docs, comments) follow the repository's language. Each has a short `SKILL.md` that routes to `references/` files loaded on demand.
+The skills are written in English and respond in the language of the user's messages (Brazilian Portuguese when it cannot be determined), including report headings; persisted artifacts (commits, PR text, docs, comments) follow the repository's language. Each has a short `SKILL.md` that routes to `references/` files loaded on demand.
 
 ## Install
 
@@ -19,18 +20,20 @@ Symlink each skill folder into the agent's skills directory. With symlinks, `git
 mkdir -p ~/.claude/skills
 ln -sfn "$PWD/frontend-engineering" ~/.claude/skills/frontend-engineering
 ln -sfn "$PWD/engineering-gauntlet" ~/.claude/skills/engineering-gauntlet
+ln -sfn "$PWD/mobile-engineering" ~/.claude/skills/mobile-engineering
 
 # Codex (all projects)
 mkdir -p ~/.codex/skills
 ln -sfn "$PWD/frontend-engineering" ~/.codex/skills/frontend-engineering
 ln -sfn "$PWD/engineering-gauntlet" ~/.codex/skills/engineering-gauntlet
+ln -sfn "$PWD/mobile-engineering" ~/.codex/skills/mobile-engineering
 
 # or per project (copies, pinned to this version)
 SKILLS_REPO="$PWD"; cd /path/to/project
-mkdir -p .claude/skills && cp -R "$SKILLS_REPO/frontend-engineering" "$SKILLS_REPO/engineering-gauntlet" .claude/skills/
+mkdir -p .claude/skills && cp -R "$SKILLS_REPO/frontend-engineering" "$SKILLS_REPO/engineering-gauntlet" "$SKILLS_REPO/mobile-engineering" .claude/skills/
 ```
 
-`ln -sfn` is safe to re-run when the target is a link (it replaces it); if the target is a real directory, remove it first (`rm -r ~/.claude/skills/<skill>`), and `rm -r` a per-project copy before re-copying. Restart the agent after installing. In Claude Code, invoke explicitly with `/frontend-engineering` or `/engineering-gauntlet`; in other agents, invoke them by name or let the agent pick them from their descriptions. Each skill folder carries its own MIT `LICENSE`, so copies stay licensed.
+`ln -sfn` is safe to re-run when the target is a link (it replaces it); if the target is a real directory, remove it first (`rm -r ~/.claude/skills/<skill>`), and `rm -r` a per-project copy before re-copying. Restart the agent after installing. In Claude Code, invoke explicitly with `/frontend-engineering`, `/engineering-gauntlet` or `/mobile-engineering`; in other agents, invoke them by name or let the agent pick them from their descriptions. Each skill folder carries its own MIT `LICENSE`, so copies stay licensed.
 
 ## Optional dependency: agent-browser
 
@@ -48,7 +51,7 @@ Verification artifacts (screenshots, videos) use **absolute paths** (`"$PWD/.ver
 
 ## How the skills were tested
 
-Both skills were exercised with subagents on fixture projects (a money bug fix, a vague "add auth" request, a static pricing page, and a UX/a11y audit of a broken signup form), scored against the skill's own rules, fixed, and re-run. Notable rules that came out of it:
+The frontend-engineering and engineering-gauntlet skills were exercised with subagents on fixture projects (a money bug fix, a vague "add auth" request, a static pricing page, and a UX/a11y audit of a broken signup form), scored against the skill's own rules, fixed, and re-run. Notable rules that came out of it:
 
 - **engineering-gauntlet:** small/medium/large defined; gates scale with the change, not just the risk level; commit only when the human asked for or approved commits (mode approval counts) and the host/project allow it (on a feature branch, staging only the changed paths); otherwise the change stays in the working tree with "commit" listed under **Decisions needed**; reports have a **Decisions needed** section; calculation tests must discriminate plausible wrong implementations (floor/ceil/half-even); money rounding is a business decision; manual mutation testing when no tool exists; high-risk work keeps a design approval even when discovery is skipped.
 - **frontend-engineering:** dedicated accessibility-audit route; known axe blind spots (placeholder-only labels, clickable `<div>`s, focus visibility, charset); short verification pass for small changes; 200% text-resize check; wait for animations before evidence screenshots; no invented "most popular" badges, annual prices show the total billed, and links to pages that don't exist are reported as open items.
