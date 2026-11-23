@@ -18,7 +18,8 @@ Concrete, verifiable rules for interaction, forms, content, and accessibility. A
 - Sticky elements and overlays do not cover the focused element (`scroll-margin`/`scroll-padding`).
 - Dialogs trap and return focus correctly (use accessible primitives).
 - Hit area matches the visual; every part that looks interactive is interactive.
-- Every gesture (drag, swipe, pinch) has a click/tap and keyboard alternative.
+- For author-defined drag actions such as reordering a queue, offer a click or tap alternative such as **Move up**. Test it with one pointer and then exercise keyboard operation separately. Document any essential drag interaction. [W3C dragging movements](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html)
+- For custom swipe and pinch shortcuts, keep the same actions reachable through controls and the keyboard.
 - Disable text selection during drag.
 - Tooltips: delay the first in a group, show subsequent ones immediately. Prefer inline help; a tooltip is a last resort and never holds essential information.
 - `overscroll-behavior: contain` on modals and drawers.
@@ -64,6 +65,8 @@ For every screen, make clear: what is clickable, editable, selected, loading, fa
 
 ## Navigation and URL
 
+For links to separate pages, use navigation links and identify the current page. For panels within a view, use the tabs pattern. In a horizontal tab list, Tab enters on the selected tab, Left/Right moves focus and Tab leaves the list. Activate on focus when panels appear immediately. When activation fetches content with noticeable latency, let Enter or Space activate the focused tab. Test arrowing past two tabs on a slow connection. [WAI-ARIA tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)
+
 - Navigation uses `<a>`/`<Link>` to keep browser behaviors (open in new tab, copy link).
 - Relevant state in the URL (filters, tabs, pagination, expanded panels) for refresh, sharing, and Back/Forward.
 - Restore scroll position on Back.
@@ -87,7 +90,7 @@ For every screen, make clear: what is clickable, editable, selected, loading, fa
 
 ## Mobile and touch
 
-- Targets: minimum 24×24 CSS px (WCAG 2.5.8); prefer 44×44 px on touch. 2.5.8 exceptions: inline links in text, controls with an equivalent target (a small checkbox whose wrapping `<label>` is clickable passes if the label is ≥ 24px), and targets with enough spacing. Undersized targets the change did not create are reported as pre-existing, not fixed unasked.
+- Measure the clickable area, including its associated label when applicable. WCAG 2.2 AA 2.5.8 uses 24 × 24 CSS px. For a smaller target, center a 24 CSS px diameter circle on its bounding box. The spacing exception applies if the circle clears adjacent targets and the corresponding circles around other small targets. Other exceptions cover an equivalent control on the same page, inline text, unmodified browser controls and essential presentation. Record which exception applies before grading the finding. [W3C target size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
 - `touch-action: manipulation` on controls (no double-tap delay).
 - `-webkit-tap-highlight-color` consistent with the design.
 - Inputs with font size ≥ 16px.

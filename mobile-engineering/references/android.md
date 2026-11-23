@@ -15,4 +15,6 @@ Use theme color roles and paired content colors. Start with Material text fields
 
 Aim for a 48 × 48 dp touch target. A small glyph can sit inside a full-sized IconButton. Avoid overlapping expanded hit areas. Expose toggle role and checked value once on a labeled interactive row, and exclude decorative icons from spoken output. Check large font scale in sp and TalkBack traversal. [Compose accessibility defaults](https://developer.android.com/develop/ui/compose/accessibility/api-defaults)
 
+For swipe-to-archive in Compose, connect a labeled accessibility action on the row to the same archive handler. Offer a tap path for people who use touch. In TalkBack, invoke Archive on the second item and confirm which item disappears. [Compose custom actions](https://developer.android.com/develop/ui/compose/accessibility/semantics#custom-actions)
+
 For Material 3 Expressive, use size, grouping, shape or motion to clarify which action deserves attention. Test that the hierarchy remains readable with dynamic color and reduced animation. Adopt components available in the app's Material version. [Google Design research](https://design.google/library/expressive-material-design-google-research)

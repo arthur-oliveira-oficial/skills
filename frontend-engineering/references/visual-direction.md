@@ -2,6 +2,7 @@
 
 ## Contents
 - Design brief
+- Choosing the opening visual
 - Product vs. showcase
 - Defaults when the project has none
 - Process: plan → review → build → critique
@@ -30,6 +31,14 @@ Every later decision should serve this direction. Draw visual references from th
 **Spend your boldness in one place.** One or two memorable decisions; everything else disciplined.
 
 If the project already has a font, palette, or brand, keep it — unless the request includes a rebrand. If a DESIGN.md exists (location in SKILL.md step 1), the direction comes from it.
+
+## Choosing the opening visual
+
+For a landing page, ask what a visitor could learn by looking. If a code review tool promises to explain a change, open on a readable diff with one review comment. For a ceramics studio selling handmade cups, a close photograph of the rim and glaze can show what makes the work distinctive. When the proposition is fully conveyed by the headline, give the type room to carry it.
+
+Prefer assets from the product or client when the specific interface, object or place matters. A licensed stand-in can establish composition during design. Identify it at handoff with the intended replacement and any credit the license requires. Use verified client material for claims about their work.
+
+Inspect the rendered opening at wide and narrow widths. Can a visitor still read the changed line or see the glaze detail? If scaling loses the evidence, crop to the relevant fragment or supply an alternate composition. For a video or interactive demo, check that the poster or static state communicates the point while the asset loads and with reduced motion enabled.
 
 ## Product vs. showcase
 

@@ -33,7 +33,7 @@ SKILLS_REPO="$PWD"; cd /path/to/project
 mkdir -p .claude/skills && cp -R "$SKILLS_REPO/frontend-engineering" "$SKILLS_REPO/engineering-gauntlet" "$SKILLS_REPO/mobile-engineering" .claude/skills/
 ```
 
-`ln -sfn` is safe to re-run when the target is a link (it replaces it); if the target is a real directory, remove it first (`rm -r ~/.claude/skills/<skill>`), and `rm -r` a per-project copy before re-copying. Restart the agent after installing. In Claude Code, invoke explicitly with `/frontend-engineering`, `/engineering-gauntlet` or `/mobile-engineering`; in other agents, invoke them by name or let the agent pick them from their descriptions. Each skill folder carries its own MIT `LICENSE`, so copies stay licensed.
+`ln -sfn` is safe to re-run when the target is a link (it replaces it); if the target is a real directory, remove it first (`rm -r ~/.claude/skills/<skill>`), and `rm -r` a per-project copy before re-copying. Restart the agent after installing. In Claude Code, invoke explicitly with `/frontend-engineering`, `/engineering-gauntlet` or `/mobile-engineering`; in other agents, invoke them by name or let the agent pick them from their descriptions. Each skill folder carries its own MIT `LICENSE`. Frontend and mobile also bundle the complete Taste Skill repository and Anthropic frontend-design plugin with their own licenses and asset credits. Both work from standalone skill copies. See the [frontend workflow](frontend-engineering/references/design-sources.md) and [native and mobile web workflow](mobile-engineering/references/design-sources.md).
 
 ## Optional dependency: agent-browser
 

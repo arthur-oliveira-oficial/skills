@@ -9,6 +9,8 @@ Inspect package.json, lockfile, native build configuration or Expo app config, r
 3. For long or changing feeds, use the project's virtualized list, stable IDs and external state for selection. With FlatList, pass changing dependencies through props such as extraData when required. Only provide getItemLayout when the dimensions remain predictable at supported font scales. Profile scrolling in a release-like build before replacing a list library. [FlatList](https://reactnative.dev/docs/flatlist)
 4. Give interactive controls a label, role and state. A filter chip can announce its label and selected state through accessibilityState. Group a row only when its children represent one action. Test independent secondary actions with VoiceOver and TalkBack because grouping behavior differs. [React Native accessibility](https://reactnative.dev/docs/accessibility)
 
+For adjacent icon actions, size the pressable container first. If using `hitSlop`, check the parent bounds and any sibling drawn above it. Taps outside the parent cannot reach the pressable, and an overlapping sibling can receive the tap. Exercise the facing edges of both controls on each target OS. [React Native Pressable](https://reactnative.dev/docs/pressable)
+
 For async search, use the app's query cache or associate each request with a generation. Only the active generation can update results, errors or loading state. Clearing the field invalidates the outstanding request. In a controlled test, resolve the newer query first, then let the older one succeed or fail. Also clear the field before a response arrives.
 
 ## Pick the smallest component that fits

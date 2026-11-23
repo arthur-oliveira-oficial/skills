@@ -63,7 +63,7 @@ The Navigation column is for **apps** (dashboards, SaaS, tools) with several top
 **Thumb zone and actions**
 - Primary actions reachable by the thumb: bottom area, sticky bottom action bar, or FAB for one dominant create action.
 - Destructive actions away from frequently tapped spots.
-- Touch targets ≥ 44×44px for important controls (24px is the WCAG minimum); ≥ 8px between adjacent targets.
+- Prefer 44 × 44 CSS px for important touch controls. Evaluate small adjacent controls using the [target size and spacing guidance](interface-guidelines.md#mobile-and-touch).
 
 **Overlays**
 - Prefer bottom sheets over centered modals; long forms open as full-screen dialogs or pages.

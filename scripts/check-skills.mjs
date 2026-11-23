@@ -14,11 +14,12 @@ const SKIP = new Set(['.git', 'node_modules']);
 
 const normalise = (t) => t.replace(/^﻿/, '').replace(/\r\n?/g, '\n');
 
-function walk(dir) {
+function walk(dir, unpackedBundle) {
   return readdirSync(dir).flatMap((n) => {
     if (SKIP.has(n)) return [];
     const p = join(dir, n);
-    return statSync(p).isDirectory() ? walk(p) : [p];
+    if (p === unpackedBundle) return [];
+    return statSync(p).isDirectory() ? walk(p, unpackedBundle) : [p];
   });
 }
 
@@ -63,7 +64,10 @@ function checkSkill(dir) {
   if (lines >= SKILL_LINE_LIMIT) problems.push(`${folder}/SKILL.md: ${lines} lines (keep under ${SKILL_LINE_LIMIT})`);
   if (!existsSync(join(dir, 'LICENSE'))) problems.push(`${folder}: missing LICENSE`);
 
-  const files = walk(dir).filter((f) => f.endsWith('.md'));
+  // Archive utilities may expand the third-party sources beside the distributed bundle.
+  const bundle = join(dir, 'assets', 'design-sources');
+  const unpackedBundle = existsSync(bundle + '.tar.gz') ? bundle : null;
+  const files = walk(dir, unpackedBundle).filter((f) => f.endsWith('.md'));
   const reachable = new Set([skillMd]);
   const queue = [skillMd];
   while (queue.length) {

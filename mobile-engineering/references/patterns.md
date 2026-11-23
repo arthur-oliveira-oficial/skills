@@ -2,6 +2,12 @@
 
 Choose the screen by what the person needs to do. Identify what must be visible before the first action, what can wait until selection, and what must survive Back. The examples below are design recommendations derived from the linked material. Recheck official guidance for the platform and SDK used by the project.
 
+## Visual identity across a flow
+
+Choose the detail that helps someone make the decision at each step. In a trail app, a landscape photo helps a hiker recognize a destination while browsing. Keep distance and ascent aligned across rows so routes are easy to compare. Once navigation starts, give the next turn and its distance the prominent position. Carry the trail identity through its name and marker, using the app’s familiar navigation and controls.
+
+Exercise both screens with a long trail name, enlarged system text and an unavailable photo. The hiker should still be able to distinguish two routes, select one and read the next turn. If the photograph carries essential information about the route, surface that fact in accessible text as well.
+
 ## Patterns by task
 
 | User task | Compact layout and component choice | Adaptation or failure to exercise |

@@ -100,7 +100,7 @@ Look at each screenshot: sibling controls (equal height, no uneven wrapping), na
 
 **Missing `<meta name="viewport">`.** `set viewport` gives a true CSS width, so the page may look fine at 375px in the tool while a real phone renders it at ~980px and zooms out. Check the source; a missing or zoom-disabling viewport meta (`user-scalable=no`, `maximum-scale=1`) is a finding.
 
-**Text resize (WCAG 1.4.4).** 1.4.4 is judged at 200% **browser zoom**, which halves the CSS viewport: `set viewport 640 400` equals 1280×800 at 200%. Run the overflow and clipping checks there; reflow at 320px covers 1.4.10.
+**Text resize and reflow.** Enlarge text to 200% using a supported browser zoom or text-size control. Check that the text actually grows and complete the task with the enlarged labels. For vertically scrolling pages, separately check reflow at 320 CSS px, including access to actions and readable text in table cells. A map or comparison table that needs two dimensions may scroll inside its own region. A narrower viewport exercises layout only. If the tool cannot enlarge text, report resize as unverified. [W3C resize text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) · [W3C reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)
 
 **Root font-size scaling (best practice, advisory).** Text and form controls sized in `px` ignore the user's font-size setting. This is a best-practice finding, not a 1.4.4 failure. At a desktop width, run this once per page load (it sets 200%; reload before re-running):
 
@@ -137,8 +137,8 @@ agent-browser --session "$S-device" screenshot "$V/screenshots/route-ipad-pro.pn
 Verify touch behavior with these checks instead of trusting emulation:
 
 1. **Hover-only actions (static):** search the changed code for visibility gated on hover, e.g. `opacity-0 group-hover:opacity-100`, `hidden group-hover:block`, `:hover` rules that reveal controls. Each must also appear on `focus-visible`/`focus-within` and be visible by default under `@media (hover: none)` (or always visible).
-2. **Target size (browser):** `agent-browser get box @eN` on important controls — ≥ 44×44px preferred, ≥ 24×24px minimum. For visually hidden inputs (custom radios/checkboxes, which measure 1×1), measure the clickable `<label>` instead.
-3. **Spacing between targets:** compare adjacent boxes; ≥ 8px apart on touch layouts.
+2. **Target size.** Use `agent-browser get box @eN` on the clickable control or its activating label. For a target under 24 CSS px in either dimension, inspect neighboring hit regions and the [2.5.8 exceptions](interface-guidelines.md#mobile-and-touch). Label a stricter kit or product threshold as a design finding.
+3. **Adjacent controls.** Activate the facing edges of a dense pair, such as Edit and Remove. Check that each edge invokes the intended action. Use the spacing exception above when assessing WCAG.
 4. **Real device or DevTools device mode** (touch enabled) when the change depends on gestures, `pointer: coarse` styles, or touch events. If not available, list "touch interaction" as **NOT VERIFIED**.
 
 ## Keyboard and focus

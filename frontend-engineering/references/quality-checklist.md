@@ -54,7 +54,7 @@ Items above without a command are judgment items: say how you checked them (code
 - [ ] Dialogs, sheets, and sticky elements fit the viewport.
 - [ ] Floating elements never cover content: with each toast, banner, or sticky/fixed bar visible, scroll to the end of the list and screenshot; the last item is fully readable and clickable. Fix by reserving space (bottom padding equal to the floating element's height plus a gap), not by shrinking the element.
 - [ ] Content taller than the viewport: the default state captured with `screenshot --full` and enough data to scroll; backgrounds, sidebars, and dividers reach the end of the page (`min-h-dvh` or a `sticky` sidebar, not `h-screen` on a container whose content can grow).
-- [ ] Touch targets ≥ 24px (44px preferred for important ones).
+- [ ] Small pointer targets assessed using their actual hit region, spacing and applicable [WCAG exceptions](interface-guidelines.md#mobile-and-touch).
 
 ## Accessibility
 

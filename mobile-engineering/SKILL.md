@@ -3,7 +3,7 @@ name: mobile-engineering
 description: Designs, implements, and reviews Android and iOS app features in Kotlin (Jetpack Compose or Views), Swift (SwiftUI or UIKit), and React Native (including Expo), plus Progressive Web Apps (PWA) and Android Trusted Web Activities (TWA). Use for mobile UI/UX, 2026 mobile design trends, component selection, navigation, adaptive layouts, app lifecycle, accessibility, and device verification. Também para criar, corrigir ou auditar telas e fluxos de aplicativos móveis. Use for web app installation, offline flows, Bubblewrap packaging, Digital Asset Links, Android Studio, USB device testing with adb, Xcode, TestFlight, Google Play and App Store submission readiness.
 license: MIT
 metadata:
-  version: "1.4.0"
+  version: "1.5.1"
 ---
 
 # Mobile engineering
@@ -17,6 +17,8 @@ Start with the user's task and its entry and exit points. For example, a person 
 
 ## Choose the relevant guide
 
+For branded mobile UI, a visual redesign, or a Taste or Anthropic design request, use the [bundled design workflows](references/design-sources.md). Apply the native design review to app screens and the complete web build and browser checks to a Taste page delivered through a PWA or TWA.
+
 | When working on | Read |
 | --- | --- |
 | Kotlin, Compose, Material 3, Views, foldables or Android Back | [Android implementation](references/android.md) |
@@ -29,7 +31,7 @@ Start with the user's task and its entry and exit points. For example, a person 
 | Xcode on a physical iPhone, archiving, TestFlight or App Store Review | [Xcode and App Store release](references/app-store.md) |
 | A 2026 visual direction, current mobile UI/UX trends or a reference-led redesign | [2026 mobile design patterns](references/mobile-design-2026.md) |
 | Implementing a flow seen in a mobile app, such as a playback queue, offline map, quoted reply or order tracker | [Interaction patterns from 20 apps](references/app-interactions.md) |
-| A screen concept, design system or component choice | [Patterns and research](references/patterns.md) |
+| A screen concept, branded visual hierarchy or component choice | [Patterns and research](references/patterns.md) |
 | A changed flow, accessibility audit or suspected device-specific regression | [Verification](references/verification.md) |
 
 For a shared React Native screen, use the native guide for the specific behavior that differs. In a new app, follow the requested stack. If the user leaves it open, base the choice on target platforms, native integrations, existing team code and the cost of maintaining separate UIs.

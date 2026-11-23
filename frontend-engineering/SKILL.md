@@ -3,7 +3,7 @@ name: frontend-engineering
 description: "Designs, builds, audits, and verifies production web UIs (frontend). Use for pages, sites, dashboards, SaaS apps, landing pages, admin, forms, onboarding, checkout, navigation, components, redesigns, visual polish, design options, missing states, CSS, themes, dark mode, responsive layout (mobile, tablet, desktop), UI bugs, slow pages, layout shift, frontend code review, UX/usability/accessibility audits, browser verification or QA, and any change to layout, styling, tokens, or visual states; with Next.js or Vite + React, Tailwind CSS, shadcn/ui or other component libraries, Vue, Nuxt, Angular, Svelte, or plain HTML/CSS; and for creating, validating, exporting, or applying a DESIGN.md design system (tokens, Tailwind theme, tokens.json). Not for backend-only work, native mobile apps, HTML email, or chart internals. Também: tela, página, página lenta, desempenho de UI, site, interface, formulário, painel, componente, layout, estilo, tema, responsivo, acessibilidade, usabilidade, redesign, design system."
 license: MIT
 metadata:
-  version: "2.6.0"
+  version: "2.7.1"
 ---
 
 # Frontend Engineering
@@ -24,6 +24,8 @@ On conflict, follow this order:
 Compliance, security, consent, and the user's ability to complete the task override any aesthetic preference. Non-negotiable rules constrain outcomes (no overflow at 320px, keyboard access, no fabricated claims of your own), not technique: a desktop-first codebase keeps its convention.
 
 ## Routing
+
+For a new visual identity or substantial redesign, use the bundled Anthropic guide. For company sites, landing pages and requests for the full Taste workflow, also use its templates, asset library and browser gate. The project precedence above applies throughout. [Bundled design workflows](references/design-sources.md)
 
 Identify the mode and read **only** the references it needs:
 
@@ -52,7 +54,7 @@ Several rows can apply at once: read the union and deliver one report.
 
 **Required for any new screen or app.** Read the references your route lists before writing UI code: this list only summarizes them, and following this file alone produces incomplete work.
 
-1. No DESIGN.md or theme → the defaults in [visual-direction.md](references/visual-direction.md) (Defaults when the project has none); product UI is light and neutral with one highlight element per screen (Product vs. showcase).
+1. For a Taste site with no existing theme, use the palette and type workflow in the bundled manual. For other work with no DESIGN.md or theme → the defaults in [visual-direction.md](references/visual-direction.md) (Defaults when the project has none); product UI is light and neutral with one highlight element per screen (Product vs. showcase).
 2. Every state from [screen-states.md](references/screen-states.md): loading, empty, empty after filter, error with retry, slow ("still saving…" after ~2 s), server unreachable, deleted elsewhere.
 3. Stable controls: a loading button keeps its width (invisible label, spinner on top); selected items keep the same font weight.
 4. Delete with undo for a few seconds; confirmation only when it cannot be undone.
@@ -106,7 +108,7 @@ New project with no stack specified: a single page or prototype → plain HTML/C
 - **Scope:** do only what was asked or is clearly necessary. Do not rewrite architectures, restyle unrelated screens, or add libraries (components, icons, CSS, animation, state) without real need.
 - **Mobile-first:** no horizontal scrolling at 320px; important features do not disappear on mobile; tablet and desktop are deliberate enhancements (size classes in [responsive-layout.md](references/responsive-layout.md)).
 - **Accessibility is a design constraint, not a final audit:** semantic HTML, keyboard, visible focus, labels, accessible names, contrast, `prefers-reduced-motion`. Never rely on color alone.
-- **Touch targets:** the normative WCAG 2.2 AA 2.5.8 minimum is 24×24 CSS px; prefer 44×44 px for important touch controls.
+- **Pointer targets.** Aim for 44 × 44 CSS px on important touch controls. For a WCAG 2.2 AA audit, measure the clickable area and evaluate the applicable 2.5.8 exceptions. [Target size guidance](references/interface-guidelines.md#mobile-and-touch)
 - **Real states:** loading, empty, error, and success are part of the design, not an afterthought.
 - **Honesty:** do not invent logos, testimonials, metrics, awards, "most popular" badges, or conversion lifts. No dark patterns (false urgency, fabricated scarcity, fake progress, hidden cancellation, pre-checked opt-ins). Prices: when showing a per-month equivalent of an annual plan, also show the total actually billed.
 - **Missing content, links, and data:** do not invent URLs, routes, facts, or content. Use neutral copy and visibly marked placeholders for facts; link to destinations that don't exist yet only as a recorded assumption; list all of them in the report as open items.
@@ -118,7 +120,7 @@ New project with no stack specified: a single page or prototype → plain HTML/C
 
 **Redesign.** Do not rewrite everything. Fix the 3–5 highest-impact problems (unclear hierarchy, weak spacing rhythm, excessive cards, inconsistent radii, low contrast, mechanical responsiveness, weak empty/loading states, cluttered actions) in order of impact, preserving behavior. A fix that changes a shared piece follows "Changing a shared piece" in [apply-design-md.md](references/apply-design-md.md). The user rejects the direction ("I don't like it") → [proposals.md](references/proposals.md), not tweaks.
 
-**Landing page.** Establish audience, value proposition, proof, objections, and conversion action before layout. Avoid the generic hero → logo cloud → 3 cards → testimonials → pricing sequence unless the content calls for it. Use real product visuals.
+**Landing page.** Establish audience, value proposition, proof, objections, and conversion action before layout. Avoid the generic hero → logo cloud → 3 cards → testimonials → pricing sequence unless the content calls for it. Choose an opening visual that demonstrates the promise. For asset selection and responsive crops, use [Visual direction](references/visual-direction.md#choosing-the-opening-visual).
 
 **Dashboard / SaaS.** Task completion and information scent over spectacle: clear active navigation, a useful title and action area, sensible defaults, search/filter when needed, contextual actions near the object they affect, responsive data representation. Do not wrap every metric in a floating card.
 
